@@ -7,10 +7,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { TokenService } from '../token/token.service';
 import { TokenRepository } from '../token/entities/token.repository';
 
-const JwtConfig = JwtModule.register({ secret: process.env.JWT_SECRET_KEY });
-
 @Module({
-        imports: [TypeOrmModule.forFeature([UserRepository, TokenRepository]), JwtConfig],
+        imports: [TypeOrmModule.forFeature([UserRepository, TokenRepository]), JwtModule.register({ secret: process.env.JWT_SECRET_KEY })],
         controllers: [AuthController],
         providers: [AuthService, TokenService],
 })

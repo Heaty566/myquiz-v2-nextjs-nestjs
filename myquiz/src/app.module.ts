@@ -13,11 +13,15 @@ import { JwtModule } from '@nestjs/jwt';
 const DBConfig = TypeOrmModule.forRoot({
         url: process.env.DB_URL,
         type: 'mongodb',
+        synchronize: true,
+        keepConnectionAlive: true,
         useUnifiedTopology: true,
+        database: 'myquiz',
         entities: [User, Token],
 });
 
 const Config = ConfigModule.forRoot({
+        isGlobal: true,
         envFilePath: `./src/config/${
                 process.env.NODE_ENV === 'production' ? '.env' : process.env.NODE_ENV === 'development' ? '.env.development' : '.env.test'
         }`,
@@ -31,4 +35,3 @@ const JwtConfig = JwtModule.register({ secret: process.env.JWT_SECRET_KEY });
         providers: [AppService],
 })
 export class AppModule {}
-console.log('hellooo');

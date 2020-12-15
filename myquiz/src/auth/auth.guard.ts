@@ -1,27 +1,49 @@
 import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { UserRole } from './entities/userRole.enum';
-import { User } from '../user/entities/user.entity';
-import { UserRepository } from '../user/entities/userRepository.entity';
-import { InjectRepository } from '@nestjs/typeorm';
+import { Request, Response } from 'express';
 import { JwtService } from '@nestjs/jwt';
-
+import { TokenService } from '../token/token.service';
+import { Token } from '../token/entities/token.entity';
 @Injectable()
 export class UserAuth implements CanActivate {
         constructor(
                 private readonly reflector: Reflector,
-                @InjectRepository(User) private readonly userRepository: UserRepository,
+
                 private readonly jwtService: JwtService,
+                private readonly tokenService: TokenService,
         ) {}
 
         async canActivate(context: ExecutionContext) {
-                const role = this.reflector.get<UserRole>('role', context.getHandler());
+                const req: Request = context.switchToHttp().getRequest();
+                const res: Response = context.switchToHttp().getResponse();
 
-                // const user = await this.userRepository.findOne({ where: {_id: s } });
-                return true;
+                const refreshToken = req.cookies['re-token'] || '';
+                let authToken: string = req.cookies['token'] || '';
+                if (!refreshToken) throw new UnauthorizedException('Invalid token');
+
+                if (!authToken) {
+                        const newAuthToken = await this.tokenService.getAuthToken(refreshToken);
+                        if (!newAuthToken) throw new UnauthorizedException('Invalid token');
+                        res.cookie('token', newAuthToken);
+
+                        authToken = newAuthToken;
+                }
+
+                const decodeToken = this.decodeToken(authToken);
+                if (typeof decodeToken === 'object') {
+                        const role = this.reflector.get<UserRole>('role', context.getHandler());
+
+                        if (role === UserRole.ADMIN && decodeToken.role !== UserRole.ADMIN) throw new UnauthorizedException('Invalid token');
+                        const reqUser = Object.assign(new Token(), decodeToken);
+
+                        req.user = reqUser;
+                        return true;
+                }
+                return false;
         }
 
-        async decodeToken(token: string) {
+        decodeToken(token: string) {
                 try {
                         const data = this.jwtService.decode(token);
                         return data;
