@@ -1,0 +1,35 @@
+version: 2.1
+
+# Define the jobs we want to run for this project
+orbs:
+  node: circleci/node@2.0.3
+
+jobs:
+  test:
+    docker:
+      - image: heaty566/myquiz-v2-alpha-3
+        auth:
+          username: heaty566
+          password: $DOCKER_PASSWORD # context / project UI env-var reference
+    steps:
+      - checkout
+      - run: echo "Running test"
+      - run: yarn install
+      - run: yarn run test
+
+  build:
+    docker:
+      - image: heaty566/myquiz-v2-alpha-3
+        auth:
+          username: heaty566
+          password: $DOCKER_PASSWORD # context / project UI env-var reference
+    steps:
+      - checkout
+      - run: echo "this is the test job"
+
+# Orchestrate our job run sequence
+workflows:
+  build_and_test:
+    jobs:
+      - test
+      - build
