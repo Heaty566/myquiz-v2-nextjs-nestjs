@@ -15,7 +15,7 @@ jobs:
       - checkout
       - run: echo "Running test"
       - run: ls
-      - run: cd app
+      - run: cd myquiz
       - run: ls
       - run: yarn install
       - run: yarn run test
