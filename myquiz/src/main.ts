@@ -8,6 +8,7 @@ async function bootstrap() {
         app.use(cookieParser());
         const port = process.env.PORT || 4000;
         await app.listen(port, () => {
+                console.log('Current Mode: ' + process.env.NODE_ENV);
                 console.log('Listening on port ' + port);
         });
 }

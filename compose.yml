@@ -1,0 +1,22 @@
+version: "3"
+services:
+  server:
+    build: ./myquiz
+    image: heaty566/myquiz-v2-server
+    networks:
+      - backend
+    ports:
+      - 6000:4000
+    env_file:
+      - ./config/.env
+    container_name: my-web-container
+  client:
+    build: ./nextjs
+    image: heaty566/myquiz-v2-client
+    networks:
+      - frontend
+    ports:
+      - 7000:3000
+networks:
+  frontend:
+  backend:
