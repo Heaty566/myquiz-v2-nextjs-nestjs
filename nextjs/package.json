@@ -13,6 +13,7 @@
                 "@types/react": "^16.9.55",
                 "@zeit/next-sass": "^1.0.1",
                 "@zeit/next-typescript": "^1.1.1",
+                "axios": "^0.21.0",
                 "next": "^10.0.0",
                 "node-sass": "4.14.1",
                 "react": "^17.0.1",

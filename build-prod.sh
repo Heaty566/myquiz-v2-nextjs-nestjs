@@ -1,12 +1,16 @@
 echo "-> build docker image"
 sleep 1
 echo "----------------------------------------------------------------------------------------------------------"
-echo "build docker image Nestjs  -> heaty566/myquiz-v2-server"
+echo "testing before build image"
 sleep 1
+echo "run backend test"
 cd myquiz
 yarn run test
 cd ..
+sleep 1
 cd nextjs 
 yarn run test
 cd ..
-docker compose up -d
+echo "build docker images"
+sleep 1
+docker compose up -d -p myquiz
