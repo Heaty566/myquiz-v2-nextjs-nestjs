@@ -17,6 +17,13 @@ services:
       - frontend
     ports:
       - 7000:3000
+  proxy:
+    build: ./.docker/nginx
+    image: heaty566/myquiz-v2-proxy:latest
+    networks:
+      - backend
+    ports:
+      - 80:80
 networks:
   frontend:
   backend:
