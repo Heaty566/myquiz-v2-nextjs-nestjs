@@ -3,27 +3,19 @@ services:
   server:
     build: ./myquiz
     image: heaty566/myquiz-v2-server:latest
-    networks:
-      - backend
-    ports:
-      - 4000:4000
+    expose:
+      - 4000
     env_file:
       - ./config/.env
 
   client:
     build: ./nextjs
     image: heaty566/myquiz-v2-client:latest
-    networks:
-      - frontend
-    ports:
-      - 7000:3000
-  proxy:
+    expose:
+      - 3000
+
+  nginx:
     build: ./.docker/nginx
     image: heaty566/myquiz-v2-proxy:latest
-    networks:
-      - backend
     ports:
       - 80:80
-networks:
-  frontend:
-  backend:

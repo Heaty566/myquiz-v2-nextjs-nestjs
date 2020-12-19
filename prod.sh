@@ -15,4 +15,4 @@ yarn run test
 cd ..
 echo "build docker images"
 sleep 1
-docker compose up -d -p myquiz
+docker-compose up -d 
