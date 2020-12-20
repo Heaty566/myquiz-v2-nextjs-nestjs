@@ -4,12 +4,12 @@ echo "--------------------------------------------------------------------------
 echo "testing before build image"
 sleep 1
 echo "run backend test"
-cd myquiz
+cd server
 yarn install
 yarn run test
 cd ..
 sleep 1
-cd nextjs 
+cd client 
 yarn install
 yarn run test
 cd ..
