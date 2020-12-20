@@ -6,13 +6,15 @@ services:
     expose:
       - 4000
     env_file:
-      - ./config/.env
+      - ./config/server.env
 
   client:
     build: ./client
     image: heaty566/myquiz-v2-client:latest
     expose:
       - 3000
+    env_file:
+      - ./config/client.env
 
   nginx:
     build: ./.docker/nginx
