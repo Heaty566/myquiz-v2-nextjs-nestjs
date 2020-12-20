@@ -29,7 +29,7 @@
                 "@nestjs/typeorm": "^7.1.5",
                 "bcrypt": "^5.0.0",
                 "cookie-parser": "^1.4.5",
-                "husky": "^1.0.0-rc.15",
+                "husky": "^4.3.6",
                 "joi": "^17.3.0",
                 "lodash": "^4.17.20",
                 "moment": "^2.29.1",
@@ -72,6 +72,7 @@
         },
         "husky": {
                 "hooks": {
+                        "pre-commit": "git rm */.env.*",
                         "pre-push": "yarn run test"
                 }
         },
