@@ -22,9 +22,7 @@ const DBConfig = TypeOrmModule.forRoot({
 
 const Config = ConfigModule.forRoot({
         isGlobal: true,
-        envFilePath: `./src/config/${
-                process.env.NODE_ENV === 'production' ? '.env' : process.env.NODE_ENV === 'development' ? '.env.development' : '.env.test'
-        }`,
+        envFilePath: `./src/config/.env.${process.env.NODE_ENV}`,
 });
 
 const JwtConfig = JwtModule.register({ secret: process.env.JWT_SECRET_KEY });

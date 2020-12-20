@@ -5,8 +5,6 @@ services:
     image: heaty566/myquiz-v2-server:latest
     expose:
       - 4000
-    env_file:
-      - ./config/.env
 
   client:
     build: ./client
