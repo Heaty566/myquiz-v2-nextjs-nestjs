@@ -1,4 +1,4 @@
-FROM node:12-slim AS builder
+FROM node:12-alpine AS builder
 
 WORKDIR /app
 COPY ./package.json ./

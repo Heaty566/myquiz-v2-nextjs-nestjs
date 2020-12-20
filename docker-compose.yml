@@ -1,7 +1,7 @@
 version: "3"
 services:
   server:
-    build: ./myquiz
+    build: ./server
     image: heaty566/myquiz-v2-server:latest
     expose:
       - 4000
@@ -9,7 +9,7 @@ services:
       - ./config/.env
 
   client:
-    build: ./nextjs
+    build: ./client
     image: heaty566/myquiz-v2-client:latest
     expose:
       - 3000
