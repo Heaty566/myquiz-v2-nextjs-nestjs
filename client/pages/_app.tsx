@@ -5,6 +5,8 @@ export interface AppProps {}
 
 const App: React.SFC<AppProps> = () => {
   React.useEffect(() => {
+    console.log(process.env.NODE_ENV);
+    console.log(process.env.SERVER_URL);
     axios.default.get("http://localhost/v2/api/hello").then(() => {
       console.log("i have call server");
     });
