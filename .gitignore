@@ -9,8 +9,8 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
-*/.env.*
-*/.env
+*/*/config/*
+/config/.env
 
 # OS
 .DS_Store
