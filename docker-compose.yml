@@ -1,0 +1,23 @@
+version: "3"
+services:
+  server:
+    build: ./server
+    image: heaty566/myquiz-v2-server:latest
+    expose:
+      - 4000
+    env_file:
+      - ./config/server.env
+
+  client:
+    build: ./client
+    image: heaty566/myquiz-v2-client:latest
+    expose:
+      - 3000
+    env_file:
+      - ./config/client.env
+
+  nginx:
+    build: ./.docker/nginx
+    image: heaty566/myquiz-v2-proxy:latest
+    ports:
+      - 80:80
