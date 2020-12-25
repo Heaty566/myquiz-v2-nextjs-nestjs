@@ -1,0 +1,188 @@
+openapi: 3.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/Heaty566/myQuiz/1.0.0
+  - description: MyQuizApi
+    url: http://example.com/v2/api
+info:
+  description: MyQuizApi is created on 25th Dec
+  version: 1.0.0
+  title: Myquiz-v2
+  contact:
+    email: heaty566@gmail.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: auth
+    description: Secured Admin-only calls
+  - name: user
+    description: Operations available to regular developers
+
+paths:
+  /api/auth/register:
+    post:
+     summary: create new user with username and password
+     tags: 
+      - auth
+     requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+               $ref: '#/components/schemas/CreateUserDto'
+     responses:
+       200:
+        description: return refersh-auth token
+        headers:
+          re-token: 
+            schema:
+              type: string
+            description: return refersh-auth token
+       400:
+        description: invalid input or username is taken
+        content: 
+           application/json:
+            schema:
+              type: object
+              oneOf: 
+                - properties:
+                      message:
+                        type: string
+                        example: "Username is taken"
+                      data: 
+                        type: string
+                        example: null
+                - $ref: '#/components/schemas/BadInputJoi'
+  /api/auth/login:
+      post:
+        summary: login user with username and password
+        tags: 
+          - auth
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+               $ref: '#/components/schemas/LoginUserDto'
+        responses:
+         200:
+          description: return refersh-auth token
+          headers:
+            re-token: 
+              schema:
+                type: string
+              description: return refersh-auth token
+         400:
+          description: invalid input or username doesn't exist or invalid password
+          content: 
+           application/json:
+            schema:
+              type: object
+              oneOf: 
+                - properties:
+                      message:
+                        type: string
+                        example: "Username pr password are invalid"
+                      data: 
+                        type: string
+                        example: null
+                - $ref: '#/components/schemas/BadInputJoi'
+          
+  /api/user/:
+      get:
+        summary: create new user with username and password
+        tags: 
+          - auth
+        parameters:
+          - in: cookie
+            name: re-token
+            description: "to get auth token"
+            schema: 
+              type: string
+          - in: cookie
+            name: auth-token
+            description: "to get user information"
+            schema: 
+              type: string
+        responses:
+          200: 
+            description: return user information
+            content: 
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/UserInfo'
+          401:
+            description: "Invalid token"
+            content: 
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                      example: "Invalid token"
+                    data: 
+                      type: string
+                      example: null
+components:
+  schemas:
+    UserInfo: 
+      type: object
+      properties:
+        username: 
+          type: string
+          example: example
+        fullname:
+          type: string
+          example: example
+        email:
+          type: string
+          example: example@gmail.com
+        isPremium:
+          type: boolean
+          example: false
+        role: 
+          type: string
+          example: USER
+  
+    BadInputJoi: 
+      type: object
+      properties:
+        data: 
+          type: array
+          items: 
+            type: object
+            properties: 
+              field: 
+                type: string
+                description: "field will be the name of invalid field"
+                example: "should not be empty"
+            
+    CreateUserDto:
+      type: object
+      properties:
+        fullname:
+          type: string
+          example: Widget Adapter
+          
+        username: 
+          type: string
+          example: example
+        password: 
+          type: string
+          example: 12345678Aa
+        confirmPassword: 
+          type: string
+          example: 12345678Aa
+    LoginUserDto:
+      type: object
+      properties:
+        username: 
+          type: string
+          example: example
+        password: 
+          type: string
+          example: 12345678AaK

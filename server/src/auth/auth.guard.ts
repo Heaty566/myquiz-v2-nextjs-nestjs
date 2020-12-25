@@ -5,6 +5,7 @@ import { Request, Response } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { TokenService } from '../token/token.service';
 import { Token } from '../token/entities/token.entity';
+import { CONSTANT } from '../common/constant';
 @Injectable()
 export class UserAuth implements CanActivate {
         constructor(
@@ -25,7 +26,7 @@ export class UserAuth implements CanActivate {
                 if (!authToken) {
                         const newAuthToken = await this.tokenService.getAuthToken(refreshToken);
                         if (!newAuthToken) throw new UnauthorizedException('Invalid token');
-                        res.cookie('token', newAuthToken);
+                        res.cookie('token', newAuthToken, { maxAge: CONSTANT.MINUTE * 5 });
 
                         authToken = newAuthToken;
                 }

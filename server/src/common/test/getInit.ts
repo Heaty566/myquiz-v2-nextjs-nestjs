@@ -1,6 +1,6 @@
 import { AppModule } from '../../app.module';
 import { Test, TestingModule } from '@nestjs/testing';
-import * as cookieParser from 'cookie-parser';
+import { router } from '../app/router';
 
 export const getTestInit = async () => {
         const module: TestingModule = await Test.createTestingModule({
@@ -9,7 +9,7 @@ export const getTestInit = async () => {
 
         const configModule = module.createNestApplication();
 
-        configModule.use(cookieParser());
+        router(configModule);
 
         const getApp = await configModule.init();
         //apply middleware

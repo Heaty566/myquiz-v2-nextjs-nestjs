@@ -1,7 +1,7 @@
 import { ArgumentMetadata, BadRequestException, Injectable, PipeTransform } from '@nestjs/common';
 
 import { ObjectSchema } from 'joi';
-import { JoiErrorMapper } from '../helper/JoiErrorMapper';
+import { JoiErrorMapper } from '../helper/JoiErrorMapper.helper';
 
 @Injectable()
 export class JoiValidatorPipe implements PipeTransform {

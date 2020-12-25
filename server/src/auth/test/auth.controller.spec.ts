@@ -21,27 +21,28 @@ describe('AuthController', () => {
 
         describe('createNewUser', () => {
                 let createUserData: CreateUserDto;
+                const reqApi = (input: CreateUserDto) => supertest(app.getHttpServer()).post('/api/auth/register').send(input);
 
                 beforeEach(() => {
                         createUserData = getCreateUserDto();
                 });
                 it('create new user', async () => {
-                        const res = await supertest(app.getHttpServer()).post('/auth/register').send(createUserData);
+                        const res = await reqApi(createUserData);
 
                         expect(res.headers['set-cookie']).toBeDefined();
                         expect(res.status).toBe(201);
                 });
 
                 it('invalid input (username is taken)', async () => {
-                        await supertest(app.getHttpServer()).post('/auth/register').send(createUserData);
-                        const res = await supertest(app.getHttpServer()).post('/auth/register').send(createUserData);
+                        await reqApi(createUserData);
+                        const res = await reqApi(createUserData);
                         expect(res.status).toBe(400);
                         expect(res.body.message).toBeDefined();
                 });
 
                 it('invalid input (confirmPassword does not match)', async () => {
                         createUserData.confirmPassword = '12345678';
-                        const res = await supertest(app.getHttpServer()).post('/auth/register').send(createUserData);
+                        const res = await reqApi(createUserData);
 
                         expect(res.status).toBe(400);
                         expect(res.body.data).toBeDefined();
@@ -51,13 +52,15 @@ describe('AuthController', () => {
         describe('loginUser', () => {
                 //
                 let loginUserDto: LoginUserDto;
+                const reqApi = (input: LoginUserDto) => supertest(app.getHttpServer()).post('/api/auth/login').send(input);
+
                 beforeEach(async () => {
                         loginUserDto = getLoginUserDto();
                         const encryptPassword = await authService['encryptString'](loginUserDto.password);
                         await userRepostiory.insert({ username: loginUserDto.username, password: encryptPassword });
                 });
                 it('login user success', async () => {
-                        const res = await supertest(app.getHttpServer()).post('/auth/login').send(loginUserDto);
+                        const res = await reqApi(loginUserDto);
 
                         expect(res.headers['set-cookie']).toBeDefined();
                         expect(res.status).toBe(201);
@@ -65,13 +68,14 @@ describe('AuthController', () => {
 
                 it('invalid input (username does not exist)', async () => {
                         loginUserDto.username = 'helloworld';
-                        const res = await supertest(app.getHttpServer()).post('/auth/login').send(loginUserDto);
+                        const res = await reqApi(loginUserDto);
+
                         expect(res.body.message).toBeDefined();
                         expect(res.status).toBe(400);
                 });
                 it('invalid input (incorrect password)', async () => {
                         loginUserDto.password = 'helloworld';
-                        const res = await supertest(app.getHttpServer()).post('/auth/login').send(loginUserDto);
+                        const res = await reqApi(loginUserDto);
 
                         expect(res.body.message).toBeDefined();
                         expect(res.status).toBe(400);

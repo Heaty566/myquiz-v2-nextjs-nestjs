@@ -5,6 +5,7 @@ import { loginUserDtoValidator, LoginUserDto } from './dto/loginUser.dto';
 import { TokenService } from '../token/token.service';
 import { AuthService } from './auth.service';
 import { CreateUserDto, createUserDtoValidator } from './dto/createUser.dto';
+import { CONSTANT } from '../common/constant';
 
 @Controller('auth')
 export class AuthController {
@@ -23,7 +24,7 @@ export class AuthController {
                 const { isPremium, role, _id } = await this.authService.createNewUser(body);
                 const refershToken = await this.tokenService.getRefershToken({ isPremium, role, userId: _id });
 
-                return res.cookie('re-token', refershToken).send({ message: 'Registration completed successfully' });
+                return res.cookie('re-token', refershToken, { maxAge: 180 * CONSTANT.DAY }).send({ message: 'Registration completed successfully' });
         }
 
         @Post('/login')
@@ -40,6 +41,6 @@ export class AuthController {
                         role: getUser.role,
                         userId: getUser._id,
                 });
-                return res.cookie('re-token', refershToken).send({ message: 'Login user successfully' });
+                return res.cookie('re-token', refershToken, { maxAge: CONSTANT.DAY * 180 }).send({ message: 'Login user successfully' });
         }
 }
