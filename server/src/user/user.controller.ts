@@ -2,7 +2,7 @@ import { Controller, Get, UseGuards, Req, UnauthorizedException } from '@nestjs/
 import { UserService } from './user.service';
 import { UserAuth } from '../auth/auth.guard';
 import { AuthService } from '../auth/auth.service';
-import { RequestCus } from '../common/interface/req.interface';
+import { Request } from 'express';
 import * as _ from 'lodash';
 @Controller('user')
 export class UserController {
@@ -10,7 +10,7 @@ export class UserController {
 
         @Get('')
         @UseGuards(UserAuth)
-        async getUserInfo(@Req() req: RequestCus) {
+        async getUserInfo(@Req() req: Request) {
                 const user = await this.authService.findUserByField('_id', req.user.userId);
                 if (!user) throw new UnauthorizedException('Invalid User');
 

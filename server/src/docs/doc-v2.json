@@ -1,0 +1,300 @@
+{
+        "openapi": "3.0.0",
+        "info": {
+                "title": "Myquiz-v2",
+                "description": "MyQuizApi is created on 25th Dec",
+                "contact": {
+                        "email": "heaty566@gmail.com"
+                },
+                "license": {
+                        "name": "Apache 2.0",
+                        "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+                },
+                "version": "1.0.0"
+        },
+        "servers": [
+                {
+                        "url": "https://virtserver.swaggerhub.com/Heaty566/myQuiz/1.0.0",
+                        "description": "SwaggerHub API Auto Mocking"
+                },
+                {
+                        "url": "http://example.com/v2/api",
+                        "description": "MyQuizApi"
+                }
+        ],
+        "tags": [
+                {
+                        "name": "auth",
+                        "description": "Secured Admin-only calls"
+                },
+                {
+                        "name": "user",
+                        "description": "Operations available to regular developers"
+                }
+        ],
+        "paths": {
+                "/api/auth/register": {
+                        "post": {
+                                "tags": ["auth"],
+                                "summary": "create new user with username and password",
+                                "requestBody": {
+                                        "content": {
+                                                "application/json": {
+                                                        "schema": {
+                                                                "$ref": "#/components/schemas/CreateUserDto"
+                                                        }
+                                                }
+                                        },
+                                        "required": true
+                                },
+                                "responses": {
+                                        "200": {
+                                                "description": "return refersh-auth token",
+                                                "headers": {
+                                                        "re-token": {
+                                                                "description": "return refersh-auth token",
+                                                                "style": "simple",
+                                                                "explode": false,
+                                                                "schema": {
+                                                                        "type": "string"
+                                                                }
+                                                        }
+                                                }
+                                        },
+                                        "400": {
+                                                "description": "invalid input or username is taken",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "oneOf": [
+                                                                                {
+                                                                                        "properties": {
+                                                                                                "message": {
+                                                                                                        "type": "string",
+                                                                                                        "example": "Username is taken"
+                                                                                                },
+                                                                                                "data": {
+                                                                                                        "type": "string"
+                                                                                                }
+                                                                                        }
+                                                                                },
+                                                                                {
+                                                                                        "$ref": "#/components/schemas/BadInputJoi"
+                                                                                }
+                                                                        ]
+                                                                }
+                                                        }
+                                                }
+                                        }
+                                }
+                        }
+                },
+                "/api/auth/login": {
+                        "post": {
+                                "tags": ["auth"],
+                                "summary": "login user with username and password",
+                                "requestBody": {
+                                        "content": {
+                                                "application/json": {
+                                                        "schema": {
+                                                                "$ref": "#/components/schemas/LoginUserDto"
+                                                        }
+                                                }
+                                        },
+                                        "required": true
+                                },
+                                "responses": {
+                                        "200": {
+                                                "description": "return refersh-auth token",
+                                                "headers": {
+                                                        "re-token": {
+                                                                "description": "return refersh-auth token",
+                                                                "style": "simple",
+                                                                "explode": false,
+                                                                "schema": {
+                                                                        "type": "string"
+                                                                }
+                                                        }
+                                                }
+                                        },
+                                        "400": {
+                                                "description": "invalid input or username doesn't exist or invalid password",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "type": "object",
+                                                                        "oneOf": [
+                                                                                {
+                                                                                        "properties": {
+                                                                                                "message": {
+                                                                                                        "type": "string",
+                                                                                                        "example": "Username pr password are invalid"
+                                                                                                },
+                                                                                                "data": {
+                                                                                                        "type": "string"
+                                                                                                }
+                                                                                        }
+                                                                                },
+                                                                                {
+                                                                                        "$ref": "#/components/schemas/BadInputJoi"
+                                                                                }
+                                                                        ]
+                                                                }
+                                                        }
+                                                }
+                                        }
+                                }
+                        }
+                },
+                "/api/user/": {
+                        "get": {
+                                "tags": ["auth"],
+                                "summary": "get user with au-token",
+                                "parameters": [
+                                        {
+                                                "name": "re-token",
+                                                "in": "cookie",
+                                                "description": "to get auth token",
+                                                "required": false,
+                                                "style": "form",
+                                                "explode": true,
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        },
+                                        {
+                                                "name": "auth-token",
+                                                "in": "cookie",
+                                                "description": "to get user information",
+                                                "required": false,
+                                                "style": "form",
+                                                "explode": true,
+                                                "schema": {
+                                                        "type": "string"
+                                                }
+                                        }
+                                ],
+                                "responses": {
+                                        "200": {
+                                                "description": "return user information",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "$ref": "#/components/schemas/UserInfo"
+                                                                }
+                                                        }
+                                                }
+                                        },
+                                        "401": {
+                                                "description": "Invalid token",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "$ref": "#/components/schemas/inline_response_401"
+                                                                }
+                                                        }
+                                                }
+                                        }
+                                }
+                        }
+                }
+        },
+        "components": {
+                "schemas": {
+                        "UserInfo": {
+                                "type": "object",
+                                "properties": {
+                                        "username": {
+                                                "type": "string",
+                                                "example": "example"
+                                        },
+                                        "fullName": {
+                                                "type": "string",
+                                                "example": "example"
+                                        },
+                                        "email": {
+                                                "type": "string",
+                                                "example": "example@gmail.com"
+                                        },
+                                        "isPremium": {
+                                                "type": "boolean",
+                                                "example": false
+                                        },
+                                        "role": {
+                                                "type": "string",
+                                                "example": "USER"
+                                        }
+                                }
+                        },
+                        "BadInputJoi": {
+                                "type": "object",
+                                "properties": {
+                                        "data": {
+                                                "type": "array",
+                                                "items": {
+                                                        "$ref": "#/components/schemas/BadInputJoi_data"
+                                                }
+                                        }
+                                }
+                        },
+                        "CreateUserDto": {
+                                "type": "object",
+                                "properties": {
+                                        "fullname": {
+                                                "type": "string",
+                                                "example": "Widget Adapter"
+                                        },
+                                        "username": {
+                                                "type": "string",
+                                                "example": "example"
+                                        },
+                                        "password": {
+                                                "type": "string",
+                                                "example": "12345678Aa"
+                                        },
+                                        "confirmPassword": {
+                                                "type": "string",
+                                                "example": "12345678Aa"
+                                        }
+                                }
+                        },
+                        "LoginUserDto": {
+                                "type": "object",
+                                "properties": {
+                                        "username": {
+                                                "type": "string",
+                                                "example": "example"
+                                        },
+                                        "password": {
+                                                "type": "string",
+                                                "example": "12345678Aa"
+                                        }
+                                }
+                        },
+
+                        "inline_response_401": {
+                                "type": "object",
+                                "properties": {
+                                        "message": {
+                                                "type": "string",
+                                                "example": "Invalid token"
+                                        },
+                                        "data": {
+                                                "type": "string"
+                                        }
+                                }
+                        },
+                        "BadInputJoi_data": {
+                                "type": "object",
+                                "properties": {
+                                        "field": {
+                                                "type": "string",
+                                                "description": "field will be the name of invalid field",
+                                                "example": "should not be empty"
+                                        }
+                                }
+                        }
+                }
+        }
+}

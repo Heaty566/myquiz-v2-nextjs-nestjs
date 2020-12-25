@@ -23,23 +23,20 @@ describe('userController', () => {
 
         beforeAll(async () => {
                 const createUserData = getCreateUserDto();
-                const res = await supertest(app.getHttpServer()).post('/auth/register').send(createUserData);
-                reToken = res.headers['set-cookie'][0];
+                const res = await supertest(app.getHttpServer()).post('/api/auth/register').send(createUserData);
+
+                reToken = res.headers['set-cookie'];
         });
 
         describe('getUser', () => {
+                const reqApi = () => supertest(app.getHttpServer()).get('/api/user').set({ cookie: reToken }).send();
+
                 it('get user', async () => {
-                        const res = await supertest(app.getHttpServer()).get('/user').set({ cookie: reToken }).send({});
+                        const res = await reqApi();
 
                         expect(res.body.username).toBeDefined();
                         expect(res.body.fullname).toBeDefined();
                         expect(res.body.password).toBeUndefined();
-                });
-
-                it('invalid token', async () => {
-                        const res = await supertest(app.getHttpServer()).get('/user').send({});
-                        expect(res.body.message).toBeDefined();
-                        expect(res.status).toBe(401);
                 });
 
                 let invalidReToken: string;
@@ -49,7 +46,7 @@ describe('userController', () => {
 
                 it('invalid token', async () => {
                         const cookies = `re-token=${invalidReToken}; Path=/`;
-                        const res = await supertest(app.getHttpServer()).get('/user').set({ cookie: cookies }).send({});
+                        const res = await supertest(app.getHttpServer()).get('/api/user').set({ cookie: cookies }).send({});
                         expect(res.body.message).toBeDefined();
                         expect(res.status).toBe(401);
                 });
