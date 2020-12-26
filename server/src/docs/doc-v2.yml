@@ -1,0 +1,228 @@
+openapi: 3.0.0
+servers:
+        - description: SwaggerHub API Auto Mocking
+          url: https://virtserver.swaggerhub.com/Heaty566/myQuiz/1.0.0
+        - description: MyQuizApi
+          url: http://example.com/v2/api
+info:
+        description: MyQuizApi is created on 25th Dec
+        version: 1.0.0
+        title: Myquiz-v2
+        contact:
+                email: heaty566@gmail.com
+        license:
+                name: Apache 2.0
+                url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+        - name: auth
+          description: handle authentication
+        - name: user
+          description: service for user
+        - name: system
+          description: get basic information about SystemVisitor
+
+paths:
+        /api/auth/register:
+                parameters:
+                        #common cookie
+                        - $ref: '#/components/parameters/lang'
+                post:
+                        summary: create new user with username and password
+                        tags:
+                                - auth
+                        requestBody:
+                                required: true
+                                content:
+                                        application/json:
+                                                schema:
+                                                        $ref: '#/components/schemas/CreateUserDto'
+                        responses:
+                                200:
+                                        description: return refresh-auth token
+                                        headers:
+                                                Set-Cookie:
+                                                        $ref: '#/components/headers/re-token'
+
+                                400:
+                                        description: invalid input or username is taken
+                                        content:
+                                                application/json:
+                                                        schema:
+                                                                type: object
+                                                                oneOf:
+                                                                        - $ref: '#/components/schemas/BadRequestApi'
+                                                                        - $ref: '#/components/schemas/BadInputJoi'
+        /api/auth/login:
+                parameters:
+                        #common cookie
+                        - $ref: '#/components/parameters/lang'
+                post:
+                        summary: login user with username and password
+                        tags:
+                                - auth
+                        requestBody:
+                                required: true
+                                content:
+                                        application/json:
+                                                schema:
+                                                        $ref: '#/components/schemas/LoginUserDto'
+                        responses:
+                                200:
+                                        description: return refresh-auth token
+                                        headers:
+                                                Set-Cookie:
+                                                        $ref: '#/components/headers/re-token'
+                                400:
+                                        description: invalid input or username doesn't exist or invalid password
+                                        content:
+                                                application/json:
+                                                        schema:
+                                                                type: object
+                                                                oneOf:
+                                                                        - $ref: '#/components/schemas/BadRequestApi'
+                                                                        - $ref: '#/components/schemas/BadInputJoi'
+
+        /api/user/:
+                parameters:
+                        #common cookie
+                        - $ref: '#/components/parameters/lang'
+                        - $ref: '#/components/parameters/re-token'
+                        - $ref: '#/components/parameters/auth-token'
+                get:
+                        summary: create new user with username and password
+                        tags:
+                                - user
+                        parameters:
+                                - $ref: '#/components/parameters/re-token'
+
+                        responses:
+                                200:
+                                        description: return user information
+                                        content:
+                                                application/json:
+                                                        schema:
+                                                                $ref: '#/components/schemas/UserInfo'
+                                401:
+                                        description: 'Invalid token'
+                                        content:
+                                                application/json:
+                                                        schema:
+                                                                $ref: '#/components/schemas/BadRequestApi'
+        /api/visitor:
+                parameters:
+                        #common cookie
+                        - $ref: '#/components/parameters/lang'
+                get:
+                        tags:
+                                - system
+                        responses:
+                                200:
+                                        description: 'return number of visitor in current session'
+                                        content:
+                                                application/json:
+                                                        schema:
+                                                                $ref: '#/components/schemas/SystemVisitor'
+
+components:
+        headers:
+                re-token:
+                        schema:
+                                type: string
+                        description: 'set refresh-token for client'
+        parameters:
+                re-token:
+                        in: cookie
+                        name: 're-token'
+                        schema:
+                                type: string
+                        example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
+                        required: true
+                auth-token:
+                        in: cookie
+                        name: 'auth-token'
+                        schema:
+                                type: string
+                        example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
+                lang:
+                        in: cookie
+                        name: 'lang'
+                        schema:
+                                type: string
+                        example: 'vi'
+                        description: 'allow server service multiple language'
+
+        schemas:
+                UserInfo:
+                        type: object
+                        properties:
+                                username:
+                                        type: string
+                                        example: example
+                                fullname:
+                                        type: string
+                                        example: example
+                                email:
+                                        type: string
+                                        example: example@gmail.com
+                                isPremium:
+                                        type: boolean
+                                        example: false
+                                role:
+                                        type: string
+                                        example: USER
+                SystemVisitor:
+                        type: object
+                        properties:
+                                data:
+                                        type: number
+                                        example: 10
+                                message:
+                                        type: string
+                                        example: null
+                BadRequestApi:
+                        type: object
+                        properties:
+                                data:
+                                        type: string
+                                        example: null
+                                message:
+                                        type: string
+                                        example: this is an error message
+                BadInputJoi:
+                        type: object
+                        properties:
+                                data:
+                                        type: array
+                                        items:
+                                                type: object
+                                                properties:
+                                                        field:
+                                                                type: string
+                                                                description: 'field will be the name of invalid field'
+                                                                example: 'should not be empty'
+
+                CreateUserDto:
+                        type: object
+                        properties:
+                                fullname:
+                                        type: string
+                                        example: Widget Adapter
+                                username:
+                                        type: string
+                                        example: example
+                                password:
+                                        type: string
+                                        example: 12345678Aa
+                                confirmPassword:
+                                        type: string
+                                        example: 12345678Aa
+
+                LoginUserDto:
+                        type: object
+                        properties:
+                                username:
+                                        type: string
+                                        example: example
+                                password:
+                                        type: string
+                                        example: 12345678AaK
