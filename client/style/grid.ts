@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import * as CSS from "csstype";
 
+//*todo fix pattern of color
+
 export const Grid = {
         Row: styled.div<{
                 alignItems?: CSS.Property.AlignItems;

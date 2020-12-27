@@ -1,6 +1,6 @@
 import * as React from "react";
 import { SearchBoxContainer, SearchBoxIcon, SearchBoxTextField } from "./style";
-import { ImageFull } from "../../../styled/common";
+import { ImageFull } from "../../../style/common";
 export interface SearchBoxProps {
         placeholder: string;
 }

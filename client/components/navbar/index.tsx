@@ -1,13 +1,14 @@
 import * as React from "react";
-import { NavbarContainer, NavbarLogo, NavbarLeft } from "./styled";
+import { NavbarContainer, NavbarLogo, NavbarLeft, NavbarBtnMobile } from "./style";
 import { SearchBox } from "../form/searchBox";
+import { Layout } from "../../style/grid";
+import { ImageFull } from "../../style/common";
+import { ButtonLink } from "../button/index";
 export interface NavbarProps {}
 
-import { Layout } from "../../styled/grid";
-import { ImageFull } from "../../styled/common";
-import { ButtonLink } from "../button/index";
-
 const Navbar: React.FunctionComponent<NavbarProps> = () => {
+        const [active, setActive] = React.useState(true);
+
         return (
                 <NavbarContainer>
                         <Layout justifyContent="space-between" alignItems="center">
@@ -19,6 +20,11 @@ const Navbar: React.FunctionComponent<NavbarProps> = () => {
                                         <ButtonLink label="Login" link="#" />
                                         <ButtonLink label="Register" link="#" />
                                 </NavbarLeft>
+                                <NavbarBtnMobile onClick={() => setActive(!active)} className={active ? "active" : ""}>
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                </NavbarBtnMobile>
                         </Layout>
                 </NavbarContainer>
         );
