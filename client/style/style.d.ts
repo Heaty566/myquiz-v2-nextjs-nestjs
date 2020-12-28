@@ -1,4 +1,4 @@
-import "styled-components";
+import { Keyframes } from 'styled-components';
 
 export interface Theme {
         colors: {
@@ -52,7 +52,10 @@ export interface Theme {
                 p3: number;
         };
         ruler: number;
+        animation: {
+                rotate: Keyframes;
+        };
 }
-declare module "styled-components" {
+declare module 'styled-components' {
         export interface DefaultTheme extends Theme {}
 }

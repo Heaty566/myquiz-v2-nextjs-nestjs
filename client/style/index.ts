@@ -1,4 +1,4 @@
-import { createGlobalStyle, DefaultTheme } from "styled-components";
+import { createGlobalStyle, DefaultTheme, keyframes } from 'styled-components';
 
 export const breakPoint = {
         xs: `only screen and (max-width: 480px)`,
@@ -9,46 +9,51 @@ export const breakPoint = {
         xll: `only screen and (max-width: 1600px)`,
 };
 
+const rotateAnimation = keyframes`
+	0%   { -webkit-transform: rotate(0deg); }
+	100% { -webkit-transform: rotate(360deg); }
+`;
+
 export const variable: DefaultTheme = {
         colors: {
                 primary: {
-                        one: "#5375E2",
-                        two: "#7591E8",
-                        three: "#98ACEE",
-                        four: "#BAC8F3",
-                        five: "#234dd3",
+                        one: '#5375E2',
+                        two: '#7591E8',
+                        three: '#98ACEE',
+                        four: '#BAC8F3',
+                        five: '#234dd3',
                 },
                 secondary: {
-                        one: "#7791A1",
-                        two: "#92A7B4",
-                        three: "#ADBDC7",
-                        four: "#C9D3D9",
+                        one: '#7791A1',
+                        two: '#92A7B4',
+                        three: '#ADBDC7',
+                        four: '#C9D3D9',
                 },
                 red: {
-                        one: "#F65868",
-                        two: "#F87986",
-                        three: "#F87986",
+                        one: '#F65868',
+                        two: '#F87986',
+                        three: '#F87986',
                 },
                 grey: {
-                        one: "#5C616E",
-                        two: "#7D818B",
-                        three: "#9DA0A8",
+                        one: '#5C616E',
+                        two: '#7D818B',
+                        three: '#9DA0A8',
                 },
                 orange: {
-                        one: "#F3AA92",
-                        two: "#F5BBA8",
-                        three: "#F8CCBE",
+                        one: '#F3AA92',
+                        two: '#F5BBA8',
+                        three: '#F8CCBE',
                 },
                 white: {
-                        one: "#fefefe",
+                        one: '#fefefe',
                 },
                 font: {
-                        black: "#171717",
-                        white: "#fefefe",
+                        black: '#171717',
+                        white: '#fefefe',
                 },
         },
         background: {
-                one: "linear-gradient(97.8deg, #5375e2 0.25%, #5375e2 49.61%, #f87986 100%)",
+                one: 'linear-gradient(97.8deg, #5375e2 0.25%, #5375e2 49.61%, #f87986 100%)',
         },
         fontSize: {
                 h1: 40,
@@ -61,6 +66,9 @@ export const variable: DefaultTheme = {
                 p3: 13,
         },
         ruler: 8,
+        animation: {
+                rotate: rotateAnimation,
+        },
 };
 
 export const GlobalStyle = createGlobalStyle`

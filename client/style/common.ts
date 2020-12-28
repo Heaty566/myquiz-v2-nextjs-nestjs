@@ -10,3 +10,10 @@ export const ImageFull = styled.img<{ $objectFit?: Property.ObjectFit }>(
                 object-fit: ${$objectFit};
         `,
 );
+
+export const Box = styled.div<{ $height?: Property.Height; $width?: Property.Width }>(
+        ({ $height = '100%', $width = '100%' }) => css`
+                height: ${$height};
+                width: ${$width};
+        `,
+);

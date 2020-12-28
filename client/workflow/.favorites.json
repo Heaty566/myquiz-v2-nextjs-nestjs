@@ -161,11 +161,38 @@
     },
     {
         "type": "File",
-        "name": "e:\\S\\menu\\client\\style\\homePage.ts",
+        "name": "e:\\S\\menu\\client\\components\\homePage\\homeTop.tsx",
         "parent_id": "Cr6ZqQ9yLP3nBU5X",
-        "fsPath": "e:\\S\\menu\\client\\style\\homePage.ts",
+        "fsPath": "e:\\S\\menu\\client\\components\\homePage\\homeTop.tsx",
         "workspaceRoot": null,
         "workspacePath": null,
-        "id": "tU2pNRWCLYTzjv38"
+        "id": "vPRbaeNlSz8wu9ZB"
+    },
+    {
+        "type": "File",
+        "name": "e:\\S\\menu\\client\\components\\homePage\\homeCenter.tsx",
+        "parent_id": "Cr6ZqQ9yLP3nBU5X",
+        "fsPath": "e:\\S\\menu\\client\\components\\homePage\\homeCenter.tsx",
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "z9TNlY4OnG1DXdgV"
+    },
+    {
+        "type": "File",
+        "name": "e:\\S\\menu\\client\\components\\homePage\\homeBotttom.tsx",
+        "parent_id": "Cr6ZqQ9yLP3nBU5X",
+        "fsPath": "e:\\S\\menu\\client\\components\\homePage\\homeBotttom.tsx",
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "tlAiVEhqxT3krMYz"
+    },
+    {
+        "type": "File",
+        "name": "e:\\S\\menu\\client\\components\\homePage\\style.ts",
+        "parent_id": "Cr6ZqQ9yLP3nBU5X",
+        "fsPath": "e:\\S\\menu\\client\\components\\homePage\\style.ts",
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "tcLapQT9zviG2BMq"
     }
 ]

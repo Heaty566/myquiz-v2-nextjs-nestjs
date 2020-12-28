@@ -31,7 +31,7 @@ export const HeadMeta: React.FunctionComponent<HeadProps> = ({
                         <meta httpEquiv="Content-Type" content="text/html;charset=UTF-8" />
                         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0" />
                         {/* common header */}
-                        <title>{pageTitle}| MyQuiz</title>
+                        <title>{pageTitle} | MyQuiz</title>
                         <meta name="description" content={description} />
                         <meta name="robots" content={metaRobots} />
                         <meta name="keywords" content={keyword} />
