@@ -1,0 +1,87 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true,
+        "jest": true
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "airbnb",
+        "prettier/@typescript-eslint",
+        "plugin:prettier/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true,
+            "arrowFunctions": true
+        },
+        "ecmaVersion": 2020,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+        "@typescript-eslint"
+    ],
+    "rules": {
+        "import/no-extraneous-dependencies": [
+            "error",
+            {
+                "devDependencies": true
+            }
+        ],
+        "react/jsx-indent": 0,
+        "react/jsx-one-expression-per-line": "off",
+        "@typescript-eslint/no-empty-interface": [
+            "warn",
+            {
+                "allowSingleExtends": false
+            }
+        ],
+        "import/extensions": [
+            "error",
+            "ignorePackages",
+            {
+                "js": "never",
+                "jsx": "never",
+                "ts": "never",
+                "tsx": "never"
+            }
+        ],
+        "no-unused-vars": "warn",
+        "no-console": "warn",
+        "prettier/prettier": [
+            "error",
+            {
+                "endOfLine": "auto"
+            }
+        ],
+        "react/jsx-filename-extension": [
+            2,
+            {
+                "extensions": [
+                    ".js",
+                    ".jsx",
+                    ".ts",
+                    ".tsx"
+                ]
+            }
+        ]
+    },
+    "settings": {
+        "import/resolver": {
+            "node": {
+                "extensions": [
+                    ".js",
+                    ".jsx",
+                    ".ts",
+                    ".tsx"
+                ]
+            }
+        }
+    },
+    "ignorePatterns": [
+        "next.config.js"
+    ]
+}

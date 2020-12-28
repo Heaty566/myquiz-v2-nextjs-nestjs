@@ -1,7 +1,7 @@
-import styled, { css } from "styled-components";
+import styled, { css } from 'styled-components';
 
 export const PaginationButton = styled.a(
-        ({ theme: { ruler, colors } }) => css`
+        ({ theme: { colors } }) => css`
                 width: 10px;
                 height: 10px;
                 border-radius: 50%;
@@ -12,7 +12,7 @@ export const PaginationButton = styled.a(
                 &.active {
                         background-color: ${colors.primary.one};
                 }
-        `
+        `,
 );
 export const PaginationContainer = styled.div`
         display: flex;

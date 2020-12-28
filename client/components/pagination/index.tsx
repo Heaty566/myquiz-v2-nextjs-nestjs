@@ -1,17 +1,14 @@
-import * as React from "react";
-import { PaginationContainer, PaginationButton } from "./style";
+import * as React from 'react';
+//* Style import
+import { PaginationContainer, PaginationButton } from './style';
+
 export interface PaginatorProps {}
 
-const Pagination: React.FunctionComponent<PaginatorProps> = () => {
+export const Pagination: React.FunctionComponent<PaginatorProps> = () => {
         return (
                 <PaginationContainer>
-                        <PaginationButton className="active"></PaginationButton>
-                        <PaginationButton></PaginationButton>
-                        <PaginationButton></PaginationButton>
-                        <PaginationButton></PaginationButton>
-                        <PaginationButton></PaginationButton>
+                        <PaginationButton className="active" />
+                        <PaginationButton />
                 </PaginationContainer>
         );
 };
-
-export default Pagination;

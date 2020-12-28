@@ -1,5 +1,5 @@
-import * as React from "react";
-import Head from "next/head";
+import * as React from 'react';
+import Head from 'next/head';
 
 export interface HeadProps {
         pageTitle: string;
@@ -11,38 +11,37 @@ export interface HeadProps {
         imageUrl?: string;
 }
 
-const HeadMeta: React.FunctionComponent<HeadProps> = ({
-        pageTitle,
+export const HeadMeta: React.FunctionComponent<HeadProps> = ({
+        pageTitle = '',
         isIndexPage = false,
         isFollowPage = true,
-        description,
-        canonical = "/",
-        keyword = "myquiz, quiz, exam, study, learning",
-        imageUrl,
+        description = '',
+        canonical = '/',
+        keyword = 'myquiz, quiz, exam, study, learning',
+        imageUrl = '/',
 }) => {
-        const metaRobots = (isIndexPage ? "index" : "noindex") + ", " + (isFollowPage ? "follow" : "nofollow");
+        const metaIndexPage = isIndexPage ? 'index' : 'noindex';
+        const metaIsFollowPage = isFollowPage ? 'follow' : 'nofollow';
+        const metaRobots = `${metaIndexPage},${metaIsFollowPage}`;
         const canonicalLink = process.env.DOMAIN + canonical;
 
         return (
                 <Head>
                         <meta charSet="UTF-8" />
                         <meta httpEquiv="Content-Type" content="text/html;charset=UTF-8" />
-                        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0"></meta>
-
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0" />
                         {/* common header */}
-                        <title>{pageTitle} | MyQuiz</title>
-                        <meta name="description" content={description}></meta>
+                        <title>{pageTitle}| MyQuiz</title>
+                        <meta name="description" content={description} />
                         <meta name="robots" content={metaRobots} />
                         <meta name="keywords" content={keyword} />
-                        <link href={canonicalLink} rel="canonical"></link>
-
-                        {/* google header*/}
+                        <link href={canonicalLink} rel="canonical" />
+                        {/* google header */}
                         <meta property="og:type" content="article" />
                         <meta property="og:title" content={pageTitle} />
                         <meta property="og:description" content={description} />
                         <meta property="og:image" content={imageUrl} />
                         <meta name="fb:app_id" content="1289736761385432" />
-
                         {/* twitter header */}
                         <meta name="twitter:title" content={pageTitle} />
                         <meta name="twitter:description" content={description} />
@@ -51,5 +50,3 @@ const HeadMeta: React.FunctionComponent<HeadProps> = ({
                 </Head>
         );
 };
-
-export default HeadMeta;

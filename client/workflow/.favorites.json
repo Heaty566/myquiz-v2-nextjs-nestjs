@@ -116,26 +116,6 @@
     },
     {
         "type": "File",
-        "name": "e:\\S\\menu\\client\\pages\\index.tsx",
-        "parent_id": "Cr6ZqQ9yLP3nBU5X",
-        "fsPath": "e:\\S\\menu\\client\\pages\\index.tsx",
-        "workspaceRoot": null,
-        "workspacePath": null,
-        "id": "s8Y6uIeRLCl2z7W0",
-        "label": "Home Component"
-    },
-    {
-        "type": "File",
-        "name": "e:\\S\\menu\\client\\style\\pages\\index.ts",
-        "parent_id": "Cr6ZqQ9yLP3nBU5X",
-        "fsPath": "e:\\S\\menu\\client\\style\\pages\\index.ts",
-        "workspaceRoot": null,
-        "workspacePath": null,
-        "id": "Am3ZwMYjHOLcJq1P",
-        "label": "Home Style"
-    },
-    {
-        "type": "File",
         "name": "e:\\S\\menu\\client\\components\\button\\style.ts",
         "parent_id": "VJrgv3PLFGecM9Np",
         "fsPath": "e:\\S\\menu\\client\\components\\button\\style.ts",

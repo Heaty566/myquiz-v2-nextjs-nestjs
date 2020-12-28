@@ -6,7 +6,7 @@ services:
                 expose:
                         - 4000
                 env_file:
-                        - ./config/server.env
+                        - ./data/config/server.env
 
         client:
                 build: ./client

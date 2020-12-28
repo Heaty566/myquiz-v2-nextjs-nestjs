@@ -1,9 +1,11 @@
-import * as React from "react";
+import React from 'react';
 
-import { GlobalStyle } from "../style";
-import Navbar from "../components/navbar";
-import { variable } from "../style/index";
-import { ThemeProvider } from "styled-components";
+import { ThemeProvider } from 'styled-components';
+import { Navbar } from '../components/navbar';
+
+//* Style import
+import { GlobalStyle } from '../style';
+import { variable } from '../style/index';
 export interface AppProps {
         Component: React.FunctionComponent;
         pageProps: any;
@@ -11,7 +13,7 @@ export interface AppProps {
 
 const App: React.FunctionComponent<AppProps> = ({ Component, pageProps }) => {
         return (
-                <React.Fragment>
+                <>
                         <ThemeProvider theme={variable}>
                                 <GlobalStyle />
                                 <header>
@@ -19,7 +21,7 @@ const App: React.FunctionComponent<AppProps> = ({ Component, pageProps }) => {
                                 </header>
                                 <Component {...pageProps} />
                         </ThemeProvider>
-                </React.Fragment>
+                </>
         );
 };
 

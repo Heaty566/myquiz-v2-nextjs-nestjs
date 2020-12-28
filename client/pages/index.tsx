@@ -1,17 +1,20 @@
-import * as React from "react";
-import PageHead from "../components/head";
-import { ImageFull } from "../style/common";
-import { Layout } from "../style/grid";
-import { HomeContainerTop, HomeBannerContainer, HomeBannerImage, HomeBannerSide, HomeBannerContent, HomeBannerBtn } from "../style/pages/";
-export interface IndexProps {}
-import { Text } from "../style/typography";
-import Pagination from "../components/pagination/";
-import { Box } from "../style/utils";
+import React from 'react';
+import { HeadMeta } from '../components/head';
 
-const Index: React.FunctionComponent<IndexProps> = () => {
+//* Style import
+import { ImageFull } from '../style/common';
+import { Layout } from '../style/grid';
+import { HomeContainerTop, HomeBannerContainer, HomeBannerImage, HomeBannerSide, HomeBannerContent, HomeBannerBtn } from '../style/home';
+import { Text } from '../style/typography';
+import { Pagination } from '../components/pagination';
+import { Box } from '../style/utils';
+
+export interface IndexProps {}
+
+export const HomePage: React.FunctionComponent<IndexProps> = () => {
         return (
-                <React.Fragment>
-                        <PageHead pageTitle="hello" description="GEGE" />
+                <>
+                        <HeadMeta pageTitle="hello" description="GEGE" />
                         <HomeContainerTop>
                                 <Text $textAlign="center" $color="white" $type="h1">
                                         Make Your Awesome Quiz And Become
@@ -20,9 +23,9 @@ const Index: React.FunctionComponent<IndexProps> = () => {
                                 </Text>
 
                                 <HomeBannerContainer>
-                                        <Layout justifyContent="space-between" alignItems="stretch">
+                                        <Layout $justifyContent="space-between" $alignItems="stretch">
                                                 <HomeBannerImage>
-                                                        <ImageFull src="/image/home/banner-top.png" alt="" />
+                                                        <ImageFull src="/page/home/image/banner-top.png" alt="" />
                                                 </HomeBannerImage>
                                                 <HomeBannerSide>
                                                         <Pagination />
@@ -48,8 +51,8 @@ const Index: React.FunctionComponent<IndexProps> = () => {
                                         </Layout>
                                 </HomeBannerContainer>
                         </HomeContainerTop>
-                </React.Fragment>
+                </>
         );
 };
 
-export default Index;
+export default HomePage;

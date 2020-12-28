@@ -1,6 +1,4 @@
-import styled, { css } from "styled-components";
-
-//*todo add animation for button
+import styled, { css } from 'styled-components';
 
 const ButtonStyled = css(
         ({ theme }) => css`
@@ -14,7 +12,7 @@ const ButtonStyled = css(
                 &:hover {
                         background-color: ${theme.colors.primary.five};
                 }
-        `
+        `,
 );
 
 export const ButtonCommonContainer = styled.button`

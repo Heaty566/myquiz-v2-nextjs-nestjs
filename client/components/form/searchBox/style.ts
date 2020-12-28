@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled, { css } from 'styled-components';
 
 export const SearchBoxContainer = styled.div(
         ({ theme }) => css`
@@ -13,7 +13,7 @@ export const SearchBoxContainer = styled.div(
                 &:focus-within {
                         box-shadow: 0 0 0 2px ${theme.colors.primary.one};
                 }
-        `
+        `,
 );
 
 export const SearchBoxTextField = styled.input(
@@ -28,7 +28,7 @@ export const SearchBoxTextField = styled.input(
                         color: ${theme.colors.font.white};
                         opacity: 0.6;
                 }
-        `
+        `,
 );
 
 export const SearchBoxIcon = styled.button(
@@ -37,5 +37,5 @@ export const SearchBoxIcon = styled.button(
                 background-color: ${theme.colors.primary.one};
                 padding: ${theme.ruler}px;
                 height: inherit;
-        `
+        `,
 );

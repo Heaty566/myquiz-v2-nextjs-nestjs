@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
-import { breakPoint } from "../index";
-import { PaginationContainer } from "../../components/pagination/style";
+import { breakPoint } from "./index";
+import { PaginationContainer } from "../components/pagination/style";
+import {} from "./typography";
 
 export const HomeBannerBtn = styled.a(
         ({ theme: { ruler } }) => css`
@@ -31,11 +32,14 @@ export const HomeBannerImage = styled.div`
 export const HomeBannerContent = styled.div(
         ({ theme: { ruler } }) => css`
                 margin-top: ${ruler * 8}px;
-                padding: ${ruler * 1.25}px;
 
                 & > *:not(:last-child):not(:first-child) {
                         margin: ${ruler * 1.25}px 0;
                         opacity: 0.6;
+                }
+
+                @media ${breakPoint.xl} {
+                        margin-top: ${ruler * 4}px;
                 }
         `
 );
@@ -43,24 +47,32 @@ export const HomeBannerContent = styled.div(
 export const HomeBannerSide = styled.div(
         ({ theme: { ruler, colors } }) => css`
                 background-color: ${colors.grey.one};
-                padding: ${ruler * 2}px;
+                padding: ${ruler * 2}px ${ruler * 3.25}px;
                 flex: 3;
                 ${PaginationContainer} {
                         max-width: 120px;
                 }
+
+                @media ${breakPoint.xl} {
+                        padding: ${ruler * 2}px;
+                }
         `
 );
 export const HomeBannerContainer = styled.div(
-        ({ theme }) => css`
+        ({}) => css`
                 position: relative;
                 left: 50%;
                 transform: translateX(-50%);
                 border-radius: 2px;
                 overflow: hidden;
-                z-index: 10;
+                z-index: 20;
                 width: 75%;
                 height: 350px;
                 max-width: 1100px;
+
+                @media ${breakPoint.xl} {
+                        width: 90%;
+                }
         `
 );
 
@@ -82,7 +94,6 @@ export const HomeContainerTop = styled.section(
                         position: absolute;
                 }
                 @media ${breakPoint.md} {
-                        clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
                         min-height: calc(400px + ${ruler * 8}px);
                 }
 

@@ -1,5 +1,5 @@
 {
     "favorites.sortDirection": "ASC",
     "favorites.useWorkspace": 0,
-    "favorites.storageFilePath": ".favorites.json"
+    "favorites.storageFilePath": "/workflow/.favorites.json"
 }

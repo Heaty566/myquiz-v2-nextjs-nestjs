@@ -1,5 +1,5 @@
-import styled, { css } from "styled-components";
-import { breakPoint } from "../../style";
+import styled, { css } from 'styled-components';
+import { breakPoint } from '../../style';
 
 export const NavbarContainer = styled.nav(
         ({ theme: { ruler, colors } }) => css`
@@ -18,13 +18,13 @@ export const NavbarContainer = styled.nav(
                 @media ${breakPoint.md} {
                         padding: 0 ${ruler * 2}px;
                 }
-        `
+        `,
 );
 
 export const NavbarLogo = styled.a`
         display: flex;
         align-items: center;
-        width: 120px;
+        width: 124px;
         height: 32px;
         flex-shrink: 0;
         &:hover span {
@@ -56,7 +56,7 @@ export const NavbarBtnMobile = styled.button(
                 &.active span:nth-child(2) {
                         transform: translateX(33%);
                 }
-        `
+        `,
 );
 
 export const NavbarLeft = styled.div(
@@ -71,5 +71,5 @@ export const NavbarLeft = styled.div(
                 & > * {
                         margin-left: ${theme.ruler * 3}px;
                 }
-        `
+        `,
 );
