@@ -9,6 +9,9 @@ export const Pagination: React.FunctionComponent<PaginatorProps> = () => {
                 <PaginationContainer>
                         <PaginationButton className="active" />
                         <PaginationButton />
+                        <PaginationButton />
+                        <PaginationButton />
+                        <PaginationButton />
                 </PaginationContainer>
         );
 };

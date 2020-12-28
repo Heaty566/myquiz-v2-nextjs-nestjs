@@ -1,7 +1,8 @@
-import styled, { css } from "styled-components";
-import { breakPoint } from "./index";
-import { PaginationContainer } from "../components/pagination/style";
-import {} from "./typography";
+import styled, { css } from 'styled-components';
+import { breakPoint } from './index';
+import { PaginationContainer } from '../components/pagination/style';
+import { Layout } from './grid';
+import { Text } from './typography';
 
 export const HomeBannerBtn = styled.a(
         ({ theme: { ruler } }) => css`
@@ -21,12 +22,16 @@ export const HomeBannerBtn = styled.a(
                 &:hover > *:last-child {
                         transform: translateX(5px);
                 }
-        `
+        `,
 );
 
 export const HomeBannerImage = styled.div`
         flex: 7;
         flex-shrink: 0;
+        @media ${breakPoint.md} {
+                flex: none;
+                height: 250px;
+        }
 `;
 
 export const HomeBannerContent = styled.div(
@@ -41,7 +46,7 @@ export const HomeBannerContent = styled.div(
                 @media ${breakPoint.xl} {
                         margin-top: ${ruler * 4}px;
                 }
-        `
+        `,
 );
 
 export const HomeBannerSide = styled.div(
@@ -52,11 +57,14 @@ export const HomeBannerSide = styled.div(
                 ${PaginationContainer} {
                         max-width: 120px;
                 }
-
+                @media ${breakPoint.md} {
+                        flex: none;
+                        min-height: 250px;
+                }
                 @media ${breakPoint.xl} {
                         padding: ${ruler * 2}px;
                 }
-        `
+        `,
 );
 export const HomeBannerContainer = styled.div(
         ({}) => css`
@@ -64,7 +72,6 @@ export const HomeBannerContainer = styled.div(
                 left: 50%;
                 transform: translateX(-50%);
                 border-radius: 2px;
-                overflow: hidden;
                 z-index: 20;
                 width: 75%;
                 height: 350px;
@@ -73,18 +80,29 @@ export const HomeBannerContainer = styled.div(
                 @media ${breakPoint.xl} {
                         width: 90%;
                 }
-        `
+
+                @media ${breakPoint.md} {
+                        ${Layout} {
+                                flex-direction: column;
+                                height: auto;
+                        }
+                }
+
+                @media ${breakPoint.sm} {
+                        width: 95%;
+                }
+        `,
 );
 
 export const HomeContainerTop = styled.section(
-        ({ theme: { background, ruler } }) => css`
+        ({ theme: { background, ruler, fontSize } }) => css`
                 padding-top: ${ruler * 8}px;
                 height: calc(524px + ${ruler * 8}px);
                 width: 100%;
                 position: relative;
 
                 &::before {
-                        content: "";
+                        content: '';
                         clip-path: polygon(0 0, 100% 0, 100% 80%, 0% 100%);
                         background: ${background.one};
                         height: 100%;
@@ -95,6 +113,10 @@ export const HomeContainerTop = styled.section(
                 }
                 @media ${breakPoint.md} {
                         min-height: calc(400px + ${ruler * 8}px);
+
+                        & > ${Text} {
+                                font-size: ${fontSize.h3}px;
+                        }
                 }
 
                 & > * {
@@ -102,5 +124,5 @@ export const HomeContainerTop = styled.section(
                         z-index: 10;
                         margin-top: ${ruler * 8}px;
                 }
-        `
+        `,
 );

@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "next-i18next": "^7.0.1",
+    "react-i18next": "^11.8.5"
+  },
+  "devDependencies": {
+    "@types/react-i18next": "^8.1.0"
+  }
+}

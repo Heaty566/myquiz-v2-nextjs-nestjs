@@ -4,7 +4,7 @@ import { HeadMeta } from '../components/head';
 //* Style import
 import { ImageFull } from '../style/common';
 import { Layout } from '../style/grid';
-import { HomeContainerTop, HomeBannerContainer, HomeBannerImage, HomeBannerSide, HomeBannerContent, HomeBannerBtn } from '../style/home';
+import { HomeContainerTop, HomeBannerContainer, HomeBannerImage, HomeBannerSide, HomeBannerContent, HomeBannerBtn } from '../style/homePage';
 import { Text } from '../style/typography';
 import { Pagination } from '../components/pagination';
 import { Box } from '../style/utils';
@@ -23,7 +23,7 @@ export const HomePage: React.FunctionComponent<IndexProps> = () => {
                                 </Text>
 
                                 <HomeBannerContainer>
-                                        <Layout $justifyContent="space-between" $alignItems="stretch">
+                                        <Layout $justifyContent="space-around" $alignItems="stretch">
                                                 <HomeBannerImage>
                                                         <ImageFull src="/page/home/image/banner-top.png" alt="" />
                                                 </HomeBannerImage>
@@ -43,7 +43,7 @@ export const HomePage: React.FunctionComponent<IndexProps> = () => {
                                                                                 Learn more
                                                                         </Text>
                                                                         <Box $width="12px">
-                                                                                <ImageFull src="/icon/arrow-right.svg" alt="" />
+                                                                                <ImageFull src="/asset/icon/arrow-right.svg" alt="" />
                                                                         </Box>
                                                                 </HomeBannerBtn>
                                                         </HomeBannerContent>

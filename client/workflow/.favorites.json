@@ -149,5 +149,23 @@
         "workspaceRoot": null,
         "workspacePath": null,
         "id": "JrGceQNsgFuOlXh2"
+    },
+    {
+        "type": "File",
+        "name": "e:\\S\\menu\\client\\pages\\index.tsx",
+        "parent_id": "Cr6ZqQ9yLP3nBU5X",
+        "fsPath": "e:\\S\\menu\\client\\pages\\index.tsx",
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "26rTbtXdWjJHAz35"
+    },
+    {
+        "type": "File",
+        "name": "e:\\S\\menu\\client\\style\\homePage.ts",
+        "parent_id": "Cr6ZqQ9yLP3nBU5X",
+        "fsPath": "e:\\S\\menu\\client\\style\\homePage.ts",
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "tU2pNRWCLYTzjv38"
     }
 ]
