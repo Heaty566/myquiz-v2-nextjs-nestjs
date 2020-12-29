@@ -22,9 +22,9 @@ export class AuthController {
                 if (isExistUser) throw new BadRequestException('Username is taken');
 
                 const { isPremium, role, _id } = await this.authService.createNewUser(body);
-                const refershToken = await this.tokenService.getRefershToken({ isPremium, role, userId: _id });
+                const refreshToken = await this.tokenService.getRefreshToken({ isPremium, role, userId: _id });
 
-                return res.cookie('re-token', refershToken, { maxAge: 180 * CONSTANT.DAY }).send({ message: 'Registration completed successfully' });
+                return res.cookie('re-token', refreshToken, { maxAge: 180 * CONSTANT.DAY }).send({ message: 'Registration completed successfully' });
         }
 
         @Post('/login')
@@ -33,14 +33,14 @@ export class AuthController {
                 const getUser = await this.authService.findUserByField('username', body.username);
                 if (!getUser) throw new BadRequestException('Username or password are invalid');
 
-                const isCorrectPasswrod = await this.authService.compareEncrypt(body.password, getUser.password);
-                if (!isCorrectPasswrod) throw new BadRequestException('Username or password are invalid');
+                const isCorrectPassword = await this.authService.compareEncrypt(body.password, getUser.password);
+                if (!isCorrectPassword) throw new BadRequestException('Username or password are invalid');
 
-                const refershToken = await this.tokenService.getRefershToken({
+                const refreshToken = await this.tokenService.getRefreshToken({
                         isPremium: getUser.isPremium,
                         role: getUser.role,
                         userId: getUser._id,
                 });
-                return res.cookie('re-token', refershToken, { maxAge: CONSTANT.DAY * 180 }).send({ message: 'Login user successfully' });
+                return res.cookie('re-token', refreshToken, { maxAge: CONSTANT.DAY * 180 }).send({ message: 'Login user successfully' });
         }
 }

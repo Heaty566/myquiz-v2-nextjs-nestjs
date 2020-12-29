@@ -1,17 +1,17 @@
 # Todo List
 
-- [ ] add share result for navbar
+- [ ] add show result for sharebox
 - [ ] Done feature container
 - [ ] Done footer
-- [ ] Home center
 - [ ] Home bottom
 - [ ] Add link for a
 - [ ] run test on heroku
-- [ ] Done Card component
 - [ ] Done not found page
-- [ ] Refactor index page
 - [ ] hide code on production
-- [ ] Refactor style
+- [x] ~~_Refactor style_~~ [2020-12-30]
+- [x] ~~_Home center_~~ [2020-12-30]
+- [x] ~~_Done Card component_~~ [2020-12-30]
+- [x] ~~_Refactor index page_~~ [2020-12-30]
 - [x] ~~_set up maniframe_~~ [2020-12-29]
 - [x] ~~_add favicon_~~ [2020-12-29]
 - [x] ~~_Add testing plugin_~~ [2020-12-28]

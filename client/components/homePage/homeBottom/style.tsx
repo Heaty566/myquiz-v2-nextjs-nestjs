@@ -26,3 +26,5 @@ export const QuizCardContainer = styled.div(
                 }
         `,
 );
+
+export const UserPlanCardContainer = styled.div(({ theme }) => css``);

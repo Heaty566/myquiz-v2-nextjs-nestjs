@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { HomeBottomContainer, QuizCardContainer } from './style';
+import { HomeBottomContainer, QuizCardContainer, UserPlanCardContainer } from './style';
 import { Text } from '../../../style/typography';
 import { Layout } from '../../../style/layout';
-import { QuizCard } from '../../card';
+import { QuizCard, UserPlanCard } from '../../card';
 
 export interface HomeBottomProps {}
 
@@ -75,6 +75,15 @@ const HomeBottom: React.FunctionComponent<HomeBottomProps> = () => {
                                         />
                                 </Layout>
                         </QuizCardContainer>
+                        <UserPlanCardContainer>
+                                <UserPlanCard
+                                        btnText="Build You Quiz Now"
+                                        link="/"
+                                        listFeature={['Offline access', 'Unlimited create quizzes', 'Unlimited take exams', '24/7 Support']}
+                                        price={0}
+                                        title="Free"
+                                />
+                        </UserPlanCardContainer>
                 </HomeBottomContainer>
         );
 };

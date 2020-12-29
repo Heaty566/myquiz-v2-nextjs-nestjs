@@ -3,8 +3,8 @@ services:
         server:
                 build: ./server
                 image: heaty566/myquiz-v2-server:latest
-                expose:
-                        - 4000
+                ports:
+                        - 4000:4000
                 env_file:
                         - ./data/config/server.env
 
@@ -15,7 +15,6 @@ services:
                         - 3000
 
         nginx:
-                build: ./.docker/nginx
-                image: heaty566/myquiz-v2-proxy:latest
+                image: nginx
                 ports:
                         - 80:80

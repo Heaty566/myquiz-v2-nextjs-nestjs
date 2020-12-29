@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { QuizCardContainer, QuizStar } from './style';
+import { QuizCardContainer, QuizStar, UserPlanCardContainer } from './style';
 import { Text } from '../../style/typography';
 import { Layout } from '../../style/layout';
 import { Box } from '../../style/common';
+import { BtnLink } from '../button';
 
 export interface QuizCardProps {
         title: string;
@@ -33,5 +34,29 @@ export const QuizCard: React.FunctionComponent<QuizCardProps> = ({ owner, stars,
                                 </QuizStar>
                         </Layout>
                 </QuizCardContainer>
+        );
+};
+
+export interface UserPlanCardProps {
+        title: string;
+        price: number;
+        btnText: string;
+        link: string;
+        listFeature: string[];
+}
+
+export const UserPlanCard: React.FunctionComponent<UserPlanCardProps> = ({ btnText, link, listFeature, price, title }) => {
+        return (
+                <UserPlanCardContainer>
+                        <Text $type="h1" as="h1" $textAlign="center">
+                                {title}
+                        </Text>
+
+                        <Text $type="h1" as="h1" $textAlign="center">
+                                $ {price} / Month
+                        </Text>
+                        <BtnLink link="/" label={btnText} />
+                        <Box>ddd</Box>
+                </UserPlanCardContainer>
         );
 };

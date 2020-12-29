@@ -30,7 +30,7 @@ export class TokenService {
                 return null;
         }
 
-        async getRefershToken({ isPremium, role, userId }: CreateTokenDto) {
+        async getRefreshToken({ isPremium, role, userId }: CreateTokenDto) {
                 const token = new Token();
                 token.isPremium = isPremium;
                 token.role = role;

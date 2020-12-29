@@ -27,3 +27,27 @@ export const QuizCardContainer = styled.a(
                 }
         `,
 );
+
+export const UserPlanCardContainer = styled.a(
+        ({ theme: { colors } }) => css`
+                width: 400px;
+                height: 650px;
+                display: block;
+                box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25);
+                border-radius: 10px;
+                overflow: hidden;
+                position: relative;
+                padding: 48px 32px 32px 32px;
+
+                &::before {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        height: 32px;
+                        width: 100%;
+                        background-color: ${colors.primary.one};
+                        display: block;
+                }
+        `,
+);
