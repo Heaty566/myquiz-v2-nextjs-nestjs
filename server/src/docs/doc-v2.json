@@ -25,11 +25,15 @@
         "tags": [
                 {
                         "name": "auth",
-                        "description": "Secured Admin-only calls"
+                        "description": "handle authentication"
                 },
                 {
                         "name": "user",
-                        "description": "Operations available to regular developers"
+                        "description": "service for user"
+                },
+                {
+                        "name": "system",
+                        "description": "get basic information about SystemVisitor"
                 }
         ],
         "paths": {
@@ -37,6 +41,20 @@
                         "post": {
                                 "tags": ["auth"],
                                 "summary": "create new user with username and password",
+                                "parameters": [
+                                        {
+                                                "name": "lang",
+                                                "in": "cookie",
+                                                "description": "allow server service multiple language",
+                                                "required": false,
+                                                "style": "form",
+                                                "explode": true,
+                                                "schema": {
+                                                        "type": "string"
+                                                },
+                                                "example": "vi"
+                                        }
+                                ],
                                 "requestBody": {
                                         "content": {
                                                 "application/json": {
@@ -49,15 +67,10 @@
                                 },
                                 "responses": {
                                         "200": {
-                                                "description": "return refersh-auth token",
+                                                "description": "return refresh-auth token",
                                                 "headers": {
-                                                        "re-token": {
-                                                                "description": "return refersh-auth token",
-                                                                "style": "simple",
-                                                                "explode": false,
-                                                                "schema": {
-                                                                        "type": "string"
-                                                                }
+                                                        "Set-Cookie": {
+                                                                "$ref": "#/components/headers/re-token"
                                                         }
                                                 }
                                         },
@@ -69,15 +82,7 @@
                                                                         "type": "object",
                                                                         "oneOf": [
                                                                                 {
-                                                                                        "properties": {
-                                                                                                "message": {
-                                                                                                        "type": "string",
-                                                                                                        "example": "Username is taken"
-                                                                                                },
-                                                                                                "data": {
-                                                                                                        "type": "string"
-                                                                                                }
-                                                                                        }
+                                                                                        "$ref": "#/components/schemas/BadRequestApi"
                                                                                 },
                                                                                 {
                                                                                         "$ref": "#/components/schemas/BadInputJoi"
@@ -94,6 +99,20 @@
                         "post": {
                                 "tags": ["auth"],
                                 "summary": "login user with username and password",
+                                "parameters": [
+                                        {
+                                                "name": "lang",
+                                                "in": "cookie",
+                                                "description": "allow server service multiple language",
+                                                "required": false,
+                                                "style": "form",
+                                                "explode": true,
+                                                "schema": {
+                                                        "type": "string"
+                                                },
+                                                "example": "vi"
+                                        }
+                                ],
                                 "requestBody": {
                                         "content": {
                                                 "application/json": {
@@ -106,15 +125,10 @@
                                 },
                                 "responses": {
                                         "200": {
-                                                "description": "return refersh-auth token",
+                                                "description": "return refresh-auth token",
                                                 "headers": {
-                                                        "re-token": {
-                                                                "description": "return refersh-auth token",
-                                                                "style": "simple",
-                                                                "explode": false,
-                                                                "schema": {
-                                                                        "type": "string"
-                                                                }
+                                                        "Set-Cookie": {
+                                                                "$ref": "#/components/headers/re-token"
                                                         }
                                                 }
                                         },
@@ -126,15 +140,7 @@
                                                                         "type": "object",
                                                                         "oneOf": [
                                                                                 {
-                                                                                        "properties": {
-                                                                                                "message": {
-                                                                                                        "type": "string",
-                                                                                                        "example": "Username pr password are invalid"
-                                                                                                },
-                                                                                                "data": {
-                                                                                                        "type": "string"
-                                                                                                }
-                                                                                        }
+                                                                                        "$ref": "#/components/schemas/BadRequestApi"
                                                                                 },
                                                                                 {
                                                                                         "$ref": "#/components/schemas/BadInputJoi"
@@ -149,30 +155,42 @@
                 },
                 "/api/user/": {
                         "get": {
-                                "tags": ["auth"],
-                                "summary": "get user with au-token",
+                                "tags": ["user"],
+                                "summary": "create new user with username and password",
                                 "parameters": [
                                         {
-                                                "name": "re-token",
+                                                "name": "lang",
                                                 "in": "cookie",
-                                                "description": "to get auth token",
+                                                "description": "allow server service multiple language",
                                                 "required": false,
                                                 "style": "form",
                                                 "explode": true,
                                                 "schema": {
                                                         "type": "string"
-                                                }
+                                                },
+                                                "example": "vi"
+                                        },
+                                        {
+                                                "name": "re-token",
+                                                "in": "cookie",
+                                                "required": true,
+                                                "style": "form",
+                                                "explode": true,
+                                                "schema": {
+                                                        "type": "string"
+                                                },
+                                                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
                                         },
                                         {
                                                 "name": "auth-token",
                                                 "in": "cookie",
-                                                "description": "to get user information",
                                                 "required": false,
                                                 "style": "form",
                                                 "explode": true,
                                                 "schema": {
                                                         "type": "string"
-                                                }
+                                                },
+                                                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
                                         }
                                 ],
                                 "responses": {
@@ -191,7 +209,38 @@
                                                 "content": {
                                                         "application/json": {
                                                                 "schema": {
-                                                                        "$ref": "#/components/schemas/inline_response_401"
+                                                                        "$ref": "#/components/schemas/BadRequestApi"
+                                                                }
+                                                        }
+                                                }
+                                        }
+                                }
+                        }
+                },
+                "/api/visitor": {
+                        "get": {
+                                "tags": ["system"],
+                                "parameters": [
+                                        {
+                                                "name": "lang",
+                                                "in": "cookie",
+                                                "description": "allow server service multiple language",
+                                                "required": false,
+                                                "style": "form",
+                                                "explode": true,
+                                                "schema": {
+                                                        "type": "string"
+                                                },
+                                                "example": "vi"
+                                        }
+                                ],
+                                "responses": {
+                                        "200": {
+                                                "description": "return number of visitor in current session",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "$ref": "#/components/schemas/SystemVisitor"
                                                                 }
                                                         }
                                                 }
@@ -209,7 +258,7 @@
                                                 "type": "string",
                                                 "example": "example"
                                         },
-                                        "fullName": {
+                                        "fullname": {
                                                 "type": "string",
                                                 "example": "example"
                                         },
@@ -224,6 +273,30 @@
                                         "role": {
                                                 "type": "string",
                                                 "example": "USER"
+                                        }
+                                }
+                        },
+                        "SystemVisitor": {
+                                "type": "object",
+                                "properties": {
+                                        "data": {
+                                                "type": "number",
+                                                "example": 10
+                                        },
+                                        "message": {
+                                                "type": "string"
+                                        }
+                                }
+                        },
+                        "BadRequestApi": {
+                                "type": "object",
+                                "properties": {
+                                        "data": {
+                                                "type": "string"
+                                        },
+                                        "message": {
+                                                "type": "string",
+                                                "example": "this is an error message"
                                         }
                                 }
                         },
@@ -268,20 +341,7 @@
                                         },
                                         "password": {
                                                 "type": "string",
-                                                "example": "12345678Aa"
-                                        }
-                                }
-                        },
-
-                        "inline_response_401": {
-                                "type": "object",
-                                "properties": {
-                                        "message": {
-                                                "type": "string",
-                                                "example": "Invalid token"
-                                        },
-                                        "data": {
-                                                "type": "string"
+                                                "example": "12345678AaK"
                                         }
                                 }
                         },
@@ -293,6 +353,52 @@
                                                 "description": "field will be the name of invalid field",
                                                 "example": "should not be empty"
                                         }
+                                }
+                        }
+                },
+                "parameters": {
+                        "re-token": {
+                                "name": "re-token",
+                                "in": "cookie",
+                                "required": true,
+                                "style": "form",
+                                "explode": true,
+                                "schema": {
+                                        "type": "string"
+                                },
+                                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                        },
+                        "auth-token": {
+                                "name": "auth-token",
+                                "in": "cookie",
+                                "required": false,
+                                "style": "form",
+                                "explode": true,
+                                "schema": {
+                                        "type": "string"
+                                },
+                                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                        },
+                        "lang": {
+                                "name": "lang",
+                                "in": "cookie",
+                                "description": "allow server service multiple language",
+                                "required": false,
+                                "style": "form",
+                                "explode": true,
+                                "schema": {
+                                        "type": "string"
+                                },
+                                "example": "vi"
+                        }
+                },
+                "headers": {
+                        "re-token": {
+                                "description": "set refresh-token for client",
+                                "style": "simple",
+                                "explode": false,
+                                "schema": {
+                                        "type": "string"
                                 }
                         }
                 }

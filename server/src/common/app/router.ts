@@ -48,6 +48,11 @@ export function router(app: INestApplication) {
         app.useGlobalInterceptors(new CountVisitorInterceptor());
 
         app.use((req: Request, res: Response, next: NextFunction) => {
+                //set header
+                res.header('Access-Control-Allow-Origin', process.env.CLIENT_URL);
+                res.header('Access-Control-Allow-Methods', '*');
+                res.header('Access-Control-Allow-Headers', 're-token, auth-token, lang');
+
                 const lang = req.cookies['lang'] || '';
                 if (!lang) {
                         I18n.setLocale('en');

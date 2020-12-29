@@ -10,7 +10,7 @@ async function bootstrap() {
         //init all middlewares
         router(app);
         const port = process.env.PORT || 4000;
-
+        console.log(process.env.CLIENT_URL);
         await app.listen(port, () => {
                 logger.log(`Listening on port ${port}`);
                 logger.log(`Current mode: ${process.env.NODE_ENV}`);
