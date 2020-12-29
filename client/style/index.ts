@@ -1,4 +1,5 @@
-import { createGlobalStyle, DefaultTheme, keyframes } from 'styled-components';
+import { createGlobalStyle, DefaultTheme } from 'styled-components';
+import { rotateAnimation } from './animation';
 
 export const breakPoint = {
         xs: `only screen and (max-width: 480px)`,
@@ -8,11 +9,6 @@ export const breakPoint = {
         xl: `only screen and (max-width: 1200px)`,
         xll: `only screen and (max-width: 1600px)`,
 };
-
-const rotateAnimation = keyframes`
-	0%   { -webkit-transform: rotate(0deg); }
-	100% { -webkit-transform: rotate(360deg); }
-`;
 
 export const variable: DefaultTheme = {
         colors: {
@@ -46,11 +42,18 @@ export const variable: DefaultTheme = {
                 },
                 white: {
                         one: '#fefefe',
+                        two: '#f5f7fa',
+                },
+                dark: {
+                        one: '#171717',
                 },
                 font: {
                         black: '#171717',
                         white: '#fefefe',
                 },
+        },
+        stroke: {
+                one: ` 1px solid rgba(23, 23, 23, 0.8)`,
         },
         background: {
                 one: 'linear-gradient(97.8deg, #5375e2 0.25%, #5375e2 49.61%, #f87986 100%)',
@@ -73,42 +76,7 @@ export const variable: DefaultTheme = {
 
 export const GlobalStyle = createGlobalStyle`
 
-   @font-face {
-    font-family: "SFPro";
-    src: url("/font/SF-Pro-Display-Regular.otf");
-    font-weight: normal;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: "SFPro";
-    src: url("/font/SF-Pro-Display-Semibold.otf");
-    font-weight: 500;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: "SFPro";
-    src: url("/font/SF-Pro-Display-Medium.otf");
-    font-weight: 600;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: "SFPro";
-    src: url("/font/SF-Pro-Display-Light.otf");
-    font-weight: 300;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: "SFPro";
-    src: url("/font/SF-Pro-Display-Bold.otf");
-    font-weight: bold;
-    font-style: normal;
-  }
-
-  * {
+  *, *::before, *::after {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
@@ -116,7 +84,7 @@ export const GlobalStyle = createGlobalStyle`
 
   html {
     font-size: 16px;
-     font-family:"SFPro", Arial, Helvetica, sans-serif;
+     font-family: Arial, Helvetica, sans-serif;
   }
 
   a,li {

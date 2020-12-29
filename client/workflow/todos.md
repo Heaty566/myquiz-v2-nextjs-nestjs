@@ -11,6 +11,7 @@
 - [ ] Done not found page
 - [ ] Refactor index page
 - [ ] hide code on production
+- [ ] Refactor style
 - [x] ~~_set up maniframe_~~ [2020-12-29]
 - [x] ~~_add favicon_~~ [2020-12-29]
 - [x] ~~_Add testing plugin_~~ [2020-12-28]

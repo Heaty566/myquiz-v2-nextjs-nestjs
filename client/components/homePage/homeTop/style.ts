@@ -1,11 +1,11 @@
 import styled, { css } from 'styled-components';
-import { breakPoint } from '../../style/index';
-import { PaginationContainer } from '../../components/pagination/style';
-import { Layout } from '../../style/grid';
-import { Text } from '../../style/typography';
+import { breakPoint } from '../../../style';
+import { PaginationContainer } from '../../pagination/style';
+import { Layout } from '../../../style/layout';
+import { Text } from '../../../style/typography';
 
 //*-------------------------Home--Top
-export const HomeContainerTop = styled.section(
+export const ContainerTop = styled.section(
         ({ theme: { background, ruler, fontSize } }) => css`
                 padding-top: ${ruler * 8}px;
                 width: 100%;
@@ -36,7 +36,7 @@ export const HomeContainerTop = styled.section(
         `,
 );
 
-export const HomeBannerContainer = styled.div(
+export const BannerContainer = styled(Layout)(
         ({}) => css`
                 border-radius: 2px;
                 z-index: 20;
@@ -49,10 +49,10 @@ export const HomeBannerContainer = styled.div(
                 }
 
                 @media ${breakPoint.md} {
-                        height: auto;
-                        ${Layout} {
-                                flex-direction: column;
-                                height: 100%;
+                        flex-direction: column;
+                        height: 100%;
+                        & > * {
+                                height: 250px;
                         }
                 }
 
@@ -62,34 +62,28 @@ export const HomeBannerContainer = styled.div(
         `,
 );
 
-export const HomeBannerImage = styled.div`
+export const BannerImg = styled.div`
         flex: 7;
         flex-shrink: 0;
-        @media ${breakPoint.md} {
-                flex: none;
-                height: 250px;
-        }
 `;
 
-export const HomeBannerSide = styled.div(
+export const BannerSide = styled.div(
         ({ theme: { ruler, colors } }) => css`
+                flex: 3;
                 background-color: ${colors.grey.one};
                 padding: ${ruler * 2}px ${ruler * 3.25}px;
-                flex: 3;
+
                 ${PaginationContainer} {
                         max-width: 120px;
                 }
+
                 @media ${breakPoint.md} {
-                        flex: none;
-                        min-height: 250px;
-                }
-                @media ${breakPoint.xl} {
                         padding: ${ruler * 2}px;
                 }
         `,
 );
 
-export const HomeBannerContent = styled.div(
+export const BannerContent = styled.div(
         ({ theme: { ruler } }) => css`
                 margin-top: ${ruler * 8}px;
 
@@ -104,18 +98,15 @@ export const HomeBannerContent = styled.div(
         `,
 );
 
-export const HomeBannerBtn = styled.a(
+export const BannerBtn = styled(Layout)(
         ({ theme: { ruler } }) => css`
-                display: flex;
-                align-items: center;
-
                 cursor: pointer;
 
                 & > *:first-child {
                         margin-right: ${ruler * 0.5}px;
                 }
 
-                & > *:last-child {
+                & > * {
                         transition: 0.2s;
                 }
 
@@ -128,6 +119,7 @@ export const HomeBannerBtn = styled.a(
 export const HomeFeatureContainer = styled.section(
         ({ theme: { colors, ruler, fontSize } }) => css`
                 max-width: 700px;
+                padding: ${ruler * 1.5}px;
 
                 & > *:not(:last-child) {
                         margin-bottom: ${ruler * 2}px;
@@ -135,7 +127,6 @@ export const HomeFeatureContainer = styled.section(
 
                 ${Text} > span {
                         font-size: 18px;
-
                         color: ${colors.red.one};
                 }
                 @media ${breakPoint.md} {
@@ -145,9 +136,6 @@ export const HomeFeatureContainer = styled.section(
 
                         ${Layout} {
                                 flex-wrap: wrap;
-                                & > *:first-child {
-                                        margin-bottom: ${ruler * 3}px;
-                                }
 
                                 & > * {
                                         flex: 50%;
@@ -155,15 +143,5 @@ export const HomeFeatureContainer = styled.section(
                                 }
                         }
                 }
-                @media ${breakPoint.sm} {
-                        padding: ${ruler * 1.5}px;
-                }
         `,
-);
-
-//*-------------------------Home--Center
-
-export const HomeContainerCenter = styled.section(
-        ({ theme: {} }) => `
-`,
 );

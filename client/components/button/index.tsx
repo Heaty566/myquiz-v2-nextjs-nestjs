@@ -1,20 +1,20 @@
 import React from 'react';
 
 //* Style import
-import { ButtonCommonContainer, ButtonLinkContainer } from './style';
+import { BtnFuncContainer, BtnLinkContainer } from './style';
 
-interface ButtonProps {
+interface BtnCommonProps {
         label: string;
 }
-
-export interface ButtonCommonProps extends ButtonProps {}
-
-export const ButtonCommon: React.FunctionComponent<ButtonCommonProps> = ({ label = '' }) => <ButtonCommonContainer>{label}</ButtonCommonContainer>;
-
-export interface ButtonLinkProps extends ButtonProps {
+export interface BtnFuncProps extends BtnCommonProps {}
+export interface BtnLinkProps extends BtnCommonProps {
         link: string;
 }
 
-export const ButtonLink: React.FunctionComponent<ButtonLinkProps> = ({ label = '', link = '#' }) => {
-        return <ButtonLinkContainer href={link}>{label}</ButtonLinkContainer>;
+const BtnFunc: React.FunctionComponent<BtnFuncProps> = ({ label = '' }) => <BtnFuncContainer>{label}</BtnFuncContainer>;
+
+const BtnLink: React.FunctionComponent<BtnLinkProps> = ({ label = '', link = '#' }) => {
+        return <BtnLinkContainer href={link}>{label}</BtnLinkContainer>;
 };
+
+export { BtnFunc, BtnLink };

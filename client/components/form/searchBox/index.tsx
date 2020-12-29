@@ -1,20 +1,20 @@
 import React from 'react';
 
 //* Style import
-import { SearchBoxContainer, SearchBoxIcon, SearchBoxTextField } from './style';
+import { SearchBoxContainer, SearchBoxBtn, SearchBoxTextField } from './style';
 import { ImageFull } from '../../../style/common';
 
-export interface SearchBoxProps {
+export interface FormSearchBoxProps {
         placeholder: string;
 }
 
-export const SearchBox: React.FunctionComponent<SearchBoxProps> = ({ placeholder = '' }) => {
+export const FormSearchBox: React.FunctionComponent<FormSearchBoxProps> = ({ placeholder = '' }) => {
         return (
                 <SearchBoxContainer>
                         <SearchBoxTextField type="text" placeholder={placeholder} />
-                        <SearchBoxIcon>
+                        <SearchBoxBtn>
                                 <ImageFull src="/asset/icon/search-glass.svg" alt="" />
-                        </SearchBoxIcon>
+                        </SearchBoxBtn>
                 </SearchBoxContainer>
         );
 };

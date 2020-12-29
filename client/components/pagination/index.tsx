@@ -1,17 +1,17 @@
 import * as React from 'react';
 //* Style import
-import { PaginationContainer, PaginationButton } from './style';
+import { PaginationContainer, CirclePaginationBtn } from './style';
 
 export interface PaginatorProps {}
 
-export const Pagination: React.FunctionComponent<PaginatorProps> = () => {
+export const CirclePagination: React.FunctionComponent<PaginatorProps> = () => {
         return (
-                <PaginationContainer>
-                        <PaginationButton className="active" />
-                        <PaginationButton />
-                        <PaginationButton />
-                        <PaginationButton />
-                        <PaginationButton />
+                <PaginationContainer $alignItems="center" $justifyContent="space-between">
+                        <CirclePaginationBtn className="active" />
+                        <CirclePaginationBtn />
+                        <CirclePaginationBtn />
+                        <CirclePaginationBtn />
+                        <CirclePaginationBtn />
                 </PaginationContainer>
         );
 };

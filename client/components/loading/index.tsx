@@ -19,6 +19,4 @@ const CircleLoading: React.FunctionComponent<CircleLoadingProps> = ({ size = 4, 
         );
 };
 
-export default CircleLoading;
-
 export { CircleLoading };

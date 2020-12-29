@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-const ButtonStyled = css(
+const BtnCommonStyle = css(
         ({ theme }) => css`
                 background-color: ${theme.colors.primary.one};
                 border-radius: 3px;
@@ -15,9 +15,9 @@ const ButtonStyled = css(
         `,
 );
 
-export const ButtonCommonContainer = styled.button`
-        ${ButtonStyled}
+export const BtnFuncContainer = styled.button`
+        ${BtnCommonStyle}
 `;
-export const ButtonLinkContainer = styled.a`
-        ${ButtonStyled}
+export const BtnLinkContainer = styled.a`
+        ${BtnCommonStyle}
 `;

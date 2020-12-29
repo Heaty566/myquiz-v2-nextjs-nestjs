@@ -32,11 +32,18 @@ export interface Theme {
                 };
                 white: {
                         one: string;
+                        two: string;
+                };
+                dark: {
+                        one: string;
                 };
                 font: {
                         black: string;
                         white: string;
                 };
+        };
+        stroke: {
+                one: string;
         };
         background: {
                 one: string;

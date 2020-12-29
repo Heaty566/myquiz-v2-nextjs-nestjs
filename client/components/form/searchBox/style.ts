@@ -18,7 +18,6 @@ export const SearchBoxContainer = styled.div(
 
 export const SearchBoxTextField = styled.input(
         ({ theme }) => css`
-                height: inherit;
                 text-indent: ${theme.ruler}px;
                 padding-right: ${theme.ruler}px;
                 font-size: 16px;
@@ -31,7 +30,7 @@ export const SearchBoxTextField = styled.input(
         `,
 );
 
-export const SearchBoxIcon = styled.button(
+export const SearchBoxBtn = styled.button(
         ({ theme }) => css`
                 cursor: pointer;
                 background-color: ${theme.colors.primary.one};
