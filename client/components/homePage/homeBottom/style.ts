@@ -3,22 +3,29 @@ import { Layout } from '../../../style/layout';
 import { breakPoint } from '../../../style';
 
 export const HomeBottomContainer = styled.section(
-        ({ theme: { colors } }) => css`
-                background-color: ${colors.white.two};
+        ({ theme: {} }) => css`
                 margin: auto;
+
+                @media ${breakPoint.md} {
+                        display: none;
+                }
         `,
 );
+
 export const QuizCardContainer = styled.div(
+        ({ theme: { colors } }) => css`
+                background-color: ${colors.white.two};
+        `,
+);
+
+export const QuizCardWrapper = styled.div(
         ({ theme: { ruler } }) => css`
                 max-width: 1060px;
                 margin: 0 auto;
                 padding: ${ruler * 8}px;
+
                 & > *:not(:last-child) {
                         margin-bottom: ${ruler * 4}px;
-                }
-
-                @media ${breakPoint.md} {
-                        display: none;
                 }
 
                 & > ${Layout} {
@@ -27,4 +34,8 @@ export const QuizCardContainer = styled.div(
         `,
 );
 
-export const UserPlanCardContainer = styled.div(({ theme }) => css``);
+export const UserPlanCardContainer = styled(Layout)(
+        ({ theme: { ruler } }) => css`
+                padding: ${ruler * 8}px ${ruler * 2}px;
+        `,
+);

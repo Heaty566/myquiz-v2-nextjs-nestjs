@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { QuizCardContainer, QuizStar, UserPlanCardContainer } from './style';
+import { QuizCardContainer, QuizStar, UserPlanCardContainer, UserPlanCheckCol } from './style';
 import { Text } from '../../style/typography';
 import { Layout } from '../../style/layout';
 import { Box } from '../../style/common';
@@ -42,21 +42,42 @@ export interface UserPlanCardProps {
         price: number;
         btnText: string;
         link: string;
-        listFeature: string[];
+        listFeatures: string[];
+        color: 'one' | 'two';
+        featureLabel: string;
 }
 
-export const UserPlanCard: React.FunctionComponent<UserPlanCardProps> = ({ btnText, link, listFeature, price, title }) => {
+export const UserPlanCard: React.FunctionComponent<UserPlanCardProps> = ({ btnText, listFeatures = [], price, title, color, featureLabel }) => {
         return (
-                <UserPlanCardContainer>
+                <UserPlanCardContainer $color={color}>
                         <Text $type="h1" as="h1" $textAlign="center">
                                 {title}
                         </Text>
 
                         <Text $type="h1" as="h1" $textAlign="center">
-                                $ {price} / Month
+                                $ {price}
+                                <Text $type="p1" as="span">
+                                        / Month
+                                </Text>
                         </Text>
-                        <BtnLink link="/" label={btnText} />
-                        <Box>ddd</Box>
+                        <Layout $justifyContent="center">
+                                <BtnLink link="/" label={btnText} />
+                        </Layout>
+
+                        <Text $type="h4" as="h4">
+                                {featureLabel}
+                        </Text>
+
+                        {listFeatures.map((item) => {
+                                return (
+                                        <UserPlanCheckCol key={item}>
+                                                <img src="/asset/icon/check.svg" alt="" />
+                                                <Text $type="h4" as="h4" key={item}>
+                                                        {item}
+                                                </Text>
+                                        </UserPlanCheckCol>
+                                );
+                        })}
                 </UserPlanCardContainer>
         );
 };
