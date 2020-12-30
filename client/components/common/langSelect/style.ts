@@ -18,8 +18,9 @@ export const LangContainer = styled(Layout)(
 );
 
 export const LangSel = styled.input(
-        ({ theme: {} }) => css`
+        ({ theme: { ruler } }) => css`
                 width: 100%;
+                margin: 0 ${ruler}px;
                 cursor: pointer;
                 & > * {
                         position: absolute;

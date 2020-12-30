@@ -87,6 +87,10 @@ export const GlobalStyle = createGlobalStyle`
      font-family: Arial, Helvetica, sans-serif;
   }
 
+ a{
+         cursor: pointer;
+ }
+
   a,li {
         text-decoration: none;
   }
@@ -106,5 +110,16 @@ export const GlobalStyle = createGlobalStyle`
     width: 100%;
     position: relative;
   }
+
+  #__next {
+          min-height: inherit;
+          display: flex;
+          flex-direction: column;
+          & > *:nth-child(2){
+                  flex:1;
+                  padding-top: 64px;
+          }
+  }
+
 
 `;

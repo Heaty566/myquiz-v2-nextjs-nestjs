@@ -1,13 +1,20 @@
 # Todo List
 
 - [ ] add show result for sharebox
-- [ ] Done feature container
-- [ ] Done footer
-- [ ] Home bottom
-- [ ] Add link for a
-- [ ] run test on heroku
-- [ ] Done not found page
+- [ ] add lazy loading
+- [ ] setup call api
+- [ ] setup axios hook
+- [ ] hide redux
+- [ ] Login page
+- [ ] register page
+- [ ] refactor code
 - [ ] hide code on production
+- [x] ~~_Done not found page_~~ [2020-12-31]
+- [x] ~~_Add link for a_~~ [2020-12-30]
+- [x] ~~_Done feature container_~~ [2020-12-30]
+- [x] ~~_Done footer_~~ [2020-12-30]
+- [x] ~~_Home bottom_~~ [2020-12-30]
+- [x] ~~_run test on heroku_~~ [2020-12-30]
 - [x] ~~_Refactor style_~~ [2020-12-30]
 - [x] ~~_Home center_~~ [2020-12-30]
 - [x] ~~_Done Card component_~~ [2020-12-30]

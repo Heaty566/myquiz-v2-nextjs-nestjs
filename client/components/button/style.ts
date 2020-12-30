@@ -8,6 +8,7 @@ const BtnCommonStyle = css(
                 color: ${theme.colors.font.white};
                 display: inline-block;
                 transition: 0.2s;
+                cursor: pointer;
 
                 &:hover {
                         background-color: ${theme.colors.primary.five};

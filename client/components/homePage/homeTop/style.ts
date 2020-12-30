@@ -1,13 +1,12 @@
 import styled, { css } from 'styled-components';
 import { breakPoint } from '../../../style';
-import { PaginationContainer } from '../../pagination/style';
+import { PaginationContainer } from '../../common/pagination/style';
 import { Layout } from '../../../style/layout';
 import { Text } from '../../../style/typography';
 
 //*-------------------------Home--Top
 export const ContainerTop = styled.section(
         ({ theme: { background, ruler, fontSize } }) => css`
-                padding-top: ${ruler * 8}px;
                 width: 100%;
                 position: relative;
 

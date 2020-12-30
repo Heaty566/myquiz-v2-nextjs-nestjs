@@ -1,5 +1,4 @@
 import React from 'react';
-import { Layout } from '../../style/layout';
 import { Text } from '../../style/typography';
 import { FooterContainer, FooterContainerTop, FooterAuthor, FooterCol, FooterColContainer } from './style';
 import { LangSelect } from '../common/langSelect';

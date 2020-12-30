@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { Layout } from '../../style/layout';
+import { Layout } from '../../../style/layout';
 
 export const CirclePaginationBtn = styled.button(
         ({ theme: { colors } }) => css`

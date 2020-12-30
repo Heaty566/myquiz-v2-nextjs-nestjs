@@ -18,6 +18,7 @@ export const QuizCardContainer = styled.a(
                 border-radius: 5px;
                 height: 175px;
                 width: 341px;
+                transition: 0.2s;
 
                 & span {
                         opacity: 0.6;
@@ -26,14 +27,18 @@ export const QuizCardContainer = styled.a(
                 & p {
                         font-weight: bold;
                 }
+
+                &:hover {
+                        transform: scale(1.05);
+                }
         `,
 );
 
 export const UserPlanCheckCol = styled(Layout)(
         ({ theme: { ruler } }) => css`
                 padding: ${ruler * 2}px;
-                & > *:first-child {
-                        margin-right: ${ruler}px;
+                & > *:last-child {
+                        margin-left: ${ruler}px;
                 }
         `,
 );

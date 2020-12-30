@@ -1,11 +1,12 @@
 import * as React from 'react';
+import Image from 'next/image';
 
 //* Style import
 import { BannerBtn, BannerContainer, BannerContent, BannerImg, BannerSide, ContainerTop, HomeFeatureContainer } from './style';
 import { Text } from '../../../style/typography';
 import { Layout } from '../../../style/layout';
 import { ImageFull, Box } from '../../../style/common';
-import { CirclePagination } from '../../pagination';
+import { CirclePagination } from '../../common/pagination';
 
 export interface HomeTopProps {}
 
@@ -20,7 +21,7 @@ const HomeTop: React.FunctionComponent<HomeTopProps> = () => {
 
                         <BannerContainer $justifyContent="space-around">
                                 <BannerImg>
-                                        <ImageFull src="/page/home/image/banner-top.png" alt="" />
+                                        <ImageFull src="/page/home/image/banner-top.png" alt="" height="350px" width="750px" className="hello" />
                                 </BannerImg>
                                 <BannerSide>
                                         <CirclePagination />

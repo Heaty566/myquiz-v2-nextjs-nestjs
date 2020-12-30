@@ -1,5 +1,6 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { LangContainer, LangSel, LangOption } from './style';
+import Image from 'next/image';
 export interface LangBtnProps {}
 
 const langList = [
@@ -8,13 +9,11 @@ const langList = [
 ];
 
 export const LangSelect: React.FunctionComponent<LangBtnProps> = () => {
-        const hello = useCallback(() => {}, []);
-
         return (
-                <LangContainer $justifyContent="space-between" $alignItems="center" $gutter={1} className="">
-                        <img src="/asset/icon/global.svg" alt="" />
+                <LangContainer $justifyContent="space-between" $alignItems="center" className="">
+                        <Image src="/asset/icon/global.svg" alt="" height="20px" width="20px" />
                         <LangSel name="lang" value="English" disabled />
-                        <img src="/asset/icon/arrow-up.svg" alt="" />
+                        <Image src="/asset/icon/arrow-up.svg" alt="" height="20px" width="20px" />
                         <LangOption>
                                 {langList.map((item) => (
                                         <li key={item.value} data-value={item.value}>

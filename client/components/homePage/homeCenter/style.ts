@@ -10,9 +10,14 @@ export const HomeCenterContainer = styled.section(
         `,
 );
 
-export const CategoryCard = styled.div(
+export const CategoryCardLayout = styled(Layout)`
+        height: 100%;
+`;
+
+export const CategoryCard = styled(Layout)(
         ({ theme: { stroke, colors, ruler } }) => css`
                 height: 233px;
+
                 padding: ${ruler * 4}px ${ruler * 2}px;
                 max-width: 377px;
                 width: 100%;
@@ -21,11 +26,17 @@ export const CategoryCard = styled.div(
                 box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
                 border-radius: 5px;
                 margin-bottom: ${ruler * 8}px;
+                cursor: pointer;
+                transition: 0.2s;
                 @media ${breakPoint.xl} {
                         margin-right: 0 !important;
                 }
                 @media ${breakPoint.md} {
                         width: 100%;
+                }
+
+                &:hover {
+                        transform: scale(1.05);
                 }
         `,
 );

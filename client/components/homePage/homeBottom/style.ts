@@ -15,6 +15,7 @@ export const HomeBottomContainer = styled.section(
 export const QuizCardContainer = styled.div(
         ({ theme: { colors } }) => css`
                 background-color: ${colors.white.two};
+                width: 100vw;
         `,
 );
 

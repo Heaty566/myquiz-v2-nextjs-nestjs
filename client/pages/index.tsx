@@ -2,7 +2,7 @@ import * as React from 'react';
 import dynamic from 'next/dynamic';
 import { HeadMeta } from '../components/head';
 
-import { CircleLoading } from '../components/loading';
+import { CircleLoading } from '../components/common/loading';
 
 import HomeTop from '../components/homePage/homeTop';
 const HomeCenter = dynamic(() => import('../components/homePage/homeCenter'), { loading: () => <CircleLoading marginTop={4} /> });

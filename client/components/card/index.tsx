@@ -4,6 +4,7 @@ import { Text } from '../../style/typography';
 import { Layout } from '../../style/layout';
 import { Box } from '../../style/common';
 import { BtnLink } from '../button';
+import Image from 'next/image';
 
 export interface QuizCardProps {
         title: string;
@@ -27,7 +28,7 @@ export const QuizCard: React.FunctionComponent<QuizCardProps> = ({ owner, stars,
                         <Layout $justifyContent="space-between">
                                 <Text $type="h4" as="p">{`${totalQuestion} Questions`}</Text>
                                 <QuizStar $justifyContent="space-between" $alignItems="center">
-                                        <img src="/asset/icon/start.svg" alt="" />
+                                        <Image src="/asset/icon/start.svg" alt="" height="20px" width="20px" />
                                         <Text $type="h4" as="p">
                                                 {stars}
                                         </Text>
@@ -71,7 +72,7 @@ export const UserPlanCard: React.FunctionComponent<UserPlanCardProps> = ({ btnTe
                         {listFeatures.map((item) => {
                                 return (
                                         <UserPlanCheckCol key={item}>
-                                                <img src="/asset/icon/check.svg" alt="" />
+                                                <Image src="/asset/icon/check.svg" alt="" height="18px" width="25px" />
                                                 <Text $type="h4" as="h4" key={item}>
                                                         {item}
                                                 </Text>
