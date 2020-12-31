@@ -6,7 +6,7 @@ export interface CircleLoadingProps {
         marginTop?: number;
 }
 
-const CircleLoading: React.FunctionComponent<CircleLoadingProps> = ({ size = 4, marginTop = 0 }) => {
+export const CircleLoading: React.FunctionComponent<CircleLoadingProps> = ({ size = 4, marginTop = 0 }) => {
         return (
                 <LoadingContainer $size={size} $marginTop={marginTop}>
                         <Circle $size={size}>
@@ -19,4 +19,4 @@ const CircleLoading: React.FunctionComponent<CircleLoadingProps> = ({ size = 4, 
         );
 };
 
-export { CircleLoading };
+export default CircleLoading;

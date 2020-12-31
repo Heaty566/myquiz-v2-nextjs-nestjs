@@ -1,14 +1,38 @@
 # Todo List
 
-- [ ] add show result for sharebox
-- [ ] add lazy loading
-- [ ] setup call api
-- [ ] setup axios hook
+- [ ] add show result for search box
 - [ ] hide redux
+- [ ] hide next code
+- [ ] hide code on production
+- [ ] fix slide in home page optimize
+- [ ] writing test for login
+- [ ] writing test for register
+- [ ] writing test for index
+- [ ] writing test for useComponent
+- [ ] writing test for useDebounce
+- [ ] writing test for search box
+- [ ] fix icon black on Iphone
+- [ ] fix short name wrong on Iphone
+- [ ] set up env for auto deploy
+- [ ] set ci/cd
+- [ ] set up amazon cloudfront
+- [ ] compression add image
+- [ ] check minifame
+- [ ] navbar menu
+- [ ] add seo for home page
+
+# Today schedule
+
 - [ ] Login page
 - [ ] register page
-- [ ] refactor code
-- [ ] hide code on production
+- [ ] setup call api
+- [ ] setup axios hook
+
+# Done jobs
+
+- [x] ~~_refactor code_~~ [2021-01-01]
+- [x] ~~_add lazy loading_~~ [2021-01-01]
+- [x] ~~_lazy loading component_~~ [2021-01-01]
 - [x] ~~_Done not found page_~~ [2020-12-31]
 - [x] ~~_Add link for a_~~ [2020-12-30]
 - [x] ~~_Done feature container_~~ [2020-12-30]

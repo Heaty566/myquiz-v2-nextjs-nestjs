@@ -39,7 +39,7 @@ const HomeTop: React.FunctionComponent<HomeTopProps> = () => {
                                                                 Learn more
                                                         </Text>
                                                         <Box $width="12px">
-                                                                <ImageFull src="/asset/icon/arrow-right.svg" alt="" />
+                                                                <Image src="/asset/icon/arrow-right.svg" alt="" height="12" width="12" />
                                                         </Box>
                                                 </BannerBtn>
                                         </BannerContent>

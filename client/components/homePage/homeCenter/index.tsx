@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { CategoryContainer, FeatureContainer, CategoryCard, HomeCenterContainer, FeatureCard } from './style';
 import { Layout } from '../../../style/layout';
-import { Box, ImageFull } from '../../../style/common';
+import { Box } from '../../../style/common';
 import { Text } from '../../../style/typography';
 import Link from 'next/link';
 import Image from 'next/image';

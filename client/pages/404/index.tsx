@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { BtnLink } from '../../components/button';
-import { NotFoundContainer, NotFoundWrapper } from './style';
+import { NotFoundContainer, NotFoundWrapper } from '../../style/views/style';
 import { Text } from '../../style/typography';
 import Footer from '../../components/footer';
 

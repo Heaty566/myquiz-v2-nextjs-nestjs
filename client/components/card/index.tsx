@@ -13,7 +13,7 @@ export interface QuizCardProps {
         owner: string;
 }
 
-export const QuizCard: React.FunctionComponent<QuizCardProps> = ({ owner, stars, title, totalQuestion }) => {
+export const QuizCard: React.FunctionComponent<QuizCardProps> = ({ owner = '', stars = 0, title = '', totalQuestion = 0 }) => {
         return (
                 <QuizCardContainer>
                         <Box>

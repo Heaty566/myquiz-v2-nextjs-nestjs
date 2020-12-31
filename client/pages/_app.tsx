@@ -7,7 +7,6 @@ import { ThemeProvider } from 'styled-components';
 import { Navbar } from '../components/navbar';
 import { useTranslation } from 'react-i18next';
 import Cookies from 'universal-cookie';
-import { Layout } from '../style/layout';
 
 //* Style import
 import { GlobalStyle, variable } from '../style';

@@ -5,7 +5,6 @@ import Link from 'next/link';
 //* Style import
 import { NavbarContainer, NavbarBrand, NavbarLeft, NavbarBtnMobile } from './style';
 import { BtnLink } from '../button';
-import { ImageFull } from '../../style/common';
 import Image from 'next/image';
 
 export interface NavbarProps {}
