@@ -28,12 +28,18 @@ export const Layout = styled.div<{
         $justifyContent?: Property.JustifyContent;
         $flexDirection?: Property.FlexDirection;
         $gutter?: number;
+        $max?: boolean;
 }>(
-        ({ $flexDirection = 'initial', $alignItems = 'normal', $justifyContent = 'normal', $gutter = 0, theme: { ruler } }) => css`
+        ({ $flexDirection = 'initial', $alignItems = 'normal', $justifyContent = 'normal', $gutter = 0, theme: { ruler }, $max = false }) => css`
                 display: flex;
                 flex-direction: ${$flexDirection};
                 align-items: ${$alignItems};
                 justify-content: ${$justifyContent};
+                ${$max &&
+                css`
+                        height: 100%;
+                        width: 100%;
+                `}
 
                 & > *:not(:last-child) {
                         margin-right: ${ruler * $gutter}px;

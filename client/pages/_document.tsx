@@ -55,7 +55,6 @@ export default class MyDocument extends Document {
                                         <meta name="msapplication-TileColor" content="#ffffff" />
                                         <meta name="msapplication-TileImage" content="/asset/share/ms-icon-144x144.png" />
                                         <meta name="theme-color" content="#ffffff" />
-                                        <meta name="hello" content="helf" />
                                 </Head>
                                 <body>
                                         <Main />

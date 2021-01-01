@@ -67,7 +67,8 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    "hooks/useComponent.js"
   ],
   "exclude": [
     "node_modules"

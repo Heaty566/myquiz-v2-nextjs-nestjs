@@ -33,8 +33,8 @@ export class AuthController {
                 const getUser = await this.authService.findUserByField('username', body.username);
                 if (!getUser) throw new BadRequestException('Username or password are invalid');
 
-                const isCorrectPassword = await this.authService.compareEncrypt(body.password, getUser.password);
-                if (!isCorrectPassword) throw new BadRequestException('Username or password are invalid');
+                const isCorrectPasswrod = await this.authService.compareEncrypt(body.password, getUser.password);
+                if (!isCorrectPasswrod) throw new BadRequestException('Username or password are invalid');
 
                 const refreshToken = await this.tokenService.getRefreshToken({
                         isPremium: getUser.isPremium,

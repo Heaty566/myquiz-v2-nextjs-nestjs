@@ -1,8 +1,8 @@
 import React from 'react';
+import Image from 'next/image';
 
 //* Style import
 import { SearchBoxContainer, SearchBoxBtn, SearchBoxTextField } from './style';
-import { ImageFull } from '../../../style/common';
 
 export interface FormSearchBoxProps {
         placeholder: string;
@@ -13,7 +13,7 @@ export const FormSearchBox: React.FunctionComponent<FormSearchBoxProps> = ({ pla
                 <SearchBoxContainer>
                         <SearchBoxTextField type="text" placeholder={placeholder} />
                         <SearchBoxBtn>
-                                <ImageFull src="/asset/icon/search-glass.svg" alt="" />
+                                <Image src="/asset/icon/search-glass.svg" alt="" height="16" width="16" />
                         </SearchBoxBtn>
                 </SearchBoxContainer>
         );

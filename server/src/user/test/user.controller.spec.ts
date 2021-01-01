@@ -35,13 +35,13 @@ describe('userController', () => {
                         const res = await reqApi();
 
                         expect(res.body.username).toBeDefined();
-                        expect(res.body.fullname).toBeDefined();
+                        expect(res.body.fullName).toBeDefined();
                         expect(res.body.password).toBeUndefined();
                 });
 
                 let invalidReToken: string;
                 beforeEach(async () => {
-                        invalidReToken = await tokenService.getRefershToken(getCreateTokenDto());
+                        invalidReToken = await tokenService.getRefreshToken(getCreateTokenDto());
                 });
 
                 it('invalid token', async () => {

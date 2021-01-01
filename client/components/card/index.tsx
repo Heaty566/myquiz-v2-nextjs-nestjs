@@ -1,8 +1,12 @@
 import * as React from 'react';
-import { QuizCardContainer, QuizStar, UserPlanCardContainer } from './style';
+import Image from 'next/image';
+
+//* Style import
+import { QuizCardContainer, QuizStar, UserPlanCardContainer, UserPlanCheckCol } from './style';
 import { Text } from '../../style/typography';
 import { Layout } from '../../style/layout';
 import { Box } from '../../style/common';
+//* Import Component
 import { BtnLink } from '../button';
 
 export interface QuizCardProps {
@@ -12,7 +16,7 @@ export interface QuizCardProps {
         owner: string;
 }
 
-export const QuizCard: React.FunctionComponent<QuizCardProps> = ({ owner, stars, title, totalQuestion }) => {
+export const QuizCard: React.FunctionComponent<QuizCardProps> = ({ owner = '', stars = 0, title = '', totalQuestion = 0 }) => {
         return (
                 <QuizCardContainer>
                         <Box>
@@ -27,7 +31,7 @@ export const QuizCard: React.FunctionComponent<QuizCardProps> = ({ owner, stars,
                         <Layout $justifyContent="space-between">
                                 <Text $type="h4" as="p">{`${totalQuestion} Questions`}</Text>
                                 <QuizStar $justifyContent="space-between" $alignItems="center">
-                                        <img src="/asset/icon/start.svg" alt="" />
+                                        <Image src="/asset/icon/start.svg" alt="" height="20px" width="20px" />
                                         <Text $type="h4" as="p">
                                                 {stars}
                                         </Text>
@@ -42,21 +46,42 @@ export interface UserPlanCardProps {
         price: number;
         btnText: string;
         link: string;
-        listFeature: string[];
+        listFeatures: string[];
+        color: 'one' | 'two';
+        featureLabel: string;
 }
 
-export const UserPlanCard: React.FunctionComponent<UserPlanCardProps> = ({ btnText, link, listFeature, price, title }) => {
+export const UserPlanCard: React.FunctionComponent<UserPlanCardProps> = ({ btnText, listFeatures = [], price, title, color, featureLabel }) => {
         return (
-                <UserPlanCardContainer>
+                <UserPlanCardContainer $color={color}>
                         <Text $type="h1" as="h1" $textAlign="center">
                                 {title}
                         </Text>
 
                         <Text $type="h1" as="h1" $textAlign="center">
-                                $ {price} / Month
+                                $ {price}
+                                <Text $type="p1" as="span">
+                                        / Month
+                                </Text>
                         </Text>
-                        <BtnLink link="/" label={btnText} />
-                        <Box>ddd</Box>
+                        <Layout $justifyContent="center">
+                                <BtnLink link="/" label={btnText} />
+                        </Layout>
+
+                        <Text $type="h4" as="h4">
+                                {featureLabel}
+                        </Text>
+
+                        {listFeatures.map((item) => {
+                                return (
+                                        <UserPlanCheckCol key={item}>
+                                                <Image src="/asset/icon/check.svg" alt="" height="18px" width="25px" />
+                                                <Text $type="h4" as="h4" key={item}>
+                                                        {item}
+                                                </Text>
+                                        </UserPlanCheckCol>
+                                );
+                        })}
                 </UserPlanCardContainer>
         );
 };

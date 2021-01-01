@@ -1,5 +1,5 @@
 import { createGlobalStyle, DefaultTheme } from 'styled-components';
-import { rotateAnimation } from './animation';
+import { rotateAnimation, fadeInAnimation } from './animation';
 
 export const breakPoint = {
         xs: `only screen and (max-width: 480px)`,
@@ -71,6 +71,7 @@ export const variable: DefaultTheme = {
         ruler: 8,
         animation: {
                 rotate: rotateAnimation,
+                fadeIn: fadeInAnimation,
         },
 };
 
@@ -87,8 +88,16 @@ export const GlobalStyle = createGlobalStyle`
      font-family: Arial, Helvetica, sans-serif;
   }
 
+ a{
+         cursor: pointer;
+ }
+
   a,li {
         text-decoration: none;
+  }
+
+  ul {
+          list-style: none;
   }
 
   button, input {
@@ -102,5 +111,16 @@ export const GlobalStyle = createGlobalStyle`
     width: 100%;
     position: relative;
   }
+
+  #__next {
+          min-height: inherit;
+          display: flex;
+          flex-direction: column;
+          & > *:nth-child(2){
+                  flex:1;
+                  padding-top: 64px;
+          }
+  }
+
 
 `;
