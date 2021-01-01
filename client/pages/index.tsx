@@ -1,40 +1,39 @@
 import * as React from 'react';
 import dynamic from 'next/dynamic';
+
+//*Import style
 import { HeadMeta } from '../components/head';
-
+import { HomeBottomProps } from '../style/views/index/homeBottom';
+//*Import Component
 import { CircleLoading } from '../components/common/loading';
-
-import HomeTop from '../components/homePage/homeTop';
-const HomeCenter = dynamic(() => import('../components/homePage/homeCenter'), { loading: () => <CircleLoading marginTop={4} /> });
-const HomeBottom = dynamic(() => import('../components/homePage/homeBottom'), { loading: () => <CircleLoading marginTop={4} /> });
-const Footer = dynamic(() => import('../components/footer'), { loading: () => <CircleLoading marginTop={4} /> });
-import { useComponent } from '../hooks/useComponent';
-
 import { FooterProps } from '../components/footer';
-import { HomeBottomProps } from '../components/homePage/homeBottom';
+import { useComponent } from '../hooks/useComponent';
+import HomeTop from '../style/views/index/homeTop';
 
 export interface IndexProps {}
+const HomeCenter = dynamic(() => import('../style/views/index/homeCenter'), { loading: () => <CircleLoading marginTop={8} /> });
 
 export const HomePage: React.FunctionComponent<IndexProps> = () => {
-        const [NewBottom, check2] = useComponent<HomeBottomProps>({
-                RefComponent: HomeBottom,
+        const [HomeBottom, check2] = useComponent<HomeBottomProps>({
+                RefComponent: dynamic(() => import('../style/views/index/homeBottom'), { loading: () => <CircleLoading marginTop={8} /> }),
                 offset: 100,
 
                 Loading: () => <CircleLoading marginTop={8} />,
         });
-        const [NewFooter] = useComponent<FooterProps>({
-                RefComponent: Footer,
+        const [Footer] = useComponent<FooterProps>({
+                RefComponent: dynamic(() => import('../components/footer'), { loading: () => <CircleLoading marginTop={8} /> }),
                 offset: 100,
                 Loading: () => <CircleLoading marginTop={8} />,
                 isRender: check2,
         });
+
         return (
                 <>
                         <HeadMeta pageTitle="Home" description="GEGE" isFollowPage={true} isIndexPage={true} />
                         <HomeTop />
                         <HomeCenter />
-                        <NewBottom />
-                        <NewFooter />
+                        <HomeBottom />
+                        <Footer />
                 </>
         );
 };

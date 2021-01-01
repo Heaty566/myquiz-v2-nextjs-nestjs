@@ -61,6 +61,7 @@ export interface Theme {
         ruler: number;
         animation: {
                 rotate: Keyframes;
+                fadeIn: Keyframes;
         };
 }
 declare module 'styled-components' {

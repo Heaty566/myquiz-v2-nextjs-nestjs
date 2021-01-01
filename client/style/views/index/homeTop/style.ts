@@ -1,8 +1,8 @@
 import styled, { css } from 'styled-components';
-import { breakPoint } from '../../../style';
-import { PaginationContainer } from '../../common/pagination/style';
-import { Layout } from '../../../style/layout';
-import { Text } from '../../../style/typography';
+import { breakPoint } from '../../..';
+import { PaginationContainer } from '../../../../components/common/pagination/style';
+import { Layout } from '../../../layout';
+import { Text } from '../../../typography';
 
 //*-------------------------Home--Top
 export const ContainerTop = styled.section(

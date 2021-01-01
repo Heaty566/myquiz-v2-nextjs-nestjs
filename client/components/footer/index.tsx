@@ -1,6 +1,10 @@
 import React from 'react';
+
+//* Import style
 import { Text } from '../../style/typography';
 import { FooterContainer, FooterContainerTop, FooterAuthor, FooterCol, FooterColContainer } from './style';
+
+//* Import Component
 import { LangSelect } from '../common/langSelect';
 
 export interface FooterProps {}

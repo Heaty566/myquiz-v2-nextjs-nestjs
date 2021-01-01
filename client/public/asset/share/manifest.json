@@ -1,7 +1,7 @@
 {
         "name": "My Quiz",
-        "short_name": "Quiz",
-        "start_url": "/quiz",
+        "short_name": "My Quiz",
+        "start_url": "/",
         "theme_color": "#fefefe",
         "display": "standalone",
         "scope": "/",

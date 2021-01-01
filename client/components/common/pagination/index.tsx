@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 //* Style import
 import { PaginationContainer, CirclePaginationBtn } from './style';
 

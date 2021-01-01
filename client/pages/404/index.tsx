@@ -1,12 +1,14 @@
 import * as React from 'react';
 
-import { BtnLink } from '../../components/button';
-import { NotFoundContainer, NotFoundWrapper } from '../../style/views/style';
+//* Import style
+import { NotFoundContainer, NotFoundWrapper } from '../../style/views/404/style';
 import { Text } from '../../style/typography';
+
+//* Import Component
+import { BtnLink } from '../../components/button';
 import Footer from '../../components/footer';
 
 export interface NotFoundProps {}
-
 const NotFound: React.FunctionComponent<NotFoundProps> = () => {
         return (
                 <>

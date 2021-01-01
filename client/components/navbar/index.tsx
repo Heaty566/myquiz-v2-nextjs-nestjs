@@ -1,11 +1,13 @@
 import * as React from 'react';
-import { FormSearchBox } from '../form/searchBox';
+import Image from 'next/image';
 import Link from 'next/link';
 
 //* Style import
 import { NavbarContainer, NavbarBrand, NavbarLeft, NavbarBtnMobile } from './style';
 import { BtnLink } from '../button';
-import Image from 'next/image';
+
+//*Import Component
+import { FormSearchBox } from '../form/searchBox';
 
 export interface NavbarProps {}
 

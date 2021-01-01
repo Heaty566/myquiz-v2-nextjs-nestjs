@@ -8,7 +8,7 @@ export class User {
         _id: ObjectId;
 
         @Column()
-        fullname: string;
+        fullName: string;
 
         @Column()
         username: string;
@@ -39,7 +39,7 @@ export class User {
         constructor(username: string, password: string, fullname: string) {
                 this.username = username;
                 this.password = password;
-                this.fullname = fullname;
+                this.fullName = fullname;
                 this.email = '';
                 this.avatarUrl = '';
                 this.googleId = '';

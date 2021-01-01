@@ -1,5 +1,5 @@
 import { createGlobalStyle, DefaultTheme } from 'styled-components';
-import { rotateAnimation } from './animation';
+import { rotateAnimation, fadeInAnimation } from './animation';
 
 export const breakPoint = {
         xs: `only screen and (max-width: 480px)`,
@@ -71,6 +71,7 @@ export const variable: DefaultTheme = {
         ruler: 8,
         animation: {
                 rotate: rotateAnimation,
+                fadeIn: fadeInAnimation,
         },
 };
 

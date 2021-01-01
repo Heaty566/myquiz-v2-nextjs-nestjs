@@ -1,8 +1,10 @@
 import * as React from 'react';
+
+//*Import style
 import { HomeBottomContainer, QuizCardWrapper, UserPlanCardContainer, QuizCardContainer } from './style';
-import { Text } from '../../../style/typography';
-import { Layout } from '../../../style/layout';
-import { QuizCard, UserPlanCard } from '../../card';
+import { QuizCard, UserPlanCard } from '../../../../components/card';
+import { Text } from '../../../typography';
+import { Layout } from '../../../layout';
 
 export interface HomeBottomProps {}
 

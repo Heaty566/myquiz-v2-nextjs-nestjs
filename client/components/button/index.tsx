@@ -2,24 +2,51 @@ import React from 'react';
 import Link from 'next/link';
 
 //* Style import
-import { BtnFuncContainer, BtnLinkContainer } from './style';
+import { BtnFuncContainer, BtnLinkContainer, BtnCircle } from './style';
+
+//*------------------------------
+import { useLoading } from '../../hooks/useLoading';
 
 interface BtnCommonProps {
         label: string;
+        isApiCall?: boolean;
 }
 export interface BtnFuncProps extends BtnCommonProps {}
 export interface BtnLinkProps extends BtnCommonProps {
         link?: string;
 }
 
-const BtnFunc: React.FunctionComponent<BtnFuncProps> = ({ label = '' }) => <BtnFuncContainer>{label}</BtnFuncContainer>;
-
-const BtnLink: React.FunctionComponent<BtnLinkProps> = ({ label = '', link = '' }) => {
+const BtnLoading: React.FunctionComponent<{}> = () => {
         return (
-                <Link href={link}>
-                        <BtnLinkContainer>{label}</BtnLinkContainer>
-                </Link>
+                <BtnCircle>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                </BtnCircle>
         );
 };
 
-export { BtnFunc, BtnLink };
+export const BtnFunc: React.FunctionComponent<BtnFuncProps> = ({ label = '', isApiCall = false }) => {
+        const isLoading = useLoading();
+
+        return (
+                <BtnFuncContainer>
+                        {label}
+                        {isLoading && isApiCall && <BtnLoading />}
+                </BtnFuncContainer>
+        );
+};
+
+export const BtnLink: React.FunctionComponent<BtnLinkProps> = ({ label = '', link = '', isApiCall = false }) => {
+        const isLoading = useLoading();
+
+        return (
+                <Link href={link}>
+                        <BtnLinkContainer>
+                                {label}
+                                {isLoading && isApiCall && <BtnLoading />}
+                        </BtnLinkContainer>
+                </Link>
+        );
+};

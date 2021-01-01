@@ -1,10 +1,10 @@
 # Todo List
 
 - [ ] add show result for search box
-- [ ] hide redux
 - [ ] hide next code
 - [ ] hide code on production
 - [ ] fix slide in home page optimize
+- [ ] add screen reader
 - [ ] writing test for login
 - [ ] writing test for register
 - [ ] writing test for index
@@ -20,16 +20,19 @@
 - [ ] check minifame
 - [ ] navbar menu
 - [ ] add seo for home page
+- [ ] add seo for login page
+- [ ] add seo for register page
 
 # Today schedule
 
-- [ ] Login page
-- [ ] register page
-- [ ] setup call api
-- [ ] setup axios hook
-
 # Done jobs
 
+- [x] ~~_set import structure_~~ [2021-01-02]
+- [x] ~~_hide redux_~~ [2021-01-01]
+- [x] ~~_setup axios hook_~~ [2021-01-01]
+- [x] ~~_setup call api_~~ [2021-01-01]
+- [x] ~~_Login page_~~ [2021-01-01]
+- [x] ~~_register page_~~ [2021-01-01]
 - [x] ~~_refactor code_~~ [2021-01-01]
 - [x] ~~_add lazy loading_~~ [2021-01-01]
 - [x] ~~_lazy loading component_~~ [2021-01-01]

@@ -1,10 +1,12 @@
 import * as React from 'react';
-import { CategoryContainer, FeatureContainer, CategoryCard, HomeCenterContainer, FeatureCard } from './style';
-import { Layout } from '../../../style/layout';
-import { Box } from '../../../style/common';
-import { Text } from '../../../style/typography';
 import Link from 'next/link';
 import Image from 'next/image';
+
+//*Import style
+import { CategoryContainer, FeatureContainer, CategoryCard, HomeCenterContainer, FeatureCard } from './style';
+import { Layout } from '../../../layout';
+import { Box } from '../../../common';
+import { Text } from '../../../typography';
 
 export interface HomeCenterProps {}
 export interface CategoryCardProps {

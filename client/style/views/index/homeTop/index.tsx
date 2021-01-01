@@ -3,10 +3,10 @@ import Image from 'next/image';
 
 //* Style import
 import { BannerBtn, BannerContainer, BannerContent, BannerImg, BannerSide, ContainerTop, HomeFeatureContainer } from './style';
-import { Text } from '../../../style/typography';
-import { Layout } from '../../../style/layout';
-import { ImageFull, Box } from '../../../style/common';
-import { CirclePagination } from '../../common/pagination';
+import { Text } from '../../../typography';
+import { Layout } from '../../../layout';
+import { ImageFull, Box } from '../../../common';
+import { CirclePagination } from '../../../../components/common/pagination';
 
 export interface HomeTopProps {}
 

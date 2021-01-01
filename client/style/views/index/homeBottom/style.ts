@@ -1,11 +1,9 @@
 import styled, { css } from 'styled-components';
-import { Layout } from '../../../style/layout';
-import { breakPoint } from '../../../style';
+import { Layout } from '../../../layout';
+import { breakPoint } from '../../..';
 
 export const HomeBottomContainer = styled.section(
         ({ theme: {} }) => css`
-                margin: auto;
-
                 @media ${breakPoint.md} {
                         display: none;
                 }
@@ -15,7 +13,6 @@ export const HomeBottomContainer = styled.section(
 export const QuizCardContainer = styled.div(
         ({ theme: { colors } }) => css`
                 background-color: ${colors.white.two};
-                width: 100vw;
         `,
 );
 

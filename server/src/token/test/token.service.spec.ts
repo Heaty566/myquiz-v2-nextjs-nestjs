@@ -28,7 +28,7 @@ describe('TokenService', () => {
                         token = getCreateTokenDto();
                 });
                 it('get refersh token', async () => {
-                        const encryptedToken = await tokenService.getRefershToken(token);
+                        const encryptedToken = await tokenService.getRefreshToken(token);
                         const decode = jwtService.decode(encryptedToken);
                         if (typeof decode === 'object') {
                                 const checkIs6Month = moment().diff(decode.expiredDate, 'months');
@@ -46,7 +46,7 @@ describe('TokenService', () => {
                         token = getCreateTokenDto();
                 });
                 it('get auth token', async () => {
-                        const encryptedToken = await tokenService.getRefershToken(token);
+                        const encryptedToken = await tokenService.getRefreshToken(token);
                         const getAuthToken = await tokenService.getAuthToken(encryptedToken);
 
                         expect(typeof getAuthToken).toBe('string');
@@ -57,7 +57,7 @@ describe('TokenService', () => {
                 });
 
                 it('get auth token (token does not exist in database)', async () => {
-                        const encryptedToken = await tokenService.getRefershToken(token);
+                        const encryptedToken = await tokenService.getRefreshToken(token);
                         const decode = jwtService.decode(encryptedToken);
                         if (typeof decode === 'object') {
                                 await tokenRepository.delete({ _id: new ObjectId(decode.data) });

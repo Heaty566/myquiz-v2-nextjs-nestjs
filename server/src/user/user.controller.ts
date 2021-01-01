@@ -14,6 +14,6 @@ export class UserController {
                 const user = await this.authService.findUserByField('_id', req.user.userId);
                 if (!user) throw new UnauthorizedException('Invalid User');
 
-                return _.pick(user, ['username', 'fullname', 'email', 'avatarUrl', 'isPremium', 'role']);
+                return _.pick(user, ['username', 'fullName', 'email', 'avatarUrl', 'isPremium', 'role']);
         }
 }

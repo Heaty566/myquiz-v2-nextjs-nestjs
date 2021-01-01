@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
-import { Layout } from '../../style/layout';
-import { breakPoint } from '../../style';
+import { Layout } from '../../layout';
+import { breakPoint } from '../..';
 
 export const NotFoundContainer = styled(Layout)(
         ({ theme: { colors } }) => css`

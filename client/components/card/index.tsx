@@ -1,10 +1,13 @@
 import * as React from 'react';
+import Image from 'next/image';
+
+//* Style import
 import { QuizCardContainer, QuizStar, UserPlanCardContainer, UserPlanCheckCol } from './style';
 import { Text } from '../../style/typography';
 import { Layout } from '../../style/layout';
 import { Box } from '../../style/common';
+//* Import Component
 import { BtnLink } from '../button';
-import Image from 'next/image';
 
 export interface QuizCardProps {
         title: string;

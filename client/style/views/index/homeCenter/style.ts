@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
-import { breakPoint } from '../../../style/index';
-import { Layout } from '../../../style/layout';
+import { breakPoint } from '../../../index';
+import { Layout } from '../../../layout';
 
 export const HomeCenterContainer = styled.section(
         ({ theme: { ruler } }) => css`
