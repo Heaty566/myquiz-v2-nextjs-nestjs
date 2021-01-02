@@ -51,7 +51,7 @@ export interface UserPlanCardProps {
         featureLabel: string;
 }
 
-export const UserPlanCard: React.FunctionComponent<UserPlanCardProps> = ({ btnText, listFeatures = [], price, title, color, featureLabel }) => {
+export const UserPlanCard: React.FunctionComponent<UserPlanCardProps> = ({ btnText, listFeatures = [], price, title, color, featureLabel, link }) => {
         return (
                 <UserPlanCardContainer $color={color}>
                         <Text $type="h1" as="h1" $textAlign="center">
@@ -65,7 +65,7 @@ export const UserPlanCard: React.FunctionComponent<UserPlanCardProps> = ({ btnTe
                                 </Text>
                         </Text>
                         <Layout $justifyContent="center">
-                                <BtnLink link="/" label={btnText} />
+                                <BtnLink link={link} label={btnText} />
                         </Layout>
 
                         <Text $type="h4" as="h4">

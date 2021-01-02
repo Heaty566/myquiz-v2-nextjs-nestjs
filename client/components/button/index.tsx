@@ -33,7 +33,7 @@ export const BtnFunc: React.FunctionComponent<BtnFuncProps> = ({ label = '', isA
         return (
                 <BtnFuncContainer className="active">
                         {label}
-                        {<BtnLoading />}
+                        {isLoading && isApiCall && <BtnLoading />}
                 </BtnFuncContainer>
         );
 };

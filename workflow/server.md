@@ -1,8 +1,6 @@
 # Todo List
 
 - [ ] add show result for search box
-- [ ] hide next code
-- [ ] hide code on production
 - [ ] fix slide in home page optimize
 - [ ] add screen reader
 - [ ] writing test for login
@@ -27,6 +25,8 @@
 
 # Done jobs
 
+- [x] ~~_hide next code_~~ [2021-01-03]
+- [x] ~~_hide code on production_~~ [2021-01-03]
 - [x] ~~_set import structure_~~ [2021-01-02]
 - [x] ~~_hide redux_~~ [2021-01-01]
 - [x] ~~_setup axios hook_~~ [2021-01-01]
