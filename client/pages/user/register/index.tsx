@@ -34,24 +34,26 @@ const UserRegister: React.FunctionComponent<UserLoginProps> = () => {
         const onSubmit = (data: UserRegisterDto) => store.dispatch(authActions.registerUser(data));
 
         React.useEffect(() => {
+                const { errorDetails, isError } = apiState;
                 if (
-                        apiState.isError &&
-                        apiState.errorDetails.username &&
-                        apiState.errorDetails.password &&
-                        apiState.errorDetails.confirmPassword &&
-                        apiState.errorDetails.fullName
+                        isError &&
+                        errorDetails &&
+                        errorDetails.username &&
+                        errorDetails.password &&
+                        errorDetails.confirmPassword &&
+                        errorDetails.fullName
                 )
                         setErrors({
-                                password: apiState.errorDetails.username,
-                                username: apiState.errorDetails.password,
-                                confirmPassword: apiState.errorDetails.confirmPassword,
-                                fullName: apiState.errorDetails.fullName,
+                                password: errorDetails.username,
+                                username: errorDetails.password,
+                                confirmPassword: errorDetails.confirmPassword,
+                                fullName: errorDetails.fullName,
                         });
         }, [apiState.isError]);
 
         return (
                 <>
-                        <HeadMeta pageTitle="Register" description="GEGE" />
+                        <HeadMeta pageTitle="Register" />
                         <AuthContainer $alignItems="center" $justifyContent="center">
                                 <AuthFormContainer>
                                         <Layout $alignItems="center" $justifyContent="center" $gutter={1}>

@@ -5,6 +5,7 @@ import { NotFoundContainer, NotFoundWrapper } from '../../style/views/404/style'
 import { Text } from '../../style/typography';
 
 //* Import Component
+import { HeadMeta } from '../../components/head';
 import { BtnLink } from '../../components/button';
 import Footer from '../../components/footer';
 
@@ -12,6 +13,7 @@ export interface NotFoundProps {}
 const NotFound: React.FunctionComponent<NotFoundProps> = () => {
         return (
                 <>
+                        <HeadMeta pageTitle="Not Found" />
                         <NotFoundContainer $justifyContent="center" $alignItems="center">
                                 <NotFoundWrapper>
                                         <h1>

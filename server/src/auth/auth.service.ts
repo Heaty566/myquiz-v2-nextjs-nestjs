@@ -28,9 +28,9 @@ export class AuthService {
                 return await bcrypt.compare(value, encryptString);
         }
 
-        async createNewUser({ fullname, username, password }: CreateUserDto) {
+        async createNewUser({ fullName, username, password }: CreateUserDto) {
                 const encryptedPassword = await this.encryptString(password);
-                const user = new User(username, encryptedPassword, fullname);
+                const user = new User(username, encryptedPassword, fullName);
 
                 return await this.userRepository.save(user);
         }

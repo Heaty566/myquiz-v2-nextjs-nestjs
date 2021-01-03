@@ -4,7 +4,7 @@ import { LoginUserDto } from '../../../auth/dto/loginUser.dto';
 export const getCreateUserDto = () => {
         const password = fakeData(10, 'lettersAndNumbersLowerCase');
         const data: CreateUserDto = {
-                fullname: fakeData(10, 'letters'),
+                fullName: fakeData(10, 'letters'),
                 confirmPassword: password,
                 username: fakeData(10, 'lettersAndNumbers'),
                 password,

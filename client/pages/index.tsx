@@ -29,7 +29,7 @@ export const HomePage: React.FunctionComponent<IndexProps> = () => {
 
         return (
                 <>
-                        <HeadMeta pageTitle="Home" description="GEGE" isFollowPage={true} isIndexPage={true} />
+                        <HeadMeta pageTitle="Home" isFollowPage={true} isIndexPage={true} />
                         <HomeTop />
                         <HomeCenter />
                         <HomeBottom />

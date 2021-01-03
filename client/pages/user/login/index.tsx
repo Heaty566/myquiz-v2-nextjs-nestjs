@@ -35,13 +35,14 @@ const UserLogin: React.FunctionComponent<UserLoginProps> = () => {
         const onSubmit = (data: UserLoginDto) => store.dispatch(authActions.loginUser(data));
 
         useEffect(() => {
-                if (apiState.isError && apiState.errorDetails.username && apiState.errorDetails.password)
-                        setError({ password: apiState.errorDetails.username, username: apiState.errorDetails.password });
+                const { errorDetails, isError } = apiState;
+                if (isError && errorDetails && errorDetails.username && errorDetails.password)
+                        setError({ password: errorDetails.username, username: errorDetails.password });
         }, [apiState.isError]);
 
         return (
                 <>
-                        <HeadMeta pageTitle="Login" description="GEGE" />
+                        <HeadMeta pageTitle="Login" />
                         <AuthContainer $alignItems="center" $justifyContent="center">
                                 <AuthFormContainer>
                                         <Layout $alignItems="center" $justifyContent="center" $gutter={1}>
