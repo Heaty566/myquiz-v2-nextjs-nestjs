@@ -5,22 +5,22 @@ import { Response, NextFunction, Request } from 'express';
 import * as cookieParser from 'cookie-parser';
 import { CONSTANT } from '../constant';
 import { NotFoundApiHandler } from '../exception/notfound.exception';
-import { CountVisitorInterceptor } from '../interceptor/countVisitor.interceptor';
 import { RuntimeApiHandler } from '../exception/runtime.exception';
 import * as helmet from 'helmet';
 import * as compression from 'compression';
 import * as swagger from 'swagger-ui-express';
-import * as doc from '../../docs/doc-v2.json';
+import * as doc from '../../common/docs/doc-v2.json';
 
+//*todo fix my path deo biet nam o dau
 I18n.configure({
         locales: ['en', 'vi'],
-        directory: `../../locales`,
+        directory: `/locales`,
         cookie: 'lang',
         defaultLocale: 'en',
 });
 
 export function router(app: INestApplication) {
-        //conmmon middleware
+        //common middleware
         app.use(I18n.init);
         app.setGlobalPrefix('/api');
         app.use(cookieParser());
@@ -45,7 +45,7 @@ export function router(app: INestApplication) {
         app.useGlobalFilters(new RuntimeApiHandler());
 
         //global interceptor handler
-        app.useGlobalInterceptors(new CountVisitorInterceptor());
+        // app.useGlobalInterceptors(new CountVisitorInterceptor());
 
         app.use((req: Request, res: Response, next: NextFunction) => {
                 //set header

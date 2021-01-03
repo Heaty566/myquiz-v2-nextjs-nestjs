@@ -9,6 +9,10 @@ import { User } from './user/entities/user.entity';
 import { TokenModule } from './token/token.module';
 import { Token } from './token/entities/token.entity';
 import { JwtModule } from '@nestjs/jwt';
+import { RedisModule } from './redis/redis.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { CountVisitorInterceptor } from './common/interceptor/countVisitor.interceptor';
+import { RedisService } from './redis/redis.service';
 
 const DBConfig = TypeOrmModule.forRoot({
         url: process.env.DB_URL,
@@ -28,8 +32,15 @@ const Config = ConfigModule.forRoot({
 const JwtConfig = JwtModule.register({ secret: process.env.JWT_SECRET_KEY });
 
 @Module({
-        imports: [Config, DBConfig, UserModule, JwtConfig, AuthModule, TokenModule],
+        imports: [Config, DBConfig, UserModule, JwtConfig, AuthModule, TokenModule, RedisModule],
         controllers: [AppController],
-        providers: [AppService],
+        providers: [
+                AppService,
+                {
+                        provide: APP_INTERCEPTOR,
+                        useClass: CountVisitorInterceptor,
+                },
+                RedisService,
+        ],
 })
 export class AppModule {}

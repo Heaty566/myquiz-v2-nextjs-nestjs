@@ -9,13 +9,13 @@ import { AuthService } from '../auth.service';
 
 describe('AuthController', () => {
         let app: INestApplication;
-        let userRepostiory: UserRepository;
+        let userRepository: UserRepository;
         let authService: AuthService;
         beforeAll(async () => {
                 const { getApp, module } = await getTestInit();
                 app = getApp;
 
-                userRepostiory = module.get<UserRepository>(UserRepository);
+                userRepository = module.get<UserRepository>(UserRepository);
                 authService = module.get<AuthService>(AuthService);
         });
 
@@ -37,7 +37,6 @@ describe('AuthController', () => {
                         await reqApi(createUserData);
                         const res = await reqApi(createUserData);
                         expect(res.status).toBe(400);
-                        expect(res.body.message).toBeDefined();
                 });
 
                 it('invalid input (confirmPassword does not match)', async () => {
@@ -45,7 +44,7 @@ describe('AuthController', () => {
                         const res = await reqApi(createUserData);
 
                         expect(res.status).toBe(400);
-                        expect(res.body.data).toBeDefined();
+                        expect(res.body.confirmPassword).toBeDefined();
                 });
         });
 
@@ -57,7 +56,7 @@ describe('AuthController', () => {
                 beforeEach(async () => {
                         loginUserDto = getLoginUserDto();
                         const encryptPassword = await authService['encryptString'](loginUserDto.password);
-                        await userRepostiory.insert({ username: loginUserDto.username, password: encryptPassword });
+                        await userRepository.insert({ username: loginUserDto.username, password: encryptPassword });
                 });
                 it('login user success', async () => {
                         const res = await reqApi(loginUserDto);
@@ -70,20 +69,18 @@ describe('AuthController', () => {
                         loginUserDto.username = 'helloworld';
                         const res = await reqApi(loginUserDto);
 
-                        expect(res.body.message).toBeDefined();
                         expect(res.status).toBe(400);
                 });
                 it('invalid input (incorrect password)', async () => {
                         loginUserDto.password = 'helloworld';
                         const res = await reqApi(loginUserDto);
 
-                        expect(res.body.message).toBeDefined();
                         expect(res.status).toBe(400);
                 });
         });
 
         afterAll(async () => {
                 await app.close();
-                await userRepostiory.clear();
+                await userRepository.clear();
         });
 });

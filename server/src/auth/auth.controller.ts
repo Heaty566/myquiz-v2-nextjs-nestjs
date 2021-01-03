@@ -6,6 +6,7 @@ import { TokenService } from '../token/token.service';
 import { AuthService } from './auth.service';
 import { CreateUserDto, createUserDtoValidator } from './dto/createUser.dto';
 import { CONSTANT } from '../common/constant';
+import { ObjError } from '../common/validation/JoiErrorMapper.helper';
 
 @Controller('auth')
 export class AuthController {
@@ -18,29 +19,36 @@ export class AuthController {
                 body: CreateUserDto,
                 @Res() res: Response,
         ) {
+                const errorsObject: ObjError = {
+                        username: 'username or password are invalid',
+                };
                 const isExistUser = await this.authService.findUserByField('username', body.username);
-                if (isExistUser) throw new BadRequestException('Username is taken');
+                if (isExistUser) throw new BadRequestException(errorsObject);
 
                 const { isPremium, role, _id } = await this.authService.createNewUser(body);
                 const refreshToken = await this.tokenService.getRefreshToken({ isPremium, role, userId: _id });
 
-                return res.cookie('re-token', refreshToken, { maxAge: 180 * CONSTANT.DAY }).send({ message: 'Registration completed successfully' });
+                return res.cookie('re-token', refreshToken, { maxAge: 180 * CONSTANT.DAY }).send();
         }
 
         @Post('/login')
         @UsePipes(new JoiValidatorPipe(loginUserDtoValidator))
         async loginUser(@Body() body: LoginUserDto, @Res() res: Response) {
-                const getUser = await this.authService.findUserByField('username', body.username);
-                if (!getUser) throw new BadRequestException('Username or password are invalid');
+                const errorsObject: ObjError = {
+                        username: 'username or password are invalid',
+                };
 
-                const isCorrectPasswrod = await this.authService.compareEncrypt(body.password, getUser.password);
-                if (!isCorrectPasswrod) throw new BadRequestException('Username or password are invalid');
+                const getUser = await this.authService.findUserByField('username', body.username);
+                if (!getUser) throw new BadRequestException(errorsObject);
+
+                const isCorrectPassword = await this.authService.compareEncrypt(body.password, getUser.password);
+                if (!isCorrectPassword) throw new BadRequestException(errorsObject);
 
                 const refreshToken = await this.tokenService.getRefreshToken({
                         isPremium: getUser.isPremium,
                         role: getUser.role,
                         userId: getUser._id,
                 });
-                return res.cookie('re-token', refreshToken, { maxAge: CONSTANT.DAY * 180 }).send({ message: 'Login user successfully' });
+                return res.cookie('re-token', refreshToken, { maxAge: CONSTANT.DAY * 180 }).send();
         }
 }

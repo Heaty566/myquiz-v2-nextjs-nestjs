@@ -1,5 +1,10 @@
 version: "3"
 services:
+	redis:
+                image: redis
+                ports:
+                        - 7000:6379
+
         server:
                 build: ./server
                 image: heaty566/myquiz-v2-server:latest
@@ -7,14 +12,4 @@ services:
                         - 4000:4000
                 env_file:
                         - ./data/config/server.env
-
-        client:
-                build: ./client
-                image: heaty566/myquiz-v2-client:latest
-                expose:
-                        - 3000
-
-        nginx:
-                image: nginx
-                ports:
-                        - 80:80
+       

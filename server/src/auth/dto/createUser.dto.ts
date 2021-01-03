@@ -1,8 +1,8 @@
-import { userJoiSchema, joiSchemaGenarator } from '../../common/test/validation';
+import { userJoiSchema, joiSchemaGenerator } from '../../common/validation';
 import * as Joi from 'joi';
 import { User } from '../../user/entities/user.entity';
 
-const { getJoiSchema, getJoiSchemas } = joiSchemaGenarator<User>(userJoiSchema);
+const { getJoiSchema, getJoiSchemas } = joiSchemaGenerator<User>(userJoiSchema);
 
 export class CreateUserDto {
         fullName: string;
