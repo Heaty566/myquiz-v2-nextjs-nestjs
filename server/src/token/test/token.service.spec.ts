@@ -1,12 +1,14 @@
 import { INestApplication } from '@nestjs/common';
-import { getTestInit } from '../../common/test/getInit';
-import { TokenService } from '../token.service';
-import { TokenRepository } from '../entities/token.repository';
-import { getCreateTokenDto } from '../../common/test/fakeData/fakeToken';
-import { CreateTokenDto } from '../dto/createToken.dto';
 import { JwtService } from '@nestjs/jwt';
 import * as moment from 'moment';
 import { ObjectId } from 'mongodb';
+
+//* Internal import
+import { getCreateTokenDto } from '../../../test/fakeData/fakeToken';
+import { TokenRepository } from '../entities/token.repository';
+import { CreateTokenDto } from '../dto/createToken.dto';
+import { initTestModule } from '../../../test/initTest';
+import { TokenService } from '../token.service';
 
 describe('TokenService', () => {
         let app: INestApplication;
@@ -14,7 +16,7 @@ describe('TokenService', () => {
         let tokenService: TokenService;
         let jwtService: JwtService;
         beforeAll(async () => {
-                const { getApp, module } = await getTestInit();
+                const { getApp, module } = await initTestModule();
                 app = getApp;
 
                 tokenRepository = module.get<TokenRepository>(TokenRepository);

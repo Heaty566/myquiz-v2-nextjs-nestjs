@@ -3,7 +3,7 @@ import Head from 'next/head';
 
 export interface HeadProps {
         pageTitle: string;
-        description: string;
+        description?: string;
         isIndexPage?: boolean;
         isFollowPage?: boolean;
         canonical?: string;
@@ -15,21 +15,22 @@ export const HeadMeta: React.FunctionComponent<HeadProps> = ({
         pageTitle = '',
         isIndexPage = false,
         isFollowPage = true,
-        description = '',
+        description = 'My Quiz is an awesome platform to make Your Awesome Quiz And Become Your Most Unstoppable Self',
         canonical = '/',
         keyword = 'myquiz, quiz, exam, study, learning',
-        imageUrl = '/',
+        imageUrl = '/asset/share/banner.png',
 }) => {
         const metaIndexPage = isIndexPage ? 'index' : 'noindex';
         const metaIsFollowPage = isFollowPage ? 'follow' : 'nofollow';
         const metaRobots = `${metaIndexPage},${metaIsFollowPage}`;
-        const canonicalLink = process.env.DOMAIN + canonical;
+        const canonicalLink = canonical;
 
         return (
                 <Head>
                         <meta charSet="UTF-8" />
                         <meta httpEquiv="Content-Type" content="text/html;charset=UTF-8" />
                         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0" />
+                        <meta name="google-site-verification" content="BWOjVaLMrQlDDZSMNRtScpbtQTBOWSuuZLoFe6IwjV4" />
                         {/* common header */}
                         <title>{pageTitle} | MyQuiz</title>
                         <meta name="description" content={description} />
@@ -41,7 +42,7 @@ export const HeadMeta: React.FunctionComponent<HeadProps> = ({
                         <meta property="og:title" content={pageTitle} />
                         <meta property="og:description" content={description} />
                         <meta property="og:image" content={imageUrl} />
-                        <meta name="fb:app_id" content="1289736761385432" />
+                        <meta property="fb:app_id" content={process.env.FB_APP_ID} />
                         {/* twitter header */}
                         <meta name="twitter:title" content={pageTitle} />
                         <meta name="twitter:description" content={description} />

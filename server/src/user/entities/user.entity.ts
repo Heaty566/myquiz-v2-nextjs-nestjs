@@ -1,5 +1,7 @@
 import { Entity, ObjectIdColumn, Column } from 'typeorm';
 import { ObjectId } from 'mongodb';
+
+//* Internal import
 import { UserRole } from '../../auth/entities/userRole.enum';
 
 @Entity()
@@ -36,10 +38,10 @@ export class User {
 
         @Column()
         role: UserRole;
-        constructor(username: string, password: string, fullname: string) {
+        constructor(username?: string, password?: string, fullName?: string) {
                 this.username = username;
                 this.password = password;
-                this.fullName = fullname;
+                this.fullName = fullName;
                 this.email = '';
                 this.avatarUrl = '';
                 this.googleId = '';

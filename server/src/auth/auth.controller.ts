@@ -1,15 +1,23 @@
-import { Controller, Post, Body, BadRequestException, UsePipes, Res } from '@nestjs/common';
-import { Response } from 'express';
-import { JoiValidatorPipe } from '../common/pipe/validator.pipe';
-import { loginUserDtoValidator, LoginUserDto } from './dto/loginUser.dto';
-import { TokenService } from '../token/token.service';
-import { AuthService } from './auth.service';
-import { CreateUserDto, createUserDtoValidator } from './dto/createUser.dto';
-import { CONSTANT } from '../common/constant';
+import { Controller, Post, Body, BadRequestException, UsePipes, Res, Get, UseGuards, Req } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { Response, Request } from 'express';
 
+//* Internal import
+import { CreateUserDto, createUserDtoValidator } from './dto/createUser.dto';
+import { loginUserDtoValidator, LoginUserDto } from './dto/loginUser.dto';
+import { ObjError } from '../global/validation/messageErrorMapper.joi';
+import { JoiValidatorPipe } from '../global/pipe/validator.pipe';
+import { TokenService } from '../token/token.service';
+import { UserService } from '../user/user.service';
+import { CONSTANT } from '../global/constant';
+import { AuthService } from './auth.service';
 @Controller('auth')
 export class AuthController {
-        constructor(private readonly authService: AuthService, private readonly tokenService: TokenService) {}
+        constructor(
+                private readonly authService: AuthService,
+                private readonly tokenService: TokenService,
+                private readonly userService: UserService,
+        ) {}
 
         @Post('/register')
         @UsePipes(new JoiValidatorPipe(createUserDtoValidator))
@@ -18,29 +26,93 @@ export class AuthController {
                 body: CreateUserDto,
                 @Res() res: Response,
         ) {
-                const isExistUser = await this.authService.findUserByField('username', body.username);
-                if (isExistUser) throw new BadRequestException('Username is taken');
+                const errorsObject: ObjError = {
+                        username: 'username or password are invalid',
+                };
+                const isExistUser = await this.userService.findUserByField('username', body.username);
+                if (isExistUser) throw new BadRequestException(errorsObject);
 
                 const { isPremium, role, _id } = await this.authService.createNewUser(body);
                 const refreshToken = await this.tokenService.getRefreshToken({ isPremium, role, userId: _id });
 
-                return res.cookie('re-token', refreshToken, { maxAge: 180 * CONSTANT.DAY }).send({ message: 'Registration completed successfully' });
+                return res.cookie('re-token', refreshToken, { maxAge: 180 * CONSTANT.DAY }).send();
         }
 
         @Post('/login')
         @UsePipes(new JoiValidatorPipe(loginUserDtoValidator))
         async loginUser(@Body() body: LoginUserDto, @Res() res: Response) {
-                const getUser = await this.authService.findUserByField('username', body.username);
-                if (!getUser) throw new BadRequestException('Username or password are invalid');
+                const errorsObject: ObjError = {
+                        username: 'username or password are invalid',
+                };
 
-                const isCorrectPasswrod = await this.authService.compareEncrypt(body.password, getUser.password);
-                if (!isCorrectPasswrod) throw new BadRequestException('Username or password are invalid');
+                const getUser = await this.userService.findUserByField('username', body.username);
+                if (!getUser) throw new BadRequestException(errorsObject);
+
+                const isCorrectPassword = await this.authService.compareEncrypt(body.password, getUser.password);
+                if (!isCorrectPassword) throw new BadRequestException(errorsObject);
 
                 const refreshToken = await this.tokenService.getRefreshToken({
                         isPremium: getUser.isPremium,
                         role: getUser.role,
                         userId: getUser._id,
                 });
-                return res.cookie('re-token', refreshToken, { maxAge: CONSTANT.DAY * 180 }).send({ message: 'Login user successfully' });
+                return res.cookie('re-token', refreshToken, { maxAge: CONSTANT.DAY * 180 }).send();
+        }
+
+        @Get('/google')
+        @UseGuards(AuthGuard('google'))
+        googleAuth() {
+                //
+        }
+
+        @Get('/google/callback')
+        @UseGuards(AuthGuard('google'))
+        async googleCallBack(@Req() req: Request, @Res() res: Response) {
+                const { isPremium, role, userId } = req.user;
+                const refreshToken = await this.tokenService.getRefreshToken({
+                        isPremium,
+                        role,
+                        userId,
+                });
+
+                return res.cookie('re-token', refreshToken, { maxAge: CONSTANT.DAY * 180 }).redirect(process.env.CLIENT_URL);
+        }
+
+        @Get('/facebook')
+        @UseGuards(AuthGuard('facebook'))
+        facebookAuth() {
+                //
+        }
+
+        @Get('/facebook/callback')
+        @UseGuards(AuthGuard('facebook'))
+        async facebookCallback(@Req() req: Request, @Res() res: Response) {
+                const { isPremium, role, userId } = req.user;
+                const refreshToken = await this.tokenService.getRefreshToken({
+                        isPremium,
+                        role,
+                        userId,
+                });
+
+                return res.cookie('re-token', refreshToken, { maxAge: CONSTANT.DAY * 180 }).redirect(process.env.CLIENT_URL);
+        }
+
+        @Get('/github')
+        @UseGuards(AuthGuard('github'))
+        githubAuth() {
+                //
+        }
+
+        @Get('/github/callback')
+        @UseGuards(AuthGuard('github'))
+        async githubCallback(@Req() req: Request, @Res() res: Response) {
+                const { isPremium, role, userId } = req.user;
+                const refreshToken = await this.tokenService.getRefreshToken({
+                        isPremium,
+                        role,
+                        userId,
+                });
+
+                return res.cookie('re-token', refreshToken, { maxAge: CONSTANT.DAY * 180 }).redirect(process.env.CLIENT_URL);
         }
 }

@@ -4,5 +4,6 @@ module.exports = {
         env: {
                 SERVER_URL: process.env.SERVER_URL,
                 DOMAIN: process.env.DOMAIN,
+                FB_APP_ID: process.env.FB_APP_ID,
         },
 };

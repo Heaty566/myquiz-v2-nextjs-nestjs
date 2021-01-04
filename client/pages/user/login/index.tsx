@@ -35,13 +35,14 @@ const UserLogin: React.FunctionComponent<UserLoginProps> = () => {
         const onSubmit = (data: UserLoginDto) => store.dispatch(authActions.loginUser(data));
 
         useEffect(() => {
-                if (apiState.isError && apiState.errorDetails.username && apiState.errorDetails.password)
-                        setError({ password: apiState.errorDetails.username, username: apiState.errorDetails.password });
+                const { errorDetails, isError } = apiState;
+                if (isError && errorDetails && errorDetails.username && errorDetails.password)
+                        setError({ password: errorDetails.username, username: errorDetails.password });
         }, [apiState.isError]);
 
         return (
                 <>
-                        <HeadMeta pageTitle="Login" description="GEGE" />
+                        <HeadMeta pageTitle="Login" />
                         <AuthContainer $alignItems="center" $justifyContent="center">
                                 <AuthFormContainer>
                                         <Layout $alignItems="center" $justifyContent="center" $gutter={1}>
@@ -51,7 +52,13 @@ const UserLogin: React.FunctionComponent<UserLoginProps> = () => {
                                                 <Image src="/asset/icon/nav-logo.svg" alt="" height="32" width="120" />
                                         </Layout>
                                         <AuthForm onSubmit={handleSubmit(onSubmit)}>
-                                                <TextField name="username" label="Username" register={register} errorMsg={error.username} />
+                                                <TextField
+                                                        name="username"
+                                                        label="Username"
+                                                        register={register}
+                                                        errorMsg={error.username}
+                                                        data-test="input:username"
+                                                />
                                                 <TextFieldPassword name="password" label="Password" register={register} errorMsg={error.password} />
                                                 <AuthExtraLink>Forgot your password?</AuthExtraLink>
                                                 <BtnFunc label="Sign In" isApiCall={true} />

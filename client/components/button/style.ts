@@ -11,8 +11,11 @@ const BtnCommonStyle = css(
                 transition: 0.2s;
                 position: relative;
                 cursor: pointer;
+                &.active {
+                        color: ${theme.colors.primary.one};
+                }
 
-                &:hover {
+                &:not(.active):hover {
                         background-color: ${theme.colors.primary.five};
                 }
         `,

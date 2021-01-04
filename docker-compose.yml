@@ -7,14 +7,7 @@ services:
                         - 4000:4000
                 env_file:
                         - ./data/config/server.env
-
-        client:
-                build: ./client
-                image: heaty566/myquiz-v2-client:latest
-                expose:
-                        - 3000
-
-        nginx:
-                image: nginx
+       redis:
+                image: redis
                 ports:
-                        - 80:80
+                        - 7000:6379

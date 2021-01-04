@@ -1,17 +1,19 @@
-import { userJoiSchema, joiSchemaGenarator } from '../../common/test/validation';
 import * as Joi from 'joi';
+
+//* Internal import
+import { userJoiSchema, joiSchemaGenerator } from '../../global/validation';
 import { User } from '../../user/entities/user.entity';
 
-const { getJoiSchema, getJoiSchemas } = joiSchemaGenarator<User>(userJoiSchema);
+const { getJoiSchema, getJoiSchemas } = joiSchemaGenerator<User>(userJoiSchema);
 
 export class CreateUserDto {
-        fullname: string;
+        fullName: string;
         password: string;
         username: string;
         confirmPassword: string;
 }
 
 export const createUserDtoValidator = Joi.object({
-        ...getJoiSchemas(['username', 'password', 'fullname']),
+        ...getJoiSchemas(['username', 'password', 'fullName']),
         confirmPassword: getJoiSchema('password').valid(Joi.ref('password')),
 });
