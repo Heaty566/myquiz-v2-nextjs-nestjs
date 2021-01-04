@@ -3,6 +3,7 @@ import { ObjectSchema } from 'joi';
 
 //* Internal import
 import { JoiErrorMapper } from '../validation/messageErrorMapper.joi';
+import { ApiResponse } from '../dto/response.dto';
 
 @Injectable()
 export class JoiValidatorPipe implements PipeTransform {
@@ -10,7 +11,13 @@ export class JoiValidatorPipe implements PipeTransform {
 
         transform(input: any, metaData: ArgumentMetadata) {
                 const { error, value } = this.schema.validate(input, { abortEarly: false });
-                if (error) throw new BadRequestException(JoiErrorMapper(error));
+                if (error) {
+                        const errorResponse: ApiResponse = {
+                                detail: JoiErrorMapper(error),
+                                message: 'Invalid input',
+                        };
+                        throw new BadRequestException(errorResponse);
+                }
 
                 return value;
         }

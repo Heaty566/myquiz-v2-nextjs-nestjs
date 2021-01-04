@@ -1,6 +1,6 @@
 Env Key
 
-```json
+```python
 DB_URL=
 JWT_SECRET_KEY=
 CLIENT_URL=

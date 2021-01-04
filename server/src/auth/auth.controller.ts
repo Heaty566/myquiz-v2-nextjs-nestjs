@@ -11,6 +11,7 @@ import { TokenService } from '../token/token.service';
 import { UserService } from '../user/user.service';
 import { CONSTANT } from '../global/constant';
 import { AuthService } from './auth.service';
+import { ApiResponse } from '../global/dto/response.dto';
 @Controller('auth')
 export class AuthController {
         constructor(
@@ -26,9 +27,10 @@ export class AuthController {
                 body: CreateUserDto,
                 @Res() res: Response,
         ) {
-                const errorsObject: ObjError = {
-                        username: 'username or password are invalid',
+                const errorsObject: ApiResponse = {
+                        message: 'Username or Password are invalid',
                 };
+
                 const isExistUser = await this.userService.findUserByField('username', body.username);
                 if (isExistUser) throw new BadRequestException(errorsObject);
 
@@ -41,8 +43,8 @@ export class AuthController {
         @Post('/login')
         @UsePipes(new JoiValidatorPipe(loginUserDtoValidator))
         async loginUser(@Body() body: LoginUserDto, @Res() res: Response) {
-                const errorsObject: ObjError = {
-                        username: 'username or password are invalid',
+                const errorsObject: ApiResponse = {
+                        message: 'Username or Password are invalid',
                 };
 
                 const getUser = await this.userService.findUserByField('username', body.username);

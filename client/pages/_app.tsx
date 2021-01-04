@@ -29,7 +29,9 @@ const App: React.FunctionComponent<AppProps> = ({ Component, pageProps }) => {
                 const lang = cookies.get('lang');
                 i18n.changeLanguage(lang);
         }, []);
-
+        useEffect(() => {
+                console.log(process.env.SERVER_URL);
+        });
         return (
                 <>
                         <Provider store={store}>

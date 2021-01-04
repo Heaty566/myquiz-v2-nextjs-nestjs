@@ -11,6 +11,7 @@ import { TokenService } from '../../token/token.service';
 import { initTestModule } from '../../../test/initTest';
 import { AuthService } from '../../auth/auth.service';
 import { User } from '../entities/user.entity';
+import { UpdateUserDto } from '../dto/updateUser.dto';
 
 describe('userController', () => {
         let app: INestApplication;
@@ -61,7 +62,7 @@ describe('userController', () => {
                         expect(res.status).toBe(401);
                 });
         });
-        describe('PUT /api/password', () => {
+        describe('PUT /api/user/password', () => {
                 const callApi = (input: ChangePasswordDto) =>
                         supertest(app.getHttpServer()).put('/api/user/password').set({ cookie: cookie }).send(input);
 
@@ -93,6 +94,38 @@ describe('userController', () => {
                         const isCorrectChange = await authService.compareEncrypt(dummyPassword, user.password);
 
                         expect(isCorrectChange).toBeFalsy();
+                        expect(res.status).toBe(400);
+                });
+        });
+        describe('PUT /api/user/information', () => {
+                const callApi = (input: UpdateUserDto) =>
+                        supertest(app.getHttpServer()).put('/api/user/information').set({ cookie: cookie }).send(input);
+
+                let dummyInput: UpdateUserDto;
+
+                beforeEach(async () => {
+                        dummyInput = {
+                                email: 'example@gmail.com',
+                                fullName: fakeData(10, 'lettersAndNumbersLowerCase'),
+                        };
+                });
+
+                it('update password with valid input', async () => {
+                        await callApi(dummyInput);
+
+                        const user = await userRepository.findOne({ username: userInfo.username });
+
+                        expect(user.email).toBe(dummyInput.email);
+                        expect(user.fullName).toBe(dummyInput.fullName);
+                });
+
+                it('update password with valid input (wrong email pattern)', async () => {
+                        dummyInput.email = fakeData(10, 'lettersAndNumbers');
+                        const res = await callApi(dummyInput);
+                        const user = await userRepository.findOne({ username: userInfo.username });
+
+                        expect(user.fullName).not.toBe(dummyInput.fullName);
+                        expect(user.email).not.toBe(dummyInput.email);
                         expect(res.status).toBe(400);
                 });
         });

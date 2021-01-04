@@ -8,7 +8,8 @@ import * as flat from 'flat';
 export class RedisService {
         private readonly redisRepository: RedisClient;
         constructor() {
-                this.redisRepository = createClient(Number(process.env.REDIS_PORT) || 7000);
+                const redisPort = Number(process.env.REDIS_PORT) || 7000;
+                this.redisRepository = createClient({ port: redisPort, host: 'redis' });
                 this.redisRepository.select(process.env.REDIS_DB_NUMBER || 1);
         }
 

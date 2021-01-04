@@ -9,8 +9,10 @@ export function userJoiSchema(field: keyof User) {
                 case 'fullName':
                         return Joi.string().min(5).max(40).trim().lowercase().required().messages(formatError());
                 case 'password':
-                        return Joi.string().min(8).max(32).default('').trim().alphanum().required().messages(formatError());
+                        return Joi.string().min(8).max(32).trim().alphanum().required().messages(formatError());
                 case 'username':
-                        return Joi.string().max(32).min(5).lowercase().trim().default('').alphanum().required().messages(formatError());
+                        return Joi.string().max(32).min(5).lowercase().trim().alphanum().required().messages(formatError());
+                case 'email':
+                        return Joi.string().max(100).min(2).lowercase().trim().email().required().messages(formatError());
         }
 }

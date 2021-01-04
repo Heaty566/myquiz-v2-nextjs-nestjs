@@ -14,7 +14,8 @@ async function bootstrap() {
         router(app);
         const port = process.env.PORT || 4000;
         const redisPort = Number(process.env.REDIS_PORT) || 7000;
-        const redisClient = createClient({ port: redisPort });
+
+        const redisClient = createClient({ port: redisPort, host: 'redis' });
 
         await app.listen(port, () => {
                 redisClient.ping((err, data) => {

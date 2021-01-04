@@ -30,6 +30,26 @@ describe('AuthService', () => {
                         expect(getUser).toBeDefined();
                 });
         });
+        describe('loginUserWithProvider', () => {
+                it('create user with facebook', async () => {
+                        await authService.createNewUserByOtherProvider('example', '123', 'facebookId');
+                        const getUser = await userRepository.findOne({ facebookId: '123' });
+
+                        expect(getUser).toBeDefined();
+                });
+                it('create user with google', async () => {
+                        await authService.createNewUserByOtherProvider('example', '123', 'googleId');
+                        const getUser = await userRepository.findOne({ googleId: '123' });
+
+                        expect(getUser).toBeDefined();
+                });
+                it('create user with github', async () => {
+                        await authService.createNewUserByOtherProvider('example', '123', 'githubId');
+                        const getUser = await userRepository.findOne({ githubId: '123' });
+
+                        expect(getUser).toBeDefined();
+                });
+        });
 
         afterAll(async () => {
                 await app.close();

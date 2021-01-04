@@ -11,8 +11,6 @@ export class UserService {
         constructor(@InjectRepository(User) private readonly userRepository: UserRepository) {}
 
         async updateUser(user: User) {
-                //
-
                 return await this.userRepository.save(user);
         }
 
