@@ -1,6 +1,8 @@
+import { createClient, RedisClient } from 'redis';
 import { Injectable } from '@nestjs/common';
 import * as flat from 'flat';
-import { createClient, RedisClient } from 'redis';
+
+//* Internal import
 
 @Injectable()
 export class RedisService {

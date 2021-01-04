@@ -1,5 +1,7 @@
-import { UserRole } from '../../auth/entities/userRole.enum';
 import { ObjectId } from 'mongodb';
+
+//* Internal import
+import { UserRole } from '../../auth/entities/userRole.enum';
 
 export class CreateTokenDto {
         userId: ObjectId;

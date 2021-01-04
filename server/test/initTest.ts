@@ -1,8 +1,10 @@
-import { AppModule } from '../../app.module';
 import { Test, TestingModule } from '@nestjs/testing';
-import { router } from '../app/router';
 
-export const getTestInit = async () => {
+//* Internal import
+import { router } from '../src/global/app/router';
+import { AppModule } from '../src/app.module';
+
+export const initTestModule = async () => {
         const module: TestingModule = await Test.createTestingModule({
                 imports: [AppModule],
         }).compile();

@@ -1,11 +1,13 @@
 import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { UserRole } from './entities/userRole.enum';
-import { Request, Response } from 'express';
 import { JwtService } from '@nestjs/jwt';
-import { TokenService } from '../token/token.service';
+import { Request, Response } from 'express';
+
+//* Internal import
 import { Token } from '../token/entities/token.entity';
-import { CONSTANT } from '../common/constant';
+import { TokenService } from '../token/token.service';
+import { UserRole } from './entities/userRole.enum';
+import { CONSTANT } from '../global/constant';
 @Injectable()
 export class UserAuth implements CanActivate {
         constructor(

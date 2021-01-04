@@ -1,15 +1,17 @@
-import { INestApplication } from '@nestjs/common';
-import * as I18n from 'i18n';
-import * as morgan from 'morgan';
 import { Response, NextFunction, Request } from 'express';
+import { INestApplication } from '@nestjs/common';
+import * as swagger from 'swagger-ui-express';
 import * as cookieParser from 'cookie-parser';
-import { CONSTANT } from '../constant';
+import * as compression from 'compression';
+import * as morgan from 'morgan';
+import * as helmet from 'helmet';
+import * as I18n from 'i18n';
+
+//* Internal import
 import { NotFoundApiHandler } from '../exception/notfound.exception';
 import { RuntimeApiHandler } from '../exception/runtime.exception';
-import * as helmet from 'helmet';
-import * as compression from 'compression';
-import * as swagger from 'swagger-ui-express';
-import * as doc from '../../common/docs/doc-v2.json';
+import * as doc from '../docs/doc-v2.json';
+import { CONSTANT } from '../constant';
 
 //*todo fix my path deo biet nam o dau
 I18n.configure({
@@ -30,6 +32,8 @@ export function router(app: INestApplication) {
         if (process.env.NODE_ENV === 'production') {
                 app.use(helmet());
                 app.use(compression());
+                app.useGlobalFilters(new NotFoundApiHandler());
+                app.useGlobalFilters(new RuntimeApiHandler());
         }
 
         //for developer
@@ -41,11 +45,8 @@ export function router(app: INestApplication) {
         }
 
         //global exception handler
-        app.useGlobalFilters(new NotFoundApiHandler());
-        app.useGlobalFilters(new RuntimeApiHandler());
 
         //global interceptor handler
-        // app.useGlobalInterceptors(new CountVisitorInterceptor());
 
         app.use((req: Request, res: Response, next: NextFunction) => {
                 //set header

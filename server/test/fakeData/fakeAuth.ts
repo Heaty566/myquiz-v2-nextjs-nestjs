@@ -1,12 +1,14 @@
+//* Internal import
 import { fakeData } from './fakeData';
-import { CreateUserDto } from '../../../auth/dto/createUser.dto';
-import { LoginUserDto } from '../../../auth/dto/loginUser.dto';
+import { CreateUserDto } from '../../src/auth/dto/createUser.dto';
+import { LoginUserDto } from '../../src/auth/dto/loginUser.dto';
+
 export const getCreateUserDto = () => {
         const password = fakeData(10, 'lettersAndNumbersLowerCase');
         const data: CreateUserDto = {
                 fullName: fakeData(10, 'letters'),
                 confirmPassword: password,
-                username: fakeData(10, 'lettersAndNumbers'),
+                username: fakeData(10, 'lettersAndNumbersLowerCase'),
                 password,
         };
         return data;

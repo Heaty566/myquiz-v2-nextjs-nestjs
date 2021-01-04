@@ -1,8 +1,10 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { router } from './common/app/router';
+import { router } from './global/app/router';
 import { Logger } from '@nestjs/common';
 import { createClient } from 'redis';
+
+//* Internal import
+import { AppModule } from './app.module';
 
 async function bootstrap() {
         const app = await NestFactory.create(AppModule);

@@ -1,5 +1,7 @@
 import { ExceptionFilter, Catch, ArgumentsHost, NotFoundException, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
+
+//* Internal import
 import { ResponseApi } from '../dto/response.dto';
 
 @Catch(NotFoundException)

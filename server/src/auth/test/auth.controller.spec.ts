@@ -1,8 +1,10 @@
 import * as supertest from 'supertest';
 import { INestApplication } from '@nestjs/common';
-import { getTestInit } from '../../common/test/getInit';
-import { getCreateUserDto, getLoginUserDto } from '../../common/test/fakeData/fakeAuth';
+
+//* Internal import
+import { getCreateUserDto, getLoginUserDto } from '../../../test/fakeData/fakeAuth';
 import { UserRepository } from '../../user/entities/userRepository.entity';
+import { initTestModule } from '../../../test/initTest';
 import { CreateUserDto } from '../dto/createUser.dto';
 import { LoginUserDto } from '../dto/LoginUser.dto';
 import { AuthService } from '../auth.service';
@@ -12,7 +14,7 @@ describe('AuthController', () => {
         let userRepository: UserRepository;
         let authService: AuthService;
         beforeAll(async () => {
-                const { getApp, module } = await getTestInit();
+                const { getApp, module } = await initTestModule();
                 app = getApp;
 
                 userRepository = module.get<UserRepository>(UserRepository);

@@ -1,4 +1,4 @@
-import { Token } from '../../token/entities/token.entity';
+import { Token } from './src/token/entities/token.entity';
 
 declare global {
         namespace Express {

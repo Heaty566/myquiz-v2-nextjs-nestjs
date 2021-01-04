@@ -1,6 +1,8 @@
 import { INestApplication } from '@nestjs/common';
 import { createClient, RedisClient } from 'redis';
-import { getTestInit } from '../../common/test/getInit';
+
+//* Internal import
+import { initTestModule } from '../../../test/initTest';
 import { RedisService } from '../redis.service';
 
 describe('Redis Service', () => {
@@ -8,7 +10,7 @@ describe('Redis Service', () => {
         let redisService: RedisService;
         let redisClient: RedisClient;
         beforeAll(async () => {
-                const { getApp, module } = await getTestInit();
+                const { getApp, module } = await initTestModule();
                 app = getApp;
                 redisClient = createClient(Number(process.env.REDIS_PORT) || 7000);
                 redisService = module.get<RedisService>(RedisService);

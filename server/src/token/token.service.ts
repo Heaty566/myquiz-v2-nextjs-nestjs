@@ -1,12 +1,13 @@
-import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Token } from './entities/token.entity';
-import { TokenRepository } from './entities/token.repository';
-import { CreateTokenDto } from './dto/createToken.dto';
-import * as moment from 'moment';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ObjectId } from 'mongodb';
+import * as moment from 'moment';
 
+//* Internal import
+import { TokenRepository } from './entities/token.repository';
+import { CreateTokenDto } from './dto/createToken.dto';
+import { Token } from './entities/token.entity';
 @Injectable()
 export class TokenService {
         constructor(@InjectRepository(Token) private readonly tokenRepository: TokenRepository, private readonly jwtService: JwtService) {}
