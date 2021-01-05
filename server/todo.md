@@ -5,6 +5,14 @@
 - [ ] Gmail service
 - [ ] write swagger for router
 - [ ] format response pattern
+- [ ] upload avatar
+- [ ] set up aws 
+- [ ] upload image testing
+- [ ] upload avatar testing
+- [ ] save project as a kit
+- [ ] update quiz entity
+- [ ] update user information when loggin with provider
+
 
 # Today schedule
 
