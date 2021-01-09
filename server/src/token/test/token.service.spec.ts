@@ -1,72 +1,104 @@
 import { INestApplication } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import * as moment from 'moment';
 import { ObjectId } from 'mongodb';
 
 //* Internal import
-import { getCreateTokenDto } from '../../../test/fakeData/fakeToken';
 import { TokenRepository } from '../entities/token.repository';
-import { CreateTokenDto } from '../dto/createToken.dto';
 import { initTestModule } from '../../../test/initTest';
 import { TokenService } from '../token.service';
+import { getDummyUser } from '../../../test/fakeData/fakeAuth';
+import { UserRepository } from '../../user/entities/userRepository.entity';
+import { User } from '../../user/entities/user.entity';
+import { Token } from '../entities/token.entity';
 
 describe('TokenService', () => {
         let app: INestApplication;
         let tokenRepository: TokenRepository;
         let tokenService: TokenService;
-        let jwtService: JwtService;
+        let userRepository: UserRepository;
+        let user: User;
         beforeAll(async () => {
                 const { getApp, module } = await initTestModule();
                 app = getApp;
 
                 tokenRepository = module.get<TokenRepository>(TokenRepository);
                 tokenService = module.get<TokenService>(TokenService);
-                jwtService = module.get<JwtService>(JwtService);
+                userRepository = module.get<UserRepository>(UserRepository);
         });
 
-        describe('getRefershToken', () => {
-                let token: CreateTokenDto;
-                beforeEach(() => {
-                        token = getCreateTokenDto();
-                });
-                it('get refersh token', async () => {
-                        const encryptedToken = await tokenService.getRefreshToken(token);
-                        const decode = jwtService.decode(encryptedToken);
-                        if (typeof decode === 'object') {
-                                const checkIs6Month = moment().diff(decode.expiredDate, 'months');
-                                const getTokenFromDatabase = await tokenRepository.findOne({ where: { _id: new ObjectId(decode.data) } });
+        beforeAll(async () => {
+                user = await userRepository.save(getDummyUser());
+        });
 
-                                expect(getTokenFromDatabase).toBeDefined();
-                                expect(checkIs6Month).toBeLessThanOrEqual(-5);
-                        }
+        describe('getRefreshToken', () => {
+                it('get refresh token', async () => {
+                        const tokenId = await tokenService.getRefreshToken(user);
+                        const getToken = await tokenRepository.findOne({ where: { _id: new ObjectId(tokenId) } });
+                        const userId = await tokenService.decodeJWT<{ _id: string }>(getToken.data);
+
+                        const checkIs6Month = moment().diff(getToken.expired, 'months');
+                        expect(userId._id).toBeDefined();
+                        expect(checkIs6Month).toBeLessThanOrEqual(-5);
+                        expect(getToken).toBeDefined();
                 });
         });
 
         describe('getAuthToken', () => {
-                let token: CreateTokenDto;
+                let user: User;
                 beforeEach(() => {
-                        token = getCreateTokenDto();
+                        user = getDummyUser();
                 });
                 it('get auth token', async () => {
-                        const encryptedToken = await tokenService.getRefreshToken(token);
+                        const encryptedToken = await tokenService.getRefreshToken(user);
                         const getAuthToken = await tokenService.getAuthToken(encryptedToken);
 
-                        expect(typeof getAuthToken).toBe('string');
-                });
-                it('invalid input (token does not exist)', async () => {
-                        const getTokenFromDatabase = await tokenService.getAuthToken('123456');
-                        expect(getTokenFromDatabase).toBeNull();
+                        expect(getAuthToken).toBeDefined();
                 });
 
-                it('get auth token (token does not exist in database)', async () => {
-                        const encryptedToken = await tokenService.getRefreshToken(token);
-                        const decode = jwtService.decode(encryptedToken);
-                        if (typeof decode === 'object') {
-                                await tokenRepository.delete({ _id: new ObjectId(decode.data) });
+                it('failed (token does not exist)', async () => {
+                        const getAuthToken = await tokenService.getAuthToken(String(new ObjectId()));
 
-                                const getTokenFromDatabase = await tokenService.getAuthToken(encryptedToken);
-                                expect(getTokenFromDatabase).toBeNull();
-                        }
+                        expect(getAuthToken).toBeNull();
+                });
+                it('failed (token decode failed)', async () => {
+                        const token: Token = {
+                                _id: new ObjectId(),
+                                data: '123',
+                                expired: moment().toDate(),
+                        };
+
+                        await tokenRepository.save(token);
+                        const getAuthToken = await tokenService.getAuthToken(String(token._id));
+
+                        expect(getAuthToken).toBeNull();
+                });
+                it('failed (token decode failed)', async () => {
+                        const encryptedToken = await tokenService.getRefreshToken(user);
+                        await tokenRepository.update({ _id: new ObjectId(encryptedToken) }, { expired: new Date(2018, 11, 24, 10, 33, 30, 0) });
+                        const getAuthToken = await tokenService.getAuthToken(encryptedToken);
+
+                        expect(getAuthToken).toBeNull();
+                });
+        });
+
+        describe('generateJWT and decodeJWT', () => {
+                let user: User;
+
+                beforeEach(async () => {
+                        user = await userRepository.save(getDummyUser());
+                });
+
+                it('encrypt success', () => {
+                        const encryptedToken = tokenService.generateJWT(user);
+                        const decodeData = tokenService.decodeJWT<User>(encryptedToken);
+
+                        expect(decodeData).toBeDefined();
+                        expect(encryptedToken).toBeDefined();
+                });
+                it('decode failed invalid jwt', () => {
+                        const decodeData = tokenService.decodeJWT('3213213cxazcxz,mckxsmzlckmdlksz}');
+
+                        expect(decodeData).toBeNull();
                 });
         });
 

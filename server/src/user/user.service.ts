@@ -19,8 +19,6 @@ export class UserService {
                         return await this.userRepository.findOne({ _id: new ObjectId(value) });
                 }
 
-                const user = await this.userRepository.findOne({ [`${field}`]: value });
-
-                return user;
+                return await this.userRepository.findOne({ [`${field}`]: value });
         }
 }

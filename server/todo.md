@@ -1,16 +1,22 @@
 # Todo List
 
-- [ ] forget password api
 - [ ] get all user
-- [ ] mail service
-- [ ] mail service for forgot password
 - [ ] write swagger for login, change password
 - [ ] better logger
+- [ ] refactor code
+- [ ] create git hub for pattern
 
 # Today schedule
 
 # Done jobs
 
+- [x] ~~_test handle reset password_~~ [2021-01-10]
+- [x] ~~_handleChangePassword_~~ [2021-01-09]
+- [x] ~~_forget password api_~~ [2021-01-09]
+- [x] ~~_mail service_~~ [2021-01-09]
+- [x] ~~_mail service for forgot password_~~ [2021-01-09]
+- [x] ~~_update username and password_~~ [2021-01-09]
+- [x] ~~_fix test_~~ [2021-01-09]
 - [x] ~~_format response pattern_~~ [2021-01-04]
 - [x] ~~_writing test for loginWithProvider_~~ [2021-01-04]
 - [x] ~~_update username and password_~~ [2021-01-04]

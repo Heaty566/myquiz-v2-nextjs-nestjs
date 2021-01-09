@@ -1,7 +1,7 @@
 import * as Joi from 'joi';
 
 //* Internal import
-import { formatError } from './messageError.joi';
+import { formatError } from './messageErrorMapper.joi';
 import { User } from '../../user/entities/user.entity';
 
 export function userJoiSchema(field: keyof User) {

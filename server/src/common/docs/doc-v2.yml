@@ -85,6 +85,9 @@ paths:
                         responses:
                                 200:
                                         description: return to home page if user is valid
+                                        headers:
+                                                Set-Cookie:
+                                                        $ref: '#/components/headers/re-token'
         /api/auth/facebook:
                 get:
                         summary: login user with facebook
@@ -93,6 +96,9 @@ paths:
                         responses:
                                 200:
                                         description: return to home page if user is valid
+                                        headers:
+                                                Set-Cookie:
+                                                        $ref: '#/components/headers/re-token'
         /api/auth/github:
                 get:
                         summary: login user with github
@@ -101,6 +107,38 @@ paths:
                         responses:
                                 200:
                                         description: return to home page if user is valid
+                                        headers:
+                                                Set-Cookie:
+                                                        $ref: '#/components/headers/re-token'
+        /api/auth/social-info:
+                parameters:
+                        #common cookie
+                        - $ref: '#/components/parameters/lang'
+                        - $ref: '#/components/parameters/re-token'
+                        - $ref: '#/components/parameters/auth-token'
+                put:
+                        summary: update user information after login with google facebook or github
+                        tags:
+                                - auth
+                        requestBody:
+                                required: true
+                                content:
+                                        application/json:
+                                                schema:
+                                                        $ref: '#/components/schemas/CreateUserDto'
+                        responses:
+                                200:
+                                        description: update success
+                                        content:
+                                                application/json:
+                                                        schema:
+                                                                $ref: '#/components/schemas/BadRequestApi'
+                                400:
+                                        description: username is taken or this user is already update
+                                        content:
+                                                application/json:
+                                                        schema:
+                                                                $ref: '#/components/schemas/BadRequestApi'
 
         /api/user/:
                 parameters:

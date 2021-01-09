@@ -16,7 +16,7 @@ describe('Redis Service', () => {
                 redisService = module.get<RedisService>(RedisService);
         });
 
-        describe('get and get ByKey', () => {
+        describe('set and get ByKey', () => {
                 it('set value as string', async () => {
                         redisService.setByValue('value', '123');
                         const value = await redisService.getByKey('value');
@@ -28,7 +28,16 @@ describe('Redis Service', () => {
                 });
         });
 
-        describe('get and set ByObject', () => {
+        describe('deleteByKey', () => {
+                it('delete by key', async () => {
+                        redisService.setByValue('value', '123');
+                        redisService.deleteByKey('value');
+                        const value = await redisService.getByKey('value');
+                        expect(value).toBeNull();
+                });
+        });
+
+        describe('set and set ByObject', () => {
                 it('map to nested obj', async () => {
                         redisService.setByObject('abc', { hello: '123', h: { hello: '21`3' } });
                         const value = await redisService.getByObject('abc');

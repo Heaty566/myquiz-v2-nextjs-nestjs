@@ -2,9 +2,10 @@ import { INestApplication } from '@nestjs/common';
 
 //* Internal import
 import { UserRepository } from '../../user/entities/userRepository.entity';
-import { getCreateUserDto } from '../../../test/fakeData/fakeAuth';
+import { getDummyUser } from '../../../test/fakeData/fakeAuth';
 import { initTestModule } from '../../../test/initTest';
 import { AuthService } from '../auth.service';
+import { CreateUserDto } from '../dto/createUser.dto';
 
 describe('AuthService', () => {
         let app: INestApplication;
@@ -19,10 +20,16 @@ describe('AuthService', () => {
         });
 
         describe('createNewUser', () => {
-                let createUserData;
+                let createUserData: CreateUserDto;
 
                 beforeEach(() => {
-                        createUserData = getCreateUserDto();
+                        const getUser = getDummyUser();
+                        createUserData = {
+                                fullName: getUser.fullName,
+                                confirmPassword: getUser.password,
+                                password: getUser.password,
+                                username: getUser.username,
+                        };
                 });
                 it('create success user', async () => {
                         const newUser = await authService.createNewUser(createUserData);
@@ -43,6 +50,7 @@ describe('AuthService', () => {
 
                         expect(getUser).toBeDefined();
                 });
+
                 it('create user with github', async () => {
                         await authService.createNewUserByOtherProvider('example', '123', 'githubId');
                         const getUser = await userRepository.findOne({ githubId: '123' });

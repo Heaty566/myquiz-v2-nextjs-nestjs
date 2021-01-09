@@ -2,7 +2,7 @@ import { ArgumentMetadata, BadRequestException, Injectable, PipeTransform } from
 import { ObjectSchema } from 'joi';
 
 //* Internal import
-import { JoiErrorMapper } from '../validation/messageErrorMapper.joi';
+import { JoiErrorMapper } from './messageErrorMapper.joi';
 import { ApiResponse } from '../dto/response.dto';
 
 @Injectable()

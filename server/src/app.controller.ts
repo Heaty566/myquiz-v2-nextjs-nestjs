@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { ApiResponse } from './global/dto/response.dto';
+import { ApiResponse } from './common/dto/response.dto';
 
 //* Internal import
 import { RedisService } from './redis/redis.service';
