@@ -1,13 +1,9 @@
 import { ObjectId } from 'mongodb';
+import { Token } from '../../src/token/entities/token.entity';
 
-//* Internal import
-import { CreateTokenDto } from '../../src/token/dto/createToken.dto';
-import { UserRole } from '../../src/auth/entities/userRole.enum';
+export const getDummyToken = () => {
+        const token = new Token();
 
-export const getCreateTokenDto = () => {
-        const token = new CreateTokenDto();
-        token.isPremium = false;
-        token.role = UserRole.USER;
-        token.userId = new ObjectId();
+        token.data = String(new ObjectId());
         return token;
 };

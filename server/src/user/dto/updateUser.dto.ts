@@ -6,11 +6,11 @@ import { User } from '../../user/entities/user.entity';
 
 const { getJoiSchemas } = joiSchemaGenerator<User>(userJoiSchema);
 
-export class LoginUserDto {
-        username: string;
-        password: string;
+export class UpdateUserDto {
+        fullName: string;
+        email: string;
 }
 
-export const loginUserDtoValidator = Joi.object({
-        ...getJoiSchemas(['username', 'password']),
+export const updateUserDtoValidator = Joi.object({
+        ...getJoiSchemas(['email', 'fullName']),
 });

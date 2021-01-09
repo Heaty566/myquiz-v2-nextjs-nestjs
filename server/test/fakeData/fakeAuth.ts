@@ -1,23 +1,18 @@
 //* Internal import
 import { fakeData } from './fakeData';
-import { CreateUserDto } from '../../src/auth/dto/createUser.dto';
-import { LoginUserDto } from '../../src/auth/dto/loginUser.dto';
+import { User } from '../../src/user/entities/user.entity';
+import { UserRole } from '../../src/auth/entities/userRole.enum';
 
-export const getCreateUserDto = () => {
-        const password = fakeData(10, 'lettersAndNumbersLowerCase');
-        const data: CreateUserDto = {
-                fullName: fakeData(10, 'letters'),
-                confirmPassword: password,
-                username: fakeData(10, 'lettersAndNumbersLowerCase'),
-                password,
-        };
-        return data;
-};
-
-export const getLoginUserDto = () => {
-        const data: LoginUserDto = {
-                username: fakeData(10, 'lettersAndNumbersLowerCase'),
-                password: fakeData(10, 'lettersAndNumbersLowerCase'),
-        };
-        return data;
+export const getDummyUser = () => {
+        const user = new User();
+        user.fullName = fakeData(10, 'lettersLowerCase');
+        user.username = fakeData(10, 'lettersAndNumbersLowerCase');
+        user.password = fakeData(10, 'lettersAndNumbersLowerCase');
+        user.googleId = fakeData(10, 'lettersAndNumbersLowerCase');
+        user.facebookId = fakeData(10, 'lettersAndNumbersLowerCase');
+        user.githubId = fakeData(10, 'lettersAndNumbersLowerCase');
+        user.isPremium = true;
+        user.email = fakeData(10, 'lettersAndNumbersLowerCase') + '@gmail.com';
+        user.role = UserRole.USER;
+        return user;
 };

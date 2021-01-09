@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
 //* Internal import
-import { router } from '../src/global/app/router';
+import { router } from '../src/common/app/router';
 import { AppModule } from '../src/app.module';
 
 export const initTestModule = async () => {

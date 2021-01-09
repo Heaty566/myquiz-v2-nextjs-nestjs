@@ -10,10 +10,12 @@ import { TokenService } from '../token/token.service';
 import { AuthController } from './auth.controller';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
+import { RedisService } from '../redis/redis.service';
+import { MailService } from '../mail/mail.service';
 
 @Module({
         imports: [TypeOrmModule.forFeature([UserRepository, TokenRepository]), JwtModule.register({ secret: process.env.JWT_SECRET_KEY })],
         controllers: [AuthController],
-        providers: [AuthService, UserService, TokenService, GoogleStrategy, FacebookStrategy, GithubStrategy],
+        providers: [AuthService, UserService, RedisService, MailService, TokenService, GoogleStrategy, FacebookStrategy, GithubStrategy],
 })
 export class AuthModule {}

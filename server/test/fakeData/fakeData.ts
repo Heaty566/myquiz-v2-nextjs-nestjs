@@ -1,6 +1,7 @@
 interface FakeDataType {
         lettersAndNumbers: string;
         lettersAndNumbersLowerCase: string;
+        lettersLowerCase: string;
         letters: string;
         number: string;
 }
@@ -8,6 +9,7 @@ interface FakeDataType {
 const fakePattern: FakeDataType = {
         lettersAndNumbers: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
         lettersAndNumbersLowerCase: 'abcdefghijklmnopqrstuvwxyz0123456789',
+        lettersLowerCase: 'abcdefghijklmnopqrstuvwxyz',
         letters: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
         number: '0123456789',
 };

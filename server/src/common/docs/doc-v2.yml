@@ -6,7 +6,7 @@ servers:
           url: http://example.com/v2/api
 info:
         description: MyQuizApi is created on 25th Dec
-        version: 1.0.0
+        version: 1.2.7
         title: Myquiz-v2
         contact:
                 email: heaty566@gmail.com
@@ -48,10 +48,8 @@ paths:
                                         content:
                                                 application/json:
                                                         schema:
-                                                                type: object
-                                                                oneOf:
-                                                                        - $ref: '#/components/schemas/BadRequestApi'
-                                                                        - $ref: '#/components/schemas/BadInputJoi'
+                                                                $ref: '#/components/schemas/BadRequestApi'
+
         /api/auth/login:
                 parameters:
                         #common cookie
@@ -77,10 +75,70 @@ paths:
                                         content:
                                                 application/json:
                                                         schema:
-                                                                type: object
-                                                                oneOf:
-                                                                        - $ref: '#/components/schemas/BadRequestApi'
-                                                                        - $ref: '#/components/schemas/BadInputJoi'
+                                                                $ref: '#/components/schemas/BadRequestApi'
+
+        /api/auth/google:
+                get:
+                        summary: login user with google
+                        tags:
+                                - auth
+                        responses:
+                                200:
+                                        description: return to home page if user is valid
+                                        headers:
+                                                Set-Cookie:
+                                                        $ref: '#/components/headers/re-token'
+        /api/auth/facebook:
+                get:
+                        summary: login user with facebook
+                        tags:
+                                - auth
+                        responses:
+                                200:
+                                        description: return to home page if user is valid
+                                        headers:
+                                                Set-Cookie:
+                                                        $ref: '#/components/headers/re-token'
+        /api/auth/github:
+                get:
+                        summary: login user with github
+                        tags:
+                                - auth
+                        responses:
+                                200:
+                                        description: return to home page if user is valid
+                                        headers:
+                                                Set-Cookie:
+                                                        $ref: '#/components/headers/re-token'
+        /api/auth/social-info:
+                parameters:
+                        #common cookie
+                        - $ref: '#/components/parameters/lang'
+                        - $ref: '#/components/parameters/re-token'
+                        - $ref: '#/components/parameters/auth-token'
+                put:
+                        summary: update user information after login with google facebook or github
+                        tags:
+                                - auth
+                        requestBody:
+                                required: true
+                                content:
+                                        application/json:
+                                                schema:
+                                                        $ref: '#/components/schemas/CreateUserDto'
+                        responses:
+                                200:
+                                        description: update success
+                                        content:
+                                                application/json:
+                                                        schema:
+                                                                $ref: '#/components/schemas/BadRequestApi'
+                                400:
+                                        description: username is taken or this user is already update
+                                        content:
+                                                application/json:
+                                                        schema:
+                                                                $ref: '#/components/schemas/BadRequestApi'
 
         /api/user/:
                 parameters:
@@ -89,7 +147,7 @@ paths:
                         - $ref: '#/components/parameters/re-token'
                         - $ref: '#/components/parameters/auth-token'
                 get:
-                        summary: create new user with username and password
+                        summary: get user by token
                         tags:
                                 - user
                         parameters:
@@ -108,6 +166,83 @@ paths:
                                                 application/json:
                                                         schema:
                                                                 $ref: '#/components/schemas/BadRequestApi'
+        /api/user:
+                parameters:
+                        #common cookie
+                        - $ref: '#/components/parameters/lang'
+                        - $ref: '#/components/parameters/re-token'
+                        - $ref: '#/components/parameters/auth-token'
+                put:
+                        summary: update user information
+                        tags:
+                                - user
+                        parameters:
+                                - $ref: '#/components/parameters/re-token'
+                        requestBody:
+                                required: true
+                                content:
+                                        application/json:
+                                                schema:
+                                                        $ref: '#/components/schemas/UpdateUserDto'
+
+                        responses:
+                                200:
+                                        description: return user information
+                                        content:
+                                                application/json:
+                                                        schema:
+                                                                $ref: '#/components/schemas/BadRequestApi'
+                                401:
+                                        description: 'Invalid token'
+                                        content:
+                                                application/json:
+                                                        schema:
+                                                                $ref: '#/components/schemas/BadRequestApi'
+                                400:
+                                        description: invalid input
+                                        content:
+                                                application/json:
+                                                        schema:
+                                                                $ref: '#/components/schemas/BadRequestApi'
+        /api/user/password:
+                parameters:
+                        #common cookie
+                        - $ref: '#/components/parameters/lang'
+                        - $ref: '#/components/parameters/re-token'
+                        - $ref: '#/components/parameters/auth-token'
+                put:
+                        summary: handle change password
+                        tags:
+                                - user
+                        parameters:
+                                - $ref: '#/components/parameters/re-token'
+                        requestBody:
+                                required: true
+                                content:
+                                        application/json:
+                                                schema:
+                                                        $ref: '#/components/schemas/ChangeUserPasswordDto'
+
+                        responses:
+                                200:
+                                        description: return user information
+                                        content:
+                                                application/json:
+                                                        schema:
+                                                                $ref: '#/components/schemas/BadRequestApi'
+                                401:
+                                        description: 'Invalid token'
+                                        content:
+                                                application/json:
+                                                        schema:
+                                                                $ref: '#/components/schemas/BadRequestApi'
+                                400:
+                                        description: invalid input
+                                        content:
+                                                application/json:
+                                                        schema:
+                                                                $ref: '#/components/schemas/BadRequestApi'
+
         /api/visitor:
                 parameters:
                         #common cookie
@@ -158,7 +293,7 @@ components:
                                 username:
                                         type: string
                                         example: example
-                                fullname:
+                                fullName:
                                         type: string
                                         example: example
                                 email:
@@ -188,6 +323,8 @@ components:
                                 message:
                                         type: string
                                         example: this is an error message
+                                details:
+                                        $ref: '#/components/schemas/BadInputJoi'
                 BadInputJoi:
                         type: object
                         properties:
@@ -204,7 +341,7 @@ components:
                 CreateUserDto:
                         type: object
                         properties:
-                                fullname:
+                                fullName:
                                         type: string
                                         example: Widget Adapter
                                 username:
@@ -226,3 +363,21 @@ components:
                                 password:
                                         type: string
                                         example: 12345678AaK
+                ChangeUserPasswordDto:
+                        type: object
+                        properties:
+                                newPassword:
+                                        type: string
+                                        example: 12345678AaK
+                                confirmPassword:
+                                        type: string
+                                        example: 12345678AaK
+                UpdateUserDto:
+                        type: object
+                        properties:
+                                fullName:
+                                        type: string
+                                        example: example
+                                email:
+                                        type: string
+                                        example: example@gmail.com

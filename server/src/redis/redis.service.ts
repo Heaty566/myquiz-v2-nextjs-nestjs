@@ -3,13 +3,20 @@ import { Injectable } from '@nestjs/common';
 import * as flat from 'flat';
 
 //* Internal import
+import { CONSTANT } from '../common/constant';
 
 @Injectable()
 export class RedisService {
         private readonly redisRepository: RedisClient;
         constructor() {
-                this.redisRepository = createClient(Number(process.env.REDIS_PORT) || 7000);
+                const redisPort = Number(process.env.REDIS_PORT) || 7000;
+
+                this.redisRepository = createClient({ port: redisPort, host: process.env.REDIS_HOST || '' });
                 this.redisRepository.select(process.env.REDIS_DB_NUMBER || 1);
+        }
+
+        deleteByKey(key: string) {
+                this.redisRepository.del(key);
         }
 
         setByObject(key: string, value: Record<string, any>) {
@@ -27,8 +34,12 @@ export class RedisService {
                 });
         }
 
-        setByValue(key: string, value: number | string) {
-                this.redisRepository.set(key, String(value));
+        setByValue(key: string, value: number | string, expired?: number) {
+                if (expired) {
+                        this.redisRepository.setex(key, expired * CONSTANT.MINUTE, String(value));
+                } else {
+                        this.redisRepository.set(key, String(value));
+                }
         }
 
         // *todo take a note if it goes wrong

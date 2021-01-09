@@ -3,11 +3,12 @@ import { ObjectId } from 'mongodb';
 
 //* Internal import
 import { UserRepository } from '../entities/userRepository.entity';
-import { getCreateUserDto } from '../../../test/fakeData/fakeAuth';
+import { getDummyUser } from '../../../test/fakeData/fakeAuth';
 import { initTestModule } from '../../../test/initTest';
 import { AuthService } from '../../auth/auth.service';
 import { User } from '../entities/user.entity';
 import { UserService } from '../user.service';
+import { CreateUserDto } from '../../auth/dto/createUser.dto';
 
 describe('UserService', () => {
         let app: INestApplication;
@@ -25,7 +26,14 @@ describe('UserService', () => {
         });
 
         beforeAll(async () => {
-                const registerUser = getCreateUserDto();
+                const getUser = getDummyUser();
+                const registerUser: CreateUserDto = {
+                        username: getUser.username,
+                        confirmPassword: getUser.password,
+                        password: getUser.password,
+                        fullName: getUser.fullName,
+                };
+
                 userInfo = await authService.createNewUser(registerUser);
         });
 
