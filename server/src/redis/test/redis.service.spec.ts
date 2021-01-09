@@ -17,19 +17,19 @@ describe('Redis Service', () => {
         });
 
         describe('set and get ByKey', () => {
-                it('set value as string', async () => {
+                it('PASS', async () => {
                         redisService.setByValue('value', '123');
                         const value = await redisService.getByKey('value');
                         expect(value).toBe('123');
                 });
-                it('set value as string', async () => {
+                it('Failed (Key does not exist)', async () => {
                         const value = await redisService.getByKey('123');
                         expect(value).toBeNull();
                 });
         });
 
         describe('deleteByKey', () => {
-                it('delete by key', async () => {
+                it('Pass', async () => {
                         redisService.setByValue('value', '123');
                         redisService.deleteByKey('value');
                         const value = await redisService.getByKey('value');
@@ -38,12 +38,12 @@ describe('Redis Service', () => {
         });
 
         describe('set and set ByObject', () => {
-                it('map to nested obj', async () => {
+                it('Pass', async () => {
                         redisService.setByObject('abc', { hello: '123', h: { hello: '21`3' } });
                         const value = await redisService.getByObject('abc');
                         expect(value).toBeDefined();
                 });
-                it('return null with non-exist object', async () => {
+                it('Failed (object does not exist)', async () => {
                         const value = await redisService.getByObject('xyz');
                         expect(value).toBeNull();
                 });

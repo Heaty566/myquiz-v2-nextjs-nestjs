@@ -31,7 +31,7 @@ describe('TokenService', () => {
         });
 
         describe('getRefreshToken', () => {
-                it('get refresh token', async () => {
+                it('Pass', async () => {
                         const tokenId = await tokenService.getRefreshToken(user);
                         const getToken = await tokenRepository.findOne({ where: { _id: new ObjectId(tokenId) } });
                         const userId = await tokenService.decodeJWT<{ _id: string }>(getToken.data);
@@ -48,19 +48,19 @@ describe('TokenService', () => {
                 beforeEach(() => {
                         user = getDummyUser();
                 });
-                it('get auth token', async () => {
+                it('Pass', async () => {
                         const encryptedToken = await tokenService.getRefreshToken(user);
                         const getAuthToken = await tokenService.getAuthToken(encryptedToken);
 
                         expect(getAuthToken).toBeDefined();
                 });
 
-                it('failed (token does not exist)', async () => {
+                it('Failed (token does not exist)', async () => {
                         const getAuthToken = await tokenService.getAuthToken(String(new ObjectId()));
 
                         expect(getAuthToken).toBeNull();
                 });
-                it('failed (token decode failed)', async () => {
+                it('Failed (token decode failed)', async () => {
                         const token: Token = {
                                 _id: new ObjectId(),
                                 data: '123',
@@ -72,7 +72,7 @@ describe('TokenService', () => {
 
                         expect(getAuthToken).toBeNull();
                 });
-                it('failed (token decode failed)', async () => {
+                it('Failed (token decode failed)', async () => {
                         const encryptedToken = await tokenService.getRefreshToken(user);
                         await tokenRepository.update({ _id: new ObjectId(encryptedToken) }, { expired: new Date(2018, 11, 24, 10, 33, 30, 0) });
                         const getAuthToken = await tokenService.getAuthToken(encryptedToken);
@@ -88,14 +88,14 @@ describe('TokenService', () => {
                         user = await userRepository.save(getDummyUser());
                 });
 
-                it('encrypt success', () => {
+                it('Pass', () => {
                         const encryptedToken = tokenService.generateJWT(user);
                         const decodeData = tokenService.decodeJWT<User>(encryptedToken);
 
                         expect(decodeData).toBeDefined();
                         expect(encryptedToken).toBeDefined();
                 });
-                it('decode failed invalid jwt', () => {
+                it('Failed (invalid jwt)', () => {
                         const decodeData = tokenService.decodeJWT('3213213cxazcxz,mckxsmzlckmdlksz}');
 
                         expect(decodeData).toBeNull();

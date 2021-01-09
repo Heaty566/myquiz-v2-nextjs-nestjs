@@ -41,20 +41,20 @@ describe('AuthController', () => {
                                 confirmPassword: getUser.password,
                         };
                 });
-                it('create new user', async () => {
+                it('Pass', async () => {
                         const res = await reqApi(createUserData);
 
                         expect(res.headers['set-cookie']).toBeDefined();
                         expect(res.status).toBe(201);
                 });
 
-                it('invalid input (username is taken)', async () => {
+                it('Failed (username is taken)', async () => {
                         await reqApi(createUserData);
                         const res = await reqApi(createUserData);
                         expect(res.status).toBe(400);
                 });
 
-                it('invalid input (confirmPassword does not match)', async () => {
+                it('Failed (confirmPassword does not match)', async () => {
                         createUserData.confirmPassword = '12345678';
                         const res = await reqApi(createUserData);
 
@@ -76,20 +76,20 @@ describe('AuthController', () => {
                         const encryptPassword = await authService['encryptString'](loginUserDto.password);
                         await userRepository.insert({ username: loginUserDto.username, password: encryptPassword });
                 });
-                it('login user success', async () => {
+                it('Pass', async () => {
                         const res = await reqApi(loginUserDto);
 
                         expect(res.headers['set-cookie']).toBeDefined();
                         expect(res.status).toBe(201);
                 });
 
-                it('invalid input (username does not exist)', async () => {
+                it('Failed (username does not exist)', async () => {
                         loginUserDto.username = 'helloworld';
                         const res = await reqApi(loginUserDto);
 
                         expect(res.status).toBe(400);
                 });
-                it('invalid input (incorrect password)', async () => {
+                it('Failed (incorrect password)', async () => {
                         loginUserDto.password = 'helloworld';
                         const res = await reqApi(loginUserDto);
 
@@ -106,19 +106,19 @@ describe('AuthController', () => {
                         user = await userRepository.save(hello);
                 });
 
-                it('success', async () => {
+                it('Pass', async () => {
                         const res = await reqApi({ email: user.email });
                         expect(res.status).toBe(201);
                         expect(res.body).toBeDefined();
                 });
 
-                it('failed (email does not exist)', async () => {
+                it('Failed (email does not exist)', async () => {
                         const res = await reqApi({ email: 'example@gmail.com' });
                         expect(res.status).toBe(400);
                         expect(res.body).toBeDefined();
                 });
 
-                it('failed (email does not exist in database)', async () => {
+                it('Failed (email does not exist in database)', async () => {
                         const res = await reqApi({ email: 'example@gmail.com' });
                         expect(res.status).toBe(400);
                         expect(res.body).toBeDefined();
@@ -136,14 +136,14 @@ describe('AuthController', () => {
                         redisService.setByValue('value', token);
                 });
 
-                it('success', async () => {
+                it('Pass', async () => {
                         const res = await reqApi({ password: user.password, confirmPassword: user.password, resetKey: 'value' });
 
                         expect(res.status).toBe(200);
                         expect(res.body).toBeDefined();
                 });
 
-                it('failed key have been delete', async () => {
+                it('Failed (reset key have been delete)', async () => {
                         const res = await reqApi({ password: user.password, confirmPassword: user.password, resetKey: 'value' });
 
                         expect(res.status).toBe(400);

@@ -1,15 +1,25 @@
 # Todo List
 
 - [ ] get all user
-- [ ] write swagger for login, change password
 - [ ] better logger
 - [ ] refactor code
-- [ ] create git hub for pattern
+- [ ] write swagger for router
+- [ ] format response pattern
+- [ ] upload avatar
+- [ ] set up aws
+- [ ] upload image testing
+- [ ] upload avatar testing
+- [ ] save project as a kit
+- [ ] update quiz entity
 
 # Today schedule
 
 # Done jobs
 
+- [x] ~~_write swagger for login, change password_~~ [2021-01-10]
+- [x] ~~_create git hub for pattern_~~ [2021-01-10]
+- [x] ~~_update user information when login with provider_~~ [2021-01-10]
+- [x] ~~_refactor code_~~ [2021-01-10]
 - [x] ~~_test handle reset password_~~ [2021-01-10]
 - [x] ~~_handleChangePassword_~~ [2021-01-09]
 - [x] ~~_forget password api_~~ [2021-01-09]
