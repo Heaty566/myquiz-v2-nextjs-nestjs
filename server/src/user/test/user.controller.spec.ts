@@ -54,18 +54,18 @@ describe('userController', () => {
                         const user = getDummyUser();
                         invalidReToken = await tokenService.getRefreshToken(user);
                 });
-                it('failed no token provider', async () => {
-                        const res = await supertest(app.getHttpServer()).get('/api/user').send();
-
-                        expect(res.status).toBe(401);
-                        expect(res.body);
-                });
-
                 it('get user', async () => {
                         const res = await callApi();
 
                         expect(res.status).toBe(200);
                         expect(res.body).toBeDefined();
+                });
+
+                it('failed no token provider', async () => {
+                        const res = await supertest(app.getHttpServer()).get('/api/user').send();
+
+                        expect(res.status).toBe(401);
+                        expect(res.body);
                 });
 
                 it('invalid token', async () => {
