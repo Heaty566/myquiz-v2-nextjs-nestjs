@@ -54,21 +54,21 @@ describe('userController', () => {
                         const user = getDummyUser();
                         invalidReToken = await tokenService.getRefreshToken(user);
                 });
-                it('get user', async () => {
+                it('PASS', async () => {
                         const res = await callApi();
 
                         expect(res.status).toBe(200);
                         expect(res.body).toBeDefined();
                 });
 
-                it('failed no token provider', async () => {
+                it('Failed (no token provides)', async () => {
                         const res = await supertest(app.getHttpServer()).get('/api/user').send();
 
                         expect(res.status).toBe(401);
                         expect(res.body);
                 });
 
-                it('invalid token', async () => {
+                it('Failed (invalid token)', async () => {
                         const cookies = `re-token=${invalidReToken}; Path=/`;
                         const res = await supertest(app.getHttpServer()).get('/api/user').set({ cookie: cookies }).send({});
                         expect(res.body.message).toBeDefined();
@@ -91,7 +91,7 @@ describe('userController', () => {
                         };
                 });
 
-                it('update password with valid input', async () => {
+                it('Pass', async () => {
                         await callApi(dummyInput);
 
                         const user = await userRepository.findOne({ username: userInfo.username });
@@ -100,7 +100,7 @@ describe('userController', () => {
                         expect(isCorrectChange).toBeTruthy();
                 });
 
-                it('update password with valid input (newPassword and confirmPassword does not match)', async () => {
+                it('Failed (newPassword and confirmPassword does not match)', async () => {
                         dummyInput.confirmPassword = fakeData(10, 'lettersAndNumbers');
                         const res = await callApi(dummyInput);
                         const user = await userRepository.findOne({ username: userInfo.username });
@@ -124,7 +124,7 @@ describe('userController', () => {
                         };
                 });
 
-                it('update password with valid input', async () => {
+                it('Pass', async () => {
                         await callApi(dummyInput);
 
                         const user = await userRepository.findOne({ username: userInfo.username });
@@ -133,7 +133,7 @@ describe('userController', () => {
                         expect(user.fullName).toBe(dummyInput.fullName);
                 });
 
-                it('update password with valid input (wrong email pattern)', async () => {
+                it('Failed (wrong email pattern)', async () => {
                         dummyInput.email = fakeData(10, 'lettersAndNumbers');
                         const res = await callApi(dummyInput);
                         const user = await userRepository.findOne({ username: userInfo.username });
@@ -169,20 +169,20 @@ describe('userController', () => {
                         updateToken = await tokenService.getRefreshToken(updateUser);
                 });
 
-                it('update user success', async () => {
+                it('Pass', async () => {
                         await reqApi(updateSocialDto, updateToken);
                         const user = await userRepository.findOne({ username: updateSocialDto.username });
 
                         expect(user.username).toBeDefined();
                         expect(user.githubId).toBe(updateUser.githubId);
                 });
-                it('update user failed (user already update)', async () => {
+                it('Failed (user already update)', async () => {
                         await reqApi(updateSocialDto, updateToken);
                         const res = await reqApi(updateSocialDto, updateToken);
 
                         expect(res.status).toBe(400);
                 });
-                it('update user failed (username is taken)', async () => {
+                it('Failed (username is taken)', async () => {
                         await userRepository.save({ username: updateSocialDto.username });
                         const res = await reqApi(updateSocialDto, updateToken);
 

@@ -31,27 +31,27 @@ describe('AuthService', () => {
                                 username: getUser.username,
                         };
                 });
-                it('create success user', async () => {
+                it('Pass', async () => {
                         const newUser = await authService.createNewUser(createUserData);
                         const getUser = await userRepository.findOne({ username: newUser.username });
                         expect(getUser).toBeDefined();
                 });
         });
         describe('loginUserWithProvider', () => {
-                it('create user with facebook', async () => {
+                it('Pass (with Facebook)', async () => {
                         await authService.createNewUserByOtherProvider('example', '123', 'facebookId');
                         const getUser = await userRepository.findOne({ facebookId: '123' });
 
                         expect(getUser).toBeDefined();
                 });
-                it('create user with google', async () => {
+                it('Pass (with Google)', async () => {
                         await authService.createNewUserByOtherProvider('example', '123', 'googleId');
                         const getUser = await userRepository.findOne({ googleId: '123' });
 
                         expect(getUser).toBeDefined();
                 });
 
-                it('create user with github', async () => {
+                it('Pass (with Github)', async () => {
                         await authService.createNewUserByOtherProvider('example', '123', 'githubId');
                         const getUser = await userRepository.findOne({ githubId: '123' });
 

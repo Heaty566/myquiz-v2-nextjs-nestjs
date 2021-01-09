@@ -38,24 +38,24 @@ describe('UserService', () => {
         });
 
         describe('findUserByField', () => {
-                it('find user with valid id', async () => {
+                it('Pass (with Id)', async () => {
                         const getUser = await userService.findUserByField('_id', userInfo._id);
 
                         expect(getUser).toBeDefined();
                 });
 
-                it('find user with other field', async () => {
+                it('Pass (other field)', async () => {
                         const getUser = await userService.findUserByField('username', userInfo.username);
 
                         expect(getUser).toBeDefined();
                 });
 
-                it('find user with invalid id', async () => {
+                it('Failed (invalid id)', async () => {
                         const getUser = await userService.findUserByField('_id', new ObjectId());
 
                         expect(getUser).toBeUndefined();
                 });
-                it('find user with invalid field', async () => {
+                it('Failed (invalid field)', async () => {
                         const getUser = await userService.findUserByField('username', '123');
 
                         expect(getUser).toBeUndefined();
@@ -63,7 +63,7 @@ describe('UserService', () => {
         });
 
         describe('updateUser', () => {
-                it('update user password to `change`', async () => {
+                it('Pass', async () => {
                         const mirrorUser: User = { ...userInfo };
                         mirrorUser.password = 'change';
                         await userService.updateUser(mirrorUser);
