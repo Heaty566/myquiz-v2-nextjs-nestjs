@@ -16,12 +16,23 @@ export class TokenService {
                 private readonly jwtService: JwtService,
                 private readonly userService: UserService,
         ) {}
-        async getAuthToken(id: string): Promise<Token> {
-                const token = await this.tokenRepository.findOne({ _id: new ObjectId(id) });
-                if (!token) return null;
 
-                const isExpired = moment(token.expired).diff(moment(), 'minutes');
-                if (isExpired < 0) return null;
+        async getValidToken(_id: string): Promise<Token> {
+                try {
+                        const token = await this.tokenRepository.findOne({ _id: new ObjectId(_id) });
+                        if (!token) return null;
+
+                        const isExpired = moment(token.expired).diff(moment(), 'minutes');
+                        if (isExpired < 0) return null;
+                        return token;
+                } catch {
+                        return null;
+                }
+        }
+
+        async getAuthToken(_id: string): Promise<Token> {
+                const token = await this.getValidToken(_id);
+                if (!token) return null;
 
                 const data = this.decodeJWT<{ _id: string }>(token.data);
                 if (!data) return null;

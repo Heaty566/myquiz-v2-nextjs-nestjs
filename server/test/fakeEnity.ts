@@ -1,9 +1,11 @@
 //* Internal import
 import { fakeData } from './fakeData';
-import { User } from '../../src/user/entities/user.entity';
-import { UserRole } from '../../src/auth/entities/userRole.enum';
+import { User } from '../src/user/entities/user.entity';
+import { UserRole } from '../src/auth/entities/userRole.enum';
+import { ObjectId } from 'mongodb';
+import { Token } from '../src/token/entities/token.entity';
 
-export const getDummyUser = () => {
+export const fakeUser = () => {
         const user = new User();
         user.fullName = fakeData(10, 'lettersLowerCase');
         user.username = fakeData(10, 'lettersAndNumbersLowerCase');
@@ -15,4 +17,11 @@ export const getDummyUser = () => {
         user.email = fakeData(10, 'lettersAndNumbersLowerCase') + '@gmail.com';
         user.role = UserRole.USER;
         return user;
+};
+
+export const fakeToken = () => {
+        const token = new Token();
+
+        token.data = String(new ObjectId());
+        return token;
 };

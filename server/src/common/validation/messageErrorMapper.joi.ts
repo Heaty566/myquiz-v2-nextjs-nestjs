@@ -1,4 +1,6 @@
-export const formatError = (override?: Record<string, any>) => {
+import { ValidationError } from 'joi';
+
+export const errorMsg = (override?: Record<string, any>) => {
         return {
                 'string.base': `should be a string`,
                 'string.min': `should contain at least {#limit} characters`,
@@ -14,7 +16,6 @@ export const formatError = (override?: Record<string, any>) => {
                 ...override,
         };
 };
-import { ValidationError } from 'joi';
 
 export const JoiErrorMapper = (err: ValidationError) => {
         const errorObj = {};
