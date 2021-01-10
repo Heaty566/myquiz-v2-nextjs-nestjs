@@ -27,6 +27,11 @@ export class AuthController {
                 private readonly mailService: MailService,
         ) {}
 
+        /**
+         * @description Handle to register for normal user
+         * @param body  fullName:string ,username: string ; password: string ; confirmPassword: string
+         * @returns a re-token token to user for the next authentication
+         */
         @Post('/register')
         @UsePipes(new JoiValidatorPipe(createUserDtoValidator))
         async registerUser(
@@ -38,15 +43,20 @@ export class AuthController {
                         message: 'Username is taken',
                 };
 
-                const isExistUser = await this.userService.findUserByField('username', body.username);
-                if (isExistUser) throw new BadRequestException(errorsObject);
+                const isExistUsername = await this.userService.findUserByField('username', body.username);
+                if (isExistUsername) throw new BadRequestException(errorsObject);
 
                 const newUser = await this.authService.createNewUser(body);
-                const refreshToken = await this.tokenService.getRefreshToken(newUser);
+                const reToken = await this.tokenService.getRefreshToken(newUser);
 
-                return res.cookie('re-token', refreshToken, { maxAge: 180 * CONSTANT.DAY }).send();
+                return res.cookie('re-token', reToken, { maxAge: 180 * CONSTANT.DAY }).send();
         }
 
+        /**
+         * @description Handle to login for normal user
+         * @param body username: string ; password: string
+         * @returns a re-token token to user for the next authentication
+         */
         @Post('/login')
         @UsePipes(new JoiValidatorPipe(loginUserDtoValidator))
         async loginUser(@Body() body: LoginUserDto, @Res() res: Response) {
@@ -64,6 +74,10 @@ export class AuthController {
                 return res.cookie('re-token', refreshToken, { maxAge: CONSTANT.DAY * 180 }).send();
         }
 
+        /**
+         * @description Handle to send a email with reset key
+         * @param body email: string
+         */
         @Post('/reset-password')
         @UsePipes(new JoiValidatorPipe(emailResetPasswordDtoValidator))
         async resetUserPassword(@Body() body: EmailResetPasswordDto): Promise<ApiResponse> {
@@ -86,6 +100,10 @@ export class AuthController {
                 };
         }
 
+        /**
+         * @description Handle to reset password with reset key (the key will be deleted after reset)
+         * @param body resetKey: string ; password: string ; confirmPassword: string
+         */
         @Put('/reset-password')
         @UsePipes(new JoiValidatorPipe(passwordResetDtoValidator))
         async resetPasswordHandler(@Body() body: PasswordResetDto): Promise<ApiResponse> {
@@ -107,12 +125,18 @@ export class AuthController {
                 };
         }
 
+        /**
+         * @description Handle login with Google in
+         */
         @Get('/google')
         @UseGuards(AuthGuard('google'))
         googleAuth() {
                 //
         }
 
+        /**
+         * @description Handle login with Google out
+         */
         @Get('/google/callback')
         @UseGuards(AuthGuard('google'))
         async googleCallBack(@Req() req: Request, @Res() res: Response) {
@@ -121,12 +145,18 @@ export class AuthController {
                 return res.cookie('re-token', refreshToken, { maxAge: CONSTANT.DAY * 180 }).redirect(process.env.CLIENT_URL);
         }
 
+        /**
+         * @description Handle login with Facebook in
+         */
         @Get('/facebook')
         @UseGuards(AuthGuard('facebook'))
         facebookAuth() {
                 //
         }
 
+        /**
+         * @description Handle login with Facebook out
+         */
         @Get('/facebook/callback')
         @UseGuards(AuthGuard('facebook'))
         async facebookCallback(@Req() req: Request, @Res() res: Response) {
@@ -135,12 +165,18 @@ export class AuthController {
                 return res.cookie('re-token', refreshToken, { maxAge: CONSTANT.DAY * 180 }).redirect(process.env.CLIENT_URL);
         }
 
+        /**
+         * @description Handle login with Github in
+         */
         @Get('/github')
         @UseGuards(AuthGuard('github'))
         githubAuth() {
                 //
         }
 
+        /**
+         * @description Handle login with Github out
+         */
         @Get('/github/callback')
         @UseGuards(AuthGuard('github'))
         async githubCallback(@Req() req: Request, @Res() res: Response) {

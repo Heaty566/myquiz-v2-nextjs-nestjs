@@ -8,10 +8,10 @@ import * as helmet from 'helmet';
 import * as I18n from 'i18n';
 
 //* Internal import
-import { NotFoundApiHandler } from '../exception/notfound.exception';
-import { RuntimeApiHandler } from '../exception/runtime.exception';
-import * as doc from '../docs/doc-v2.json';
-import { CONSTANT } from '../constant';
+import { NotFoundApiHandler } from './common/exception/notfound.exception';
+import { RuntimeApiHandler } from './common/exception/runtime.exception';
+import * as doc from '../doc-v2.json';
+import { CONSTANT } from './common/constant';
 
 //*todo fix my path deo biet nam o dau
 I18n.configure({
@@ -45,9 +45,9 @@ export function router(app: INestApplication) {
         }
 
         //global exception handler
-
         //global interceptor handler
 
+        //handle for multiple language
         app.use((req: Request, res: Response, next: NextFunction) => {
                 //set header
                 res.header('Access-Control-Allow-Origin', process.env.CLIENT_URL);

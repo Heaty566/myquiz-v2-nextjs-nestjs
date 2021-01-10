@@ -6,7 +6,7 @@ import { ObjectId } from 'mongodb';
 import { TokenRepository } from '../entities/token.repository';
 import { initTestModule } from '../../../test/initTest';
 import { TokenService } from '../token.service';
-import { getDummyUser } from '../../../test/fakeData/fakeAuth';
+import { fakeUser } from '../../../test/fakeEnity';
 import { UserRepository } from '../../user/entities/userRepository.entity';
 import { User } from '../../user/entities/user.entity';
 import { Token } from '../entities/token.entity';
@@ -27,7 +27,7 @@ describe('TokenService', () => {
         });
 
         beforeAll(async () => {
-                user = await userRepository.save(getDummyUser());
+                user = await userRepository.save(fakeUser());
         });
 
         describe('getRefreshToken', () => {
@@ -46,7 +46,7 @@ describe('TokenService', () => {
         describe('getAuthToken', () => {
                 let user: User;
                 beforeEach(() => {
-                        user = getDummyUser();
+                        user = fakeUser();
                 });
                 it('Pass', async () => {
                         const encryptedToken = await tokenService.getRefreshToken(user);
@@ -85,7 +85,7 @@ describe('TokenService', () => {
                 let user: User;
 
                 beforeEach(async () => {
-                        user = await userRepository.save(getDummyUser());
+                        user = await userRepository.save(fakeUser());
                 });
 
                 it('Pass', () => {

@@ -2,7 +2,7 @@ import * as supertest from 'supertest';
 import { INestApplication } from '@nestjs/common';
 
 //* Internal import
-import { getDummyUser } from '../../../test/fakeData/fakeAuth';
+import { fakeUser } from '../../../test/fakeEnity';
 import { UserRepository } from '../../user/entities/userRepository.entity';
 import { initTestModule } from '../../../test/initTest';
 import { CreateUserDto } from '../dto/createUser.dto';
@@ -33,7 +33,7 @@ describe('AuthController', () => {
                 const reqApi = (input: CreateUserDto) => supertest(app.getHttpServer()).post('/api/auth/register').send(input);
 
                 beforeEach(() => {
-                        const getUser = getDummyUser();
+                        const getUser = fakeUser();
                         createUserData = {
                                 fullName: getUser.fullName,
                                 username: getUser.username,
@@ -68,7 +68,7 @@ describe('AuthController', () => {
                 const reqApi = (input: LoginUserDto) => supertest(app.getHttpServer()).post('/api/auth/login').send(input);
 
                 beforeEach(async () => {
-                        const getUser = getDummyUser();
+                        const getUser = fakeUser();
                         loginUserDto = {
                                 username: getUser.username,
                                 password: getUser.password,
@@ -101,7 +101,7 @@ describe('AuthController', () => {
                 const reqApi = (input: EmailResetPasswordDto) => supertest(app.getHttpServer()).post('/api/auth/reset-password').send(input);
                 let user: User;
                 beforeAll(async () => {
-                        const hello = getDummyUser();
+                        const hello = fakeUser();
                         hello.email = 'hello@gmail.com';
                         user = await userRepository.save(hello);
                 });
@@ -124,12 +124,13 @@ describe('AuthController', () => {
                         expect(res.body).toBeDefined();
                 });
         });
+
         describe('PUT /reset-password', () => {
                 const reqApi = (input: PasswordResetDto) => supertest(app.getHttpServer()).put('/api/auth/reset-password').send(input);
                 let user: User;
 
                 beforeAll(async () => {
-                        const hello = getDummyUser();
+                        const hello = fakeUser();
                         hello.email = 'hello@gmail.com';
                         user = await userRepository.save(hello);
                         const token = tokenService.generateJWT(hello);

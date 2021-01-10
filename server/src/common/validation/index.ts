@@ -7,7 +7,7 @@ import { userJoiSchema } from './user.validator';
  *
  * @param cb must be an switch case function return Joi.schema
  * @param T the object you want to validate
- * @returns return joi generator with your schema
+ * @returns return 2 joi generator function with your schema
  */
 export function joiSchemaGenerator<T>(cb: CallableFunction) {
         function getJoiSchema(field: keyof T): Joi.Schema {

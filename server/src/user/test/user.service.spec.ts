@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb';
 
 //* Internal import
 import { UserRepository } from '../entities/userRepository.entity';
-import { getDummyUser } from '../../../test/fakeData/fakeAuth';
+import { fakeUser } from '../../../test/fakeEnity';
 import { initTestModule } from '../../../test/initTest';
 import { AuthService } from '../../auth/auth.service';
 import { User } from '../entities/user.entity';
@@ -26,7 +26,7 @@ describe('UserService', () => {
         });
 
         beforeAll(async () => {
-                const getUser = getDummyUser();
+                const getUser = fakeUser();
                 const registerUser: CreateUserDto = {
                         username: getUser.username,
                         confirmPassword: getUser.password,

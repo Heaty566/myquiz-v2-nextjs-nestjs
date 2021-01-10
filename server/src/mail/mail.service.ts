@@ -7,6 +7,11 @@ export class MailService {
                 mail.setApiKey(process.env.SENDGRID_API_KEY);
         }
 
+        /**
+         *
+         * @param receiver mail of user
+         * @param key the key for reset password
+         */
         forgetPasswordMail(receiver: string, key: string) {
                 const link = `${process.env.CLIENT_URL}/user/reset-password?key=${key}`;
                 const content = `We heard that you lost your MyQuiz password. Sorry about that! 

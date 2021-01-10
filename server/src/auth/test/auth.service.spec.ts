@@ -2,7 +2,7 @@ import { INestApplication } from '@nestjs/common';
 
 //* Internal import
 import { UserRepository } from '../../user/entities/userRepository.entity';
-import { getDummyUser } from '../../../test/fakeData/fakeAuth';
+import { fakeUser } from '../../../test/fakeEnity';
 import { initTestModule } from '../../../test/initTest';
 import { AuthService } from '../auth.service';
 import { CreateUserDto } from '../dto/createUser.dto';
@@ -23,7 +23,7 @@ describe('AuthService', () => {
                 let createUserData: CreateUserDto;
 
                 beforeEach(() => {
-                        const getUser = getDummyUser();
+                        const getUser = fakeUser();
                         createUserData = {
                                 fullName: getUser.fullName,
                                 confirmPassword: getUser.password,

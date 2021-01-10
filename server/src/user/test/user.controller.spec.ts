@@ -3,9 +3,9 @@ import * as supertest from 'supertest';
 
 //* Internal import
 import { UserRepository } from '../entities/userRepository.entity';
-import { getDummyUser } from '../../../test/fakeData/fakeAuth';
+import { fakeUser } from '../../../test/fakeEnity';
 import { ChangePasswordDto } from '../dto/changePassword.dto';
-import { fakeData } from '../../../test/fakeData/fakeData';
+import { fakeData } from '../../../test/fakeData';
 import { TokenService } from '../../token/token.service';
 import { initTestModule } from '../../../test/initTest';
 import { AuthService } from '../../auth/auth.service';
@@ -32,7 +32,7 @@ describe('userController', () => {
         });
 
         beforeAll(async () => {
-                const getUser = getDummyUser();
+                const getUser = fakeUser();
                 const createUserData: CreateUserDto = {
                         username: getUser.username,
                         confirmPassword: getUser.password,
@@ -51,7 +51,7 @@ describe('userController', () => {
 
                 let invalidReToken: string;
                 beforeAll(async () => {
-                        const user = getDummyUser();
+                        const user = fakeUser();
                         invalidReToken = await tokenService.getRefreshToken(user);
                 });
                 it('PASS', async () => {
@@ -117,7 +117,7 @@ describe('userController', () => {
                 let dummyInput: UpdateUserDto;
 
                 beforeEach(async () => {
-                        const getUser = getDummyUser();
+                        const getUser = fakeUser();
                         dummyInput = {
                                 email: getUser.email,
                                 fullName: getUser.fullName,
@@ -156,7 +156,7 @@ describe('userController', () => {
                 let updateToken: string;
 
                 beforeEach(async () => {
-                        const getUser = getDummyUser();
+                        const getUser = fakeUser();
                         updateSocialDto = {
                                 fullName: getUser.fullName,
                                 username: getUser.username,

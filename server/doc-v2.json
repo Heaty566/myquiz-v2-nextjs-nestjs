@@ -87,6 +87,56 @@
                                 }
                         }
                 },
+                "/api/auth/login": {
+                        "post": {
+                                "tags": ["auth"],
+                                "summary": "login user with username and password",
+                                "parameters": [
+                                        {
+                                                "name": "lang",
+                                                "in": "cookie",
+                                                "description": "allow server service multiple language",
+                                                "required": false,
+                                                "style": "form",
+                                                "explode": true,
+                                                "schema": {
+                                                        "type": "string"
+                                                },
+                                                "example": "vi"
+                                        }
+                                ],
+                                "requestBody": {
+                                        "content": {
+                                                "application/json": {
+                                                        "schema": {
+                                                                "$ref": "#/components/schemas/LoginUserDto"
+                                                        }
+                                                }
+                                        },
+                                        "required": true
+                                },
+                                "responses": {
+                                        "200": {
+                                                "description": "return refresh-auth token",
+                                                "headers": {
+                                                        "Set-Cookie": {
+                                                                "$ref": "#/components/headers/re-token"
+                                                        }
+                                                }
+                                        },
+                                        "400": {
+                                                "description": "invalid input or username doesn't exist or invalid password",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "$ref": "#/components/schemas/BadRequestApi"
+                                                                }
+                                                        }
+                                                }
+                                        }
+                                }
+                        }
+                },
                 "/api/auth/social-info": {
                         "put": {
                                 "tags": ["auth"],
@@ -150,56 +200,6 @@
                                         },
                                         "400": {
                                                 "description": "username is taken or this user is already update",
-                                                "content": {
-                                                        "application/json": {
-                                                                "schema": {
-                                                                        "$ref": "#/components/schemas/BadRequestApi"
-                                                                }
-                                                        }
-                                                }
-                                        }
-                                }
-                        }
-                },
-                "/api/auth/login": {
-                        "post": {
-                                "tags": ["auth"],
-                                "summary": "login user with username and password",
-                                "parameters": [
-                                        {
-                                                "name": "lang",
-                                                "in": "cookie",
-                                                "description": "allow server service multiple language",
-                                                "required": false,
-                                                "style": "form",
-                                                "explode": true,
-                                                "schema": {
-                                                        "type": "string"
-                                                },
-                                                "example": "vi"
-                                        }
-                                ],
-                                "requestBody": {
-                                        "content": {
-                                                "application/json": {
-                                                        "schema": {
-                                                                "$ref": "#/components/schemas/LoginUserDto"
-                                                        }
-                                                }
-                                        },
-                                        "required": true
-                                },
-                                "responses": {
-                                        "200": {
-                                                "description": "return refresh-auth token",
-                                                "headers": {
-                                                        "Set-Cookie": {
-                                                                "$ref": "#/components/headers/re-token"
-                                                        }
-                                                }
-                                        },
-                                        "400": {
-                                                "description": "invalid input or username doesn't exist or invalid password",
                                                 "content": {
                                                         "application/json": {
                                                                 "schema": {
