@@ -5,8 +5,8 @@ import { JwtModule } from '@nestjs/jwt';
 
 //* Internal import
 import { TokenRepository } from './entities/token.repository';
-import { UserService } from '../user/user.service';
-import { UserRepository } from '../user/entities/userRepository.entity';
+import { UserService } from '../../models/user/user.service';
+import { UserRepository } from '../../models/user/entities/userRepository.entity';
 
 @Module({
         imports: [TypeOrmModule.forFeature([TokenRepository, UserRepository]), JwtModule.register({ secret: process.env.JWT_SECRET_KEY })],

@@ -2,7 +2,7 @@ import { INestApplication } from '@nestjs/common';
 import { createClient, RedisClient } from 'redis';
 
 //* Internal import
-import { initTestModule } from '../../../test/initTest';
+import { initTestModule } from '../../../../test/initTest';
 import { RedisService } from '../redis.service';
 
 describe('Redis Service', () => {

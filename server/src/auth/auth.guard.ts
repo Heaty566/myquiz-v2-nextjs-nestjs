@@ -1,15 +1,14 @@
-import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Request, Response } from 'express';
-import * as moment from 'moment';
 
 //* Internal import
-import { ApiResponse } from '../common/dto/response.dto';
-import { TokenService } from '../token/token.service';
+import { ApiResponse } from '../common/interfaces/ApiResponse';
+import { TokenService } from '../providers/token/token.service';
 import { UserRole } from './entities/userRole.enum';
 import { CONSTANT } from '../common/constant';
-import { User } from '../user/entities/user.entity';
-import { Token } from '../token/entities/token.entity';
+import { User } from '../models/user/entities/user.entity';
+import { ErrorResponse } from '../common/interfaces/ErrorResponse';
 @Injectable()
 export class UserAuth implements CanActivate {
         private readonly errorResponse: ApiResponse = {
@@ -26,13 +25,13 @@ export class UserAuth implements CanActivate {
                 //get token and re-token from cookie
                 const refreshToken: string = req.cookies['re-token'] || '';
                 let authToken: string = req.cookies['token'] || '';
-                if (!refreshToken) throw new UnauthorizedException(this.errorResponse);
+                if (!refreshToken) throw ErrorResponse.send({ message: 'Invalid token' }, 'UnauthorizedException');
 
                 let token = await this.tokenService.getValidToken(authToken);
 
                 if (!token) {
                         token = await this.tokenService.getAuthToken(refreshToken);
-                        if (!token) throw new UnauthorizedException(this.errorResponse);
+                        if (!token) throw ErrorResponse.send({ message: 'Invalid token' }, 'UnauthorizedException');
 
                         authToken = String(token._id);
                         res.cookie('token', authToken, { maxAge: CONSTANT.MINUTE * 5 });
@@ -42,7 +41,8 @@ export class UserAuth implements CanActivate {
                 const userDecode = this.tokenService.decodeJWT<User>(token.data);
 
                 //checking role
-                if (role === UserRole.ADMIN && userDecode.role !== UserRole.ADMIN) throw new UnauthorizedException(this.errorResponse);
+                if (role === UserRole.ADMIN && userDecode.role !== UserRole.ADMIN)
+                        throw ErrorResponse.send({ message: 'Invalid token' }, 'UnauthorizedException');
 
                 req.user = userDecode;
                 return true;

@@ -1,9 +1,9 @@
 //* Internal import
 import { fakeData } from './fakeData';
-import { User } from '../src/user/entities/user.entity';
+import { User } from '../src/models/user/entities/user.entity';
 import { UserRole } from '../src/auth/entities/userRole.enum';
 import { ObjectId } from 'mongodb';
-import { Token } from '../src/token/entities/token.entity';
+import { Token } from '../src/providers/token/entities/token.entity';
 
 export const fakeUser = () => {
         const user = new User();

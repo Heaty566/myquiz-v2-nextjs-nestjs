@@ -2,7 +2,7 @@ import * as Joi from 'joi';
 
 //* Internal import
 import { userJoiSchema, joiSchemaGenerator } from '../../common/validation';
-import { User } from '../../user/entities/user.entity';
+import { User } from '../../models/user/entities/user.entity';
 
 const { getJoiSchemas } = joiSchemaGenerator<User>(userJoiSchema);
 
@@ -11,6 +11,6 @@ export class LoginUserDto {
         password: string;
 }
 
-export const loginUserDtoValidator = Joi.object({
+export const vLoginUserDto = Joi.object({
         ...getJoiSchemas(['username', 'password']),
 });

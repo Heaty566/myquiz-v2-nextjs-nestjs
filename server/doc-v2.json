@@ -615,37 +615,6 @@
                                         }
                                 }
                         }
-                },
-                "/api/visitor": {
-                        "get": {
-                                "tags": ["system"],
-                                "parameters": [
-                                        {
-                                                "name": "lang",
-                                                "in": "cookie",
-                                                "description": "allow server service multiple language",
-                                                "required": false,
-                                                "style": "form",
-                                                "explode": true,
-                                                "schema": {
-                                                        "type": "string"
-                                                },
-                                                "example": "vi"
-                                        }
-                                ],
-                                "responses": {
-                                        "200": {
-                                                "description": "return number of visitor in current session",
-                                                "content": {
-                                                        "application/json": {
-                                                                "schema": {
-                                                                        "$ref": "#/components/schemas/SystemVisitor"
-                                                                }
-                                                        }
-                                                }
-                                        }
-                                }
-                        }
                 }
         },
         "components": {

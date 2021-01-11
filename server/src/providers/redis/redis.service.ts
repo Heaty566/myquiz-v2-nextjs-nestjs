@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import * as flat from 'flat';
 
 //* Internal import
-import { CONSTANT } from '../common/constant';
+import { CONSTANT } from '../../common/constant';
 
 @Injectable()
 export class RedisService {

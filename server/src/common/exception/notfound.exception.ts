@@ -2,7 +2,7 @@ import { ExceptionFilter, Catch, ArgumentsHost, NotFoundException, HttpStatus } 
 import { Response } from 'express';
 
 //* Internal import
-import { ApiResponse } from '../dto/response.dto';
+import { ApiResponse } from '../interfaces/ApiResponse';
 
 @Catch(NotFoundException)
 export class NotFoundApiHandler implements ExceptionFilter {

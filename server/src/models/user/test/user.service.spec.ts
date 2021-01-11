@@ -3,12 +3,12 @@ import { ObjectId } from 'mongodb';
 
 //* Internal import
 import { UserRepository } from '../entities/userRepository.entity';
-import { fakeUser } from '../../../test/fakeEnity';
-import { initTestModule } from '../../../test/initTest';
-import { AuthService } from '../../auth/auth.service';
+import { fakeUser } from '../../../../test/fakeEntity';
+import { initTestModule } from '../../../../test/initTest';
+import { AuthService } from '../../../auth/auth.service';
 import { User } from '../entities/user.entity';
 import { UserService } from '../user.service';
-import { CreateUserDto } from '../../auth/dto/createUser.dto';
+import { CreateUserDto } from '../../../auth/dto/createUser.dto';
 
 describe('UserService', () => {
         let app: INestApplication;

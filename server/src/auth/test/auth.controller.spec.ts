@@ -2,16 +2,16 @@ import * as supertest from 'supertest';
 import { INestApplication } from '@nestjs/common';
 
 //* Internal import
-import { fakeUser } from '../../../test/fakeEnity';
-import { UserRepository } from '../../user/entities/userRepository.entity';
+import { fakeUser } from '../../../test/fakeEntity';
+import { UserRepository } from '../../models/user/entities/userRepository.entity';
 import { initTestModule } from '../../../test/initTest';
 import { CreateUserDto } from '../dto/createUser.dto';
-import { User } from '../../user/entities/user.entity';
+import { User } from '../../models/user/entities/user.entity';
 import { LoginUserDto } from '../dto/LoginUser.dto';
 import { AuthService } from '../auth.service';
 import { EmailResetPasswordDto, PasswordResetDto } from '../dto/resetPassword';
-import { RedisService } from '../../redis/redis.service';
-import { TokenService } from '../../token/token.service';
+import { RedisService } from '../../providers/redis/redis.service';
+import { TokenService } from '../../providers/token/token.service';
 
 describe('AuthController', () => {
         let app: INestApplication;

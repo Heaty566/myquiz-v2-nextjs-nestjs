@@ -4,11 +4,11 @@ import { ObjectId } from 'mongodb';
 
 //* Internal import
 import { TokenRepository } from '../entities/token.repository';
-import { initTestModule } from '../../../test/initTest';
+import { initTestModule } from '../../../../test/initTest';
 import { TokenService } from '../token.service';
-import { fakeUser } from '../../../test/fakeEnity';
-import { UserRepository } from '../../user/entities/userRepository.entity';
-import { User } from '../../user/entities/user.entity';
+import { fakeUser } from '../../../../test/fakeEntity';
+import { UserRepository } from '../../../models/user/entities/userRepository.entity';
+import { User } from '../../../models/user/entities/user.entity';
 import { Token } from '../entities/token.entity';
 
 describe('TokenService', () => {

@@ -3,17 +3,17 @@ import * as supertest from 'supertest';
 
 //* Internal import
 import { UserRepository } from '../entities/userRepository.entity';
-import { fakeUser } from '../../../test/fakeEnity';
+import { fakeUser } from '../../../../test/fakeEntity';
 import { ChangePasswordDto } from '../dto/changePassword.dto';
-import { fakeData } from '../../../test/fakeData';
-import { TokenService } from '../../token/token.service';
-import { initTestModule } from '../../../test/initTest';
-import { AuthService } from '../../auth/auth.service';
+import { fakeData } from '../../../../test/fakeData';
+import { TokenService } from '../../../providers/token/token.service';
+import { initTestModule } from '../../../../test/initTest';
+import { AuthService } from '../../../auth/auth.service';
 import { User } from '../entities/user.entity';
 import { UpdateUserDto } from '../dto/updateUser.dto';
-import { CreateUserDto } from '../../auth/dto/createUser.dto';
+import { CreateUserDto } from '../../../auth/dto/createUser.dto';
 import { UpdateEmailDto } from '../dto/updateEmail.dto';
-import { RedisService } from '../../redis/redis.service';
+import { RedisService } from '../../../providers/redis/redis.service';
 
 describe('userController', () => {
         let app: INestApplication;

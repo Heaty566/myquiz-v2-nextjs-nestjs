@@ -3,7 +3,7 @@ import { ObjectSchema } from 'joi';
 
 //* Internal import
 import { JoiErrorMapper } from './messageErrorMapper.joi';
-import { ApiResponse } from '../dto/response.dto';
+import { ApiResponse } from '../interfaces/ApiResponse';
 
 @Injectable()
 export class JoiValidatorPipe implements PipeTransform {

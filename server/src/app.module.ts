@@ -5,15 +5,14 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 //* Internal import
 import { CountVisitorInterceptor } from './common/interceptor/countVisitor.interceptor';
-import { Token } from './token/entities/token.entity';
-import { RedisService } from './redis/redis.service';
-import { User } from './user/entities/user.entity';
-import { RedisModule } from './redis/redis.module';
-import { TokenModule } from './token/token.module';
-import { AppController } from './app.controller';
+import { Token } from './providers/token/entities/token.entity';
+import { User } from './models/user/entities/user.entity';
+import { RedisModule } from './providers/redis/redis.module';
+import { TokenModule } from './providers/token/token.module';
 import { AuthModule } from './auth/auth.module';
-import { UserModule } from './user/user.module';
-import { MailModule } from './mail/mail.module';
+import { UserModule } from './models/user/user.module';
+import { MailModule } from './providers/mail/mail.module';
+import { RedisService } from './providers/redis/redis.service';
 
 const Config = ConfigModule.forRoot({
         isGlobal: true,
@@ -32,7 +31,7 @@ const JwtConfig = JwtModule.register({ secret: process.env.JWT_SECRET_KEY });
 
 @Module({
         imports: [Config, DBConfig, UserModule, JwtConfig, AuthModule, TokenModule, RedisModule, MailModule],
-        controllers: [AppController],
+        controllers: [],
         providers: [
                 {
                         provide: APP_INTERCEPTOR,

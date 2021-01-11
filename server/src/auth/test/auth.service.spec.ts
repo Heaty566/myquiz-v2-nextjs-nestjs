@@ -1,8 +1,8 @@
 import { INestApplication } from '@nestjs/common';
 
 //* Internal import
-import { UserRepository } from '../../user/entities/userRepository.entity';
-import { fakeUser } from '../../../test/fakeEnity';
+import { UserRepository } from '../../models/user/entities/userRepository.entity';
+import { fakeUser } from '../../../test/fakeEntity';
 import { initTestModule } from '../../../test/initTest';
 import { AuthService } from '../auth.service';
 import { CreateUserDto } from '../dto/createUser.dto';

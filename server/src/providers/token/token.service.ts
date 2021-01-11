@@ -7,8 +7,8 @@ import * as moment from 'moment';
 //* Internal import
 import { TokenRepository } from './entities/token.repository';
 import { Token } from './entities/token.entity';
-import { User } from '../user/entities/user.entity';
-import { UserService } from '../user/user.service';
+import { User } from '../../models/user/entities/user.entity';
+import { UserService } from '../../models/user/user.service';
 @Injectable()
 export class TokenService {
         constructor(

@@ -1,21 +1,22 @@
-import { Controller, Post, Body, BadRequestException, UsePipes, Res, Get, UseGuards, Req, Put } from '@nestjs/common';
+import { Controller, Post, Body, UsePipes, Res, Get, UseGuards, Req, Put } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Response, Request } from 'express';
 import { ObjectId } from 'mongodb';
 
 //* Internal import
-import { emailResetPasswordDtoValidator, EmailResetPasswordDto, PasswordResetDto, passwordResetDtoValidator } from './dto/resetPassword';
-import { CreateUserDto, createUserDtoValidator } from './dto/createUser.dto';
-import { loginUserDtoValidator, LoginUserDto } from './dto/loginUser.dto';
+import { vEmailResetPassword, EmailResetPasswordDto, PasswordResetDto, vPasswordResetDtoValidator } from './dto/resetPassword';
+import { CreateUserDto, vCreateUserDto } from './dto/createUser.dto';
+import { vLoginUserDto, LoginUserDto } from './dto/loginUser.dto';
 import { JoiValidatorPipe } from '../common/validation/validator.pipe';
-import { TokenService } from '../token/token.service';
-import { UserService } from '../user/user.service';
+import { TokenService } from '../providers/token/token.service';
+import { UserService } from '../models/user/user.service';
 import { CONSTANT } from '../common/constant';
 import { AuthService } from './auth.service';
-import { ApiResponse } from '../common/dto/response.dto';
-import { MailService } from '../mail/mail.service';
-import { RedisService } from '../redis/redis.service';
-import { User } from '../user/entities/user.entity';
+import { ErrorResponse } from '../common/interfaces/ErrorResponse';
+import { ApiResponse } from '../common/interfaces/ApiResponse';
+import { MailService } from '../providers/mail/mail.service';
+import { RedisService } from '../providers/redis/redis.service';
+import { User } from '../models/user/entities/user.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -33,18 +34,14 @@ export class AuthController {
          * @returns a re-token token to user for the next authentication
          */
         @Post('/register')
-        @UsePipes(new JoiValidatorPipe(createUserDtoValidator))
+        @UsePipes(new JoiValidatorPipe(vCreateUserDto))
         async registerUser(
                 @Body()
                 body: CreateUserDto,
                 @Res() res: Response,
         ) {
-                const errorsObject: ApiResponse = {
-                        message: 'Username is taken',
-                };
-
                 const isExistUsername = await this.userService.findUserByField('username', body.username);
-                if (isExistUsername) throw new BadRequestException(errorsObject);
+                if (isExistUsername) throw ErrorResponse.send({ message: 'Username is taken' }, 'BadRequestException');
 
                 const newUser = await this.authService.createNewUser(body);
                 const reToken = await this.tokenService.getRefreshToken(newUser);
@@ -58,17 +55,15 @@ export class AuthController {
          * @returns a re-token token to user for the next authentication
          */
         @Post('/login')
-        @UsePipes(new JoiValidatorPipe(loginUserDtoValidator))
+        @UsePipes(new JoiValidatorPipe(vLoginUserDto))
         async loginUser(@Body() body: LoginUserDto, @Res() res: Response) {
-                const errorsObject: ApiResponse = {
-                        message: 'Username or Password are invalid',
-                };
+                const errorResponse = ErrorResponse.send({ message: 'Username or Password are invalid' }, 'BadRequestException');
 
                 const getUser = await this.userService.findUserByField('username', body.username);
-                if (!getUser) throw new BadRequestException(errorsObject);
+                if (!getUser) throw errorResponse;
 
                 const isCorrectPassword = await this.authService.compareEncrypt(body.password, getUser.password);
-                if (!isCorrectPassword) throw new BadRequestException(errorsObject);
+                if (!isCorrectPassword) throw errorResponse;
 
                 const refreshToken = await this.tokenService.getRefreshToken(getUser);
                 return res.cookie('re-token', refreshToken, { maxAge: CONSTANT.DAY * 180 }).send();
@@ -79,21 +74,17 @@ export class AuthController {
          * @param body email: string
          */
         @Post('/reset-password')
-        @UsePipes(new JoiValidatorPipe(emailResetPasswordDtoValidator))
+        @UsePipes(new JoiValidatorPipe(vEmailResetPassword))
         async resetUserPassword(@Body() body: EmailResetPasswordDto): Promise<ApiResponse> {
-                const errorsObject: ApiResponse = {
-                        message: 'Email is not found',
-                };
-
                 const user = await this.userService.findUserByField('email', body.email);
-                if (!user) throw new BadRequestException(errorsObject);
+                if (!user) throw ErrorResponse.send({ message: 'Email is not found' }, 'BadRequestException');
 
                 const jwt = this.tokenService.generateJWT(user);
                 const key = String(new ObjectId());
                 this.redisService.setByValue(key, jwt, 30);
 
                 const isSendSuccess = await this.mailService.forgetPasswordMail(user.email, key);
-                if (!isSendSuccess) throw new BadRequestException(errorsObject);
+                if (!isSendSuccess) throw ErrorResponse.send({ message: 'Can not send email to ' + body.email }, 'BadRequestException');
 
                 return {
                         message: 'An email has been sent to your email',
@@ -105,14 +96,10 @@ export class AuthController {
          * @param body resetKey: string ; password: string ; confirmPassword: string
          */
         @Put('/reset-password')
-        @UsePipes(new JoiValidatorPipe(passwordResetDtoValidator))
+        @UsePipes(new JoiValidatorPipe(vPasswordResetDtoValidator))
         async resetPasswordHandler(@Body() body: PasswordResetDto): Promise<ApiResponse> {
-                const errorsObject: ApiResponse = {
-                        message: 'Reset key is invalid',
-                };
-
                 const findRedisKey = await this.redisService.getByKey(body.resetKey);
-                if (!findRedisKey) throw new BadRequestException(errorsObject);
+                if (!findRedisKey) throw ErrorResponse.send({ message: 'Reset key is invalid' }, 'BadRequestException');
 
                 const decode = this.tokenService.decodeJWT<User>(findRedisKey);
                 const user = await this.userService.findUserByField('_id', decode._id);

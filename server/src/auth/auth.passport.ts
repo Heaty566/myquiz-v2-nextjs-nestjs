@@ -5,7 +5,7 @@ import { Strategy as Facebook } from 'passport-facebook';
 import { Strategy as Github } from 'passport-github';
 
 //* Internal import
-import { UserService } from '../user/user.service';
+import { UserService } from '../models/user/user.service';
 import { AuthService } from './auth.service';
 
 const callbackPrefix = '/api/auth';

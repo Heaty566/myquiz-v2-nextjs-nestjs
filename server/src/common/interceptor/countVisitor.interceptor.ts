@@ -1,7 +1,7 @@
 import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from '@nestjs/common';
 
 //* Internal import
-import { RedisService } from '../../redis/redis.service';
+import { RedisService } from '../../providers/redis/redis.service';
 
 @Injectable()
 export class CountVisitorInterceptor implements NestInterceptor {
