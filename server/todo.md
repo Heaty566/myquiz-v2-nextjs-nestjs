@@ -11,8 +11,16 @@
 - [ ] upload avatar testing
 - [ ] save project as a kit
 - [ ] update quiz entity
+- [ ] confirm email by otp
+- [ ] generate otp by email
+- [ ] edit msg for vi
+- [ ] build docker
+- [ ] write test for otp
+- [ ] create form for otp mail
 
 # Today schedule
+
+- [ ] launch app build frontend
 
 # Done jobs
 
