@@ -1,5 +1,6 @@
 import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from '@nestjs/common';
-import { Observable } from 'rxjs';
+
+//* Internal import
 import { RedisService } from '../../redis/redis.service';
 
 @Injectable()

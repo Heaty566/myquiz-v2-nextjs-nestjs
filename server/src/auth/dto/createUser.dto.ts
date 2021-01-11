@@ -1,5 +1,7 @@
-import { userJoiSchema, joiSchemaGenerator } from '../../common/validation';
 import * as Joi from 'joi';
+
+//* Internal import
+import { userJoiSchema, joiSchemaGenerator } from '../../common/validation';
 import { User } from '../../user/entities/user.entity';
 
 const { getJoiSchema, getJoiSchemas } = joiSchemaGenerator<User>(userJoiSchema);

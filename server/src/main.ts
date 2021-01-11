@@ -1,8 +1,10 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { router } from './common/app/router';
+import { router } from './router';
 import { Logger } from '@nestjs/common';
 import { createClient } from 'redis';
+
+//* Internal import
+import { AppModule } from './app.module';
 
 async function bootstrap() {
         const app = await NestFactory.create(AppModule);
@@ -12,7 +14,8 @@ async function bootstrap() {
         router(app);
         const port = process.env.PORT || 4000;
         const redisPort = Number(process.env.REDIS_PORT) || 7000;
-        const redisClient = createClient({ port: redisPort });
+
+        const redisClient = createClient({ port: redisPort, host: process.env.REDIS_HOST || '' });
 
         await app.listen(port, () => {
                 redisClient.ping((err, data) => {

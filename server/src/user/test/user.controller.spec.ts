@@ -1,54 +1,192 @@
 import { INestApplication } from '@nestjs/common';
-import { getTestInit } from '../../common/test/getInit';
 import * as supertest from 'supertest';
-import { UserRepository } from '../entities/userRepository.entity';
-import { getCreateUserDto } from '../../common/test/fakeData/fakeAuth';
-import { TokenService } from '../../token/token.service';
 
-import { getCreateTokenDto } from '../../common/test/fakeData/fakeToken';
+//* Internal import
+import { UserRepository } from '../entities/userRepository.entity';
+import { fakeUser } from '../../../test/fakeEnity';
+import { ChangePasswordDto } from '../dto/changePassword.dto';
+import { fakeData } from '../../../test/fakeData';
+import { TokenService } from '../../token/token.service';
+import { initTestModule } from '../../../test/initTest';
+import { AuthService } from '../../auth/auth.service';
+import { User } from '../entities/user.entity';
+import { UpdateUserDto } from '../dto/updateUser.dto';
+import { CreateUserDto } from '../../auth/dto/createUser.dto';
 
 describe('userController', () => {
         let app: INestApplication;
         let userRepository: UserRepository;
-
+        let authService: AuthService;
         let tokenService: TokenService;
-        let reToken: string;
+        let cookie: string;
+
+        let userInfo: User;
         beforeAll(async () => {
-                const { getApp, module } = await getTestInit();
+                const { getApp, module } = await initTestModule();
                 app = getApp;
 
                 tokenService = module.get<TokenService>(TokenService);
+
+                authService = module.get<AuthService>(AuthService);
                 userRepository = module.get<UserRepository>(UserRepository);
         });
 
         beforeAll(async () => {
-                const createUserData = getCreateUserDto();
+                const getUser = fakeUser();
+                const createUserData: CreateUserDto = {
+                        username: getUser.username,
+                        confirmPassword: getUser.password,
+                        password: getUser.password,
+                        fullName: getUser.fullName,
+                };
                 const res = await supertest(app.getHttpServer()).post('/api/auth/register').send(createUserData);
 
-                reToken = res.headers['set-cookie'];
+                cookie = res.headers['set-cookie'];
+
+                userInfo = await userRepository.findOne({ username: createUserData.username });
         });
 
-        describe('getUser', () => {
-                const reqApi = () => supertest(app.getHttpServer()).get('/api/user').set({ cookie: reToken }).send();
-
-                it('get user', async () => {
-                        const res = await reqApi();
-
-                        expect(res.body.username).toBeDefined();
-                        expect(res.body.fullName).toBeDefined();
-                        expect(res.body.password).toBeUndefined();
-                });
+        describe('GET /api/user', () => {
+                const callApi = () => supertest(app.getHttpServer()).get('/api/user').set({ cookie: cookie }).send();
 
                 let invalidReToken: string;
-                beforeEach(async () => {
-                        invalidReToken = await tokenService.getRefreshToken(getCreateTokenDto());
+                beforeAll(async () => {
+                        const user = fakeUser();
+                        invalidReToken = await tokenService.getRefreshToken(user);
+                });
+                it('PASS', async () => {
+                        const res = await callApi();
+
+                        expect(res.status).toBe(200);
+                        expect(res.body).toBeDefined();
                 });
 
-                it('invalid token', async () => {
+                it('Failed (no token provides)', async () => {
+                        const res = await supertest(app.getHttpServer()).get('/api/user').send();
+
+                        expect(res.status).toBe(401);
+                        expect(res.body);
+                });
+
+                it('Failed (invalid token)', async () => {
                         const cookies = `re-token=${invalidReToken}; Path=/`;
                         const res = await supertest(app.getHttpServer()).get('/api/user').set({ cookie: cookies }).send({});
                         expect(res.body.message).toBeDefined();
                         expect(res.status).toBe(401);
+                });
+        });
+
+        describe('PUT /api/user/password', () => {
+                const callApi = (input: ChangePasswordDto) =>
+                        supertest(app.getHttpServer()).put('/api/user/password').set({ cookie: cookie }).send(input);
+
+                let dummyInput: ChangePasswordDto;
+                let dummyPassword: string;
+                beforeEach(async () => {
+                        dummyPassword = fakeData(10, 'lettersAndNumbers');
+
+                        dummyInput = {
+                                confirmPassword: dummyPassword,
+                                newPassword: dummyPassword,
+                        };
+                });
+
+                it('Pass', async () => {
+                        await callApi(dummyInput);
+
+                        const user = await userRepository.findOne({ username: userInfo.username });
+
+                        const isCorrectChange = await authService.compareEncrypt(dummyPassword, user.password);
+                        expect(isCorrectChange).toBeTruthy();
+                });
+
+                it('Failed (newPassword and confirmPassword does not match)', async () => {
+                        dummyInput.confirmPassword = fakeData(10, 'lettersAndNumbers');
+                        const res = await callApi(dummyInput);
+                        const user = await userRepository.findOne({ username: userInfo.username });
+
+                        const isCorrectChange = await authService.compareEncrypt(dummyPassword, user.password);
+
+                        expect(isCorrectChange).toBeFalsy();
+                        expect(res.status).toBe(400);
+                });
+        });
+        describe('PUT /api/user/information', () => {
+                const callApi = (input: UpdateUserDto) => supertest(app.getHttpServer()).put('/api/user').set({ cookie: cookie }).send(input);
+
+                let dummyInput: UpdateUserDto;
+
+                beforeEach(async () => {
+                        const getUser = fakeUser();
+                        dummyInput = {
+                                email: getUser.email,
+                                fullName: getUser.fullName,
+                        };
+                });
+
+                it('Pass', async () => {
+                        await callApi(dummyInput);
+
+                        const user = await userRepository.findOne({ username: userInfo.username });
+
+                        expect(user.email).toBe(dummyInput.email);
+                        expect(user.fullName).toBe(dummyInput.fullName);
+                });
+
+                it('Failed (wrong email pattern)', async () => {
+                        dummyInput.email = fakeData(10, 'lettersAndNumbers');
+                        const res = await callApi(dummyInput);
+                        const user = await userRepository.findOne({ username: userInfo.username });
+
+                        expect(user.fullName).not.toBe(dummyInput.fullName);
+                        expect(user.email).not.toBe(dummyInput.email);
+                        expect(res.status).toBe(400);
+                });
+        });
+
+        describe('PUT /social-info', () => {
+                //
+                let updateSocialDto: CreateUserDto;
+                const reqApi = (input: CreateUserDto, token: string) =>
+                        supertest(app.getHttpServer())
+                                .put('/api/user/social-info')
+                                .set({ cookie: 're-token=' + token })
+                                .send(input);
+                let updateUser: User;
+                let updateToken: string;
+
+                beforeEach(async () => {
+                        const getUser = fakeUser();
+                        updateSocialDto = {
+                                fullName: getUser.fullName,
+                                username: getUser.username,
+                                password: getUser.password,
+                                confirmPassword: getUser.password,
+                        };
+                        getUser.username = '';
+                        updateUser = await userRepository.save(getUser);
+
+                        updateToken = await tokenService.getRefreshToken(updateUser);
+                });
+
+                it('Pass', async () => {
+                        await reqApi(updateSocialDto, updateToken);
+                        const user = await userRepository.findOne({ username: updateSocialDto.username });
+
+                        expect(user.username).toBeDefined();
+                        expect(user.githubId).toBe(updateUser.githubId);
+                });
+                it('Failed (user already update)', async () => {
+                        await reqApi(updateSocialDto, updateToken);
+                        const res = await reqApi(updateSocialDto, updateToken);
+
+                        expect(res.status).toBe(400);
+                });
+                it('Failed (username is taken)', async () => {
+                        await userRepository.save({ username: updateSocialDto.username });
+                        const res = await reqApi(updateSocialDto, updateToken);
+
+                        expect(res.status).toBe(400);
                 });
         });
 

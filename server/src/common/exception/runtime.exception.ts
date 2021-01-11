@@ -1,13 +1,15 @@
 import { ExceptionFilter, Catch, ArgumentsHost, NotFoundException, HttpStatus, InternalServerErrorException } from '@nestjs/common';
 import { Response } from 'express';
-import { ResponseApi } from '../dto/response.dto';
+
+//* Internal import
+import { ApiResponse } from '../dto/response.dto';
 
 @Catch(InternalServerErrorException)
 export class RuntimeApiHandler implements ExceptionFilter {
         catch(_: NotFoundException, host: ArgumentsHost) {
                 const ctx = host.switchToHttp();
                 const res = ctx.getResponse<Response>();
-                const resApi: ResponseApi = {
+                const resApi: ApiResponse = {
                         data: null,
                         message: 'Something went wrong, Please try again later.',
                 };

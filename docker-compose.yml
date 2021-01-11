@@ -1,15 +1,37 @@
 version: "3"
 services:
         redis:
+<<<<<<< HEAD
                 image: redis
                 ports:
                         - 7000:6379
 
+=======
+                image: "redis:alpine"
+                expose:
+                        - 6379
+>>>>>>> e4d01bfac93416d1cae1d2595125f86e0121adfb
         server:
-                build: ./server
                 image: heaty566/myquiz-v2-server:latest
-                ports:
-                        - 4000:4000
+                expose:
+                        - 4000
                 env_file:
                         - ./data/config/server.env
-       
+        client:
+                image: heaty566/myquiz-v2-client:latest
+                expose:
+                        - 3000
+        certbot:
+                image: certbot/certbot
+                volumes:
+                        - ./data/certbot/conf:/etc/letsencrypt
+                        - ./data/certbot/www:/var/www/certbot
+        nginx:
+                image: nginx:1.15-alpine
+                ports:
+                        - 80:80
+                        - 443:443
+                volumes:
+                        - ./data/certbot/conf:/etc/letsencrypt
+                        - ./data/certbot/www:/var/www/certbot
+                        - ./data/nginx:/etc/nginx/conf.d

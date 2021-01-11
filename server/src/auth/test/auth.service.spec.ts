@@ -1,15 +1,18 @@
 import { INestApplication } from '@nestjs/common';
-import { getTestInit } from '../../common/test/getInit';
-import { getCreateUserDto } from '../../common/test/fakeData/fakeAuth';
+
+//* Internal import
 import { UserRepository } from '../../user/entities/userRepository.entity';
+import { fakeUser } from '../../../test/fakeEnity';
+import { initTestModule } from '../../../test/initTest';
 import { AuthService } from '../auth.service';
+import { CreateUserDto } from '../dto/createUser.dto';
 
 describe('AuthService', () => {
         let app: INestApplication;
         let userRepository: UserRepository;
         let authService: AuthService;
         beforeAll(async () => {
-                const { getApp, module } = await getTestInit();
+                const { getApp, module } = await initTestModule();
                 app = getApp;
 
                 userRepository = module.get<UserRepository>(UserRepository);
@@ -17,14 +20,41 @@ describe('AuthService', () => {
         });
 
         describe('createNewUser', () => {
-                let createUserData;
+                let createUserData: CreateUserDto;
 
                 beforeEach(() => {
-                        createUserData = getCreateUserDto();
+                        const getUser = fakeUser();
+                        createUserData = {
+                                fullName: getUser.fullName,
+                                confirmPassword: getUser.password,
+                                password: getUser.password,
+                                username: getUser.username,
+                        };
                 });
-                it('create success user', async () => {
+                it('Pass', async () => {
                         const newUser = await authService.createNewUser(createUserData);
-                        const getUser = await userRepository.findOne({ _id: newUser._id });
+                        const getUser = await userRepository.findOne({ username: newUser.username });
+                        expect(getUser).toBeDefined();
+                });
+        });
+        describe('loginUserWithProvider', () => {
+                it('Pass (with Facebook)', async () => {
+                        await authService.createNewUserByOtherProvider('example', '123', 'facebookId');
+                        const getUser = await userRepository.findOne({ facebookId: '123' });
+
+                        expect(getUser).toBeDefined();
+                });
+                it('Pass (with Google)', async () => {
+                        await authService.createNewUserByOtherProvider('example', '123', 'googleId');
+                        const getUser = await userRepository.findOne({ googleId: '123' });
+
+                        expect(getUser).toBeDefined();
+                });
+
+                it('Pass (with Github)', async () => {
+                        await authService.createNewUserByOtherProvider('example', '123', 'githubId');
+                        const getUser = await userRepository.findOne({ githubId: '123' });
+
                         expect(getUser).toBeDefined();
                 });
         });

@@ -1,13 +1,15 @@
 import { ExceptionFilter, Catch, ArgumentsHost, NotFoundException, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
-import { ResponseApi } from '../dto/response.dto';
+
+//* Internal import
+import { ApiResponse } from '../dto/response.dto';
 
 @Catch(NotFoundException)
 export class NotFoundApiHandler implements ExceptionFilter {
         catch(_: NotFoundException, host: ArgumentsHost) {
                 const ctx = host.switchToHttp();
                 const res = ctx.getResponse<Response>();
-                const resApi: ResponseApi = {
+                const resApi: ApiResponse = {
                         data: null,
                         message: 'This method is undefined',
                 };
