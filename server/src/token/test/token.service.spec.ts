@@ -103,7 +103,7 @@ describe('TokenService', () => {
         });
 
         afterAll(async () => {
-                await app.close();
                 await tokenRepository.clear();
+                await app.close();
         });
 });

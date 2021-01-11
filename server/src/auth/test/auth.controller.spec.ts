@@ -153,7 +153,7 @@ describe('AuthController', () => {
         });
 
         afterAll(async () => {
-                await app.close();
                 await userRepository.clear();
+                await app.close();
         });
 });

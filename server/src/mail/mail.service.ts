@@ -23,6 +23,24 @@ export class MailService {
                 return this.sendMail(receiver, content, 'Reset you password');
         }
 
+        /**
+         *
+         * @param receiver mail of user
+         * @param key the key for reset password
+         */
+        otpMail(receiver: string, key: string) {
+                const content = `
+                                To authenticate, please use the following One Time Password (OTP): 
+                                <br/>
+                                <strong style="font-size: 18px;">${key}</strong>
+                                <br/>
+                                Do not share this OTP with anyone. My Quiz takes your account security very seriously.
+                                <br/>
+                                If you don’t use this link within 5 minutes, it will expire.
+                                `;
+                return this.sendMail(receiver, content, 'OTP');
+        }
+
         private sendMail(receiver: string, content: string, subject = 'My Quiz') {
                 const msg: mail.MailDataRequired = {
                         to: receiver,

@@ -11,12 +11,8 @@
 - [ ] upload avatar testing
 - [ ] save project as a kit
 - [ ] update quiz entity
-- [ ] confirm email by otp
-- [ ] generate otp by email
 - [ ] edit msg for vi
 - [ ] build docker
-- [ ] write test for otp
-- [ ] create form for otp mail
 
 # Today schedule
 
@@ -24,6 +20,10 @@
 
 # Done jobs
 
+- [x] ~~_confirm email by otp_~~ [2021-01-11]
+- [x] ~~_generate otp by email_~~ [2021-01-11]
+- [x] ~~_write test for otp_~~ [2021-01-11]
+- [x] ~~_create form for otp mail_~~ [2021-01-11]
 - [x] ~~_write swagger for login, change password_~~ [2021-01-10]
 - [x] ~~_create git hub for pattern_~~ [2021-01-10]
 - [x] ~~_update user information when login with provider_~~ [2021-01-10]

@@ -11,6 +11,10 @@ export class UserService {
         constructor(@InjectRepository(User) private readonly userRepository: UserRepository) {}
 
         async updateUser(user: User) {
+                if (typeof user._id == 'string') {
+                        user._id = new ObjectId(user._id);
+                }
+
                 return await this.userRepository.save(user);
         }
 

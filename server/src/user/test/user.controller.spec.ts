@@ -12,12 +12,15 @@ import { AuthService } from '../../auth/auth.service';
 import { User } from '../entities/user.entity';
 import { UpdateUserDto } from '../dto/updateUser.dto';
 import { CreateUserDto } from '../../auth/dto/createUser.dto';
+import { UpdateEmailDto } from '../dto/updateEmail.dto';
+import { RedisService } from '../../redis/redis.service';
 
 describe('userController', () => {
         let app: INestApplication;
         let userRepository: UserRepository;
         let authService: AuthService;
         let tokenService: TokenService;
+        let redisService: RedisService;
         let cookie: string;
 
         let userInfo: User;
@@ -26,7 +29,7 @@ describe('userController', () => {
                 app = getApp;
 
                 tokenService = module.get<TokenService>(TokenService);
-
+                redisService = module.get<RedisService>(RedisService);
                 authService = module.get<AuthService>(AuthService);
                 userRepository = module.get<UserRepository>(UserRepository);
         });
@@ -119,7 +122,6 @@ describe('userController', () => {
                 beforeEach(async () => {
                         const getUser = fakeUser();
                         dummyInput = {
-                                email: getUser.email,
                                 fullName: getUser.fullName,
                         };
                 });
@@ -129,18 +131,7 @@ describe('userController', () => {
 
                         const user = await userRepository.findOne({ username: userInfo.username });
 
-                        expect(user.email).toBe(dummyInput.email);
                         expect(user.fullName).toBe(dummyInput.fullName);
-                });
-
-                it('Failed (wrong email pattern)', async () => {
-                        dummyInput.email = fakeData(10, 'lettersAndNumbers');
-                        const res = await callApi(dummyInput);
-                        const user = await userRepository.findOne({ username: userInfo.username });
-
-                        expect(user.fullName).not.toBe(dummyInput.fullName);
-                        expect(user.email).not.toBe(dummyInput.email);
-                        expect(res.status).toBe(400);
                 });
         });
 
@@ -190,8 +181,59 @@ describe('userController', () => {
                 });
         });
 
+        describe('POST /email', () => {
+                beforeAll(async () => {
+                        let user = fakeUser();
+                        user.email = 'example123@gmail.com';
+                        user = await userRepository.save(user);
+                });
+
+                const reqApi = (input: UpdateEmailDto) => supertest(app.getHttpServer()).post('/api/user/email').set({ cookie }).send(input);
+
+                it('Pass', async () => {
+                        const res = await reqApi({ email: 'example@gmail.com' });
+
+                        expect(res.status).toBe(201);
+                        expect(res.body).toBeDefined();
+                });
+
+                it('Failed (email does not exist)', async () => {
+                        const res = await reqApi({ email: 'example123@gmail.com' });
+                        expect(res.status).toBe(400);
+                        expect(res.body).toBeDefined();
+                });
+        });
+
+        describe('PUT /email/:key', () => {
+                const reqApi = (key: string) =>
+                        supertest(app.getHttpServer())
+                                .put('/api/user/email/' + key)
+                                .send();
+
+                beforeAll(async () => {
+                        const fUser = fakeUser();
+                        const user = await userRepository.save(fUser);
+                        user.email = 'hello@gmail.com';
+                        const token = tokenService.generateJWT(user);
+                        redisService.setByValue('123456', token);
+                });
+
+                it('Pass', async () => {
+                        const res = await reqApi('123456');
+                        expect(res.status).toBe(200);
+                        expect(res.body).toBeDefined();
+                });
+
+                it('Failed (reset key have been delete)', async () => {
+                        const res = await reqApi('123456');
+
+                        expect(res.status).toBe(400);
+                        expect(res.body).toBeDefined();
+                });
+        });
+
         afterAll(async () => {
-                await app.close();
                 await userRepository.clear();
+                await app.close();
         });
 });

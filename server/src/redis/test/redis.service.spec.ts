@@ -50,7 +50,7 @@ describe('Redis Service', () => {
         });
 
         afterAll(async () => {
-                redisClient.flushdb();
+                await redisClient.flushdb();
                 await app.close();
         });
 });

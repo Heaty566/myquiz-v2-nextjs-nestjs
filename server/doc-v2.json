@@ -285,6 +285,72 @@
                                 }
                         }
                 },
+                "/api/user/email/:key": {
+                        "put": {
+                                "tags": ["user"],
+                                "summary": "update user email with otp ke ",
+                                "responses": {
+                                        "201": {
+                                                "description": "update user email with otp key",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "$ref": "#/components/schemas/CommonResponseApi"
+                                                                }
+                                                        }
+                                                }
+                                        },
+                                        "400": {
+                                                "description": "opt key doesn't exist or expired",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "$ref": "#/components/schemas/BadRequestApi"
+                                                                }
+                                                        }
+                                                }
+                                        }
+                                }
+                        }
+                },
+                "/api/user/email": {
+                        "post": {
+                                "tags": ["user"],
+                                "summary": "request otp key to update email",
+                                "requestBody": {
+                                        "content": {
+                                                "application/json": {
+                                                        "schema": {
+                                                                "$ref": "#/components/schemas/UpdateEmailDto"
+                                                        }
+                                                }
+                                        },
+                                        "required": true
+                                },
+                                "responses": {
+                                        "201": {
+                                                "description": "this will send an email with otp key to user",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "$ref": "#/components/schemas/CommonResponseApi"
+                                                                }
+                                                        }
+                                                }
+                                        },
+                                        "400": {
+                                                "description": "invalid input or email is taken",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "$ref": "#/components/schemas/BadRequestApi"
+                                                                }
+                                                        }
+                                                }
+                                        }
+                                }
+                        }
+                },
                 "/api/auth/google": {
                         "get": {
                                 "tags": ["auth"],
@@ -584,6 +650,16 @@
         },
         "components": {
                 "schemas": {
+                        "UpdateEmailDto": {
+                                "type": "object",
+                                "properties": {
+                                        "email": {
+                                                "type": "string",
+                                                "example": "example@gmail.com"
+                                        }
+                                }
+                        },
+
                         "UserInfo": {
                                 "type": "object",
                                 "properties": {
