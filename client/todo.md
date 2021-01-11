@@ -17,6 +17,10 @@
 - [ ] compression add image
 - [ ] check minifame
 - [ ] navbar menu
+- [ ] forget password
+- [ ] user page
+- [ ] user edit page
+- [ ] change background style
 - [ ] add seo for home page
 - [ ] add seo for login page
 - [ ] add seo for register page
