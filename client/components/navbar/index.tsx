@@ -17,7 +17,7 @@ export const Navbar: React.FunctionComponent<NavbarProps> = () => {
         return (
                 <NavbarContainer $alignItems="center" $justifyContent="space-between">
                         <Link href="/">
-                                <NavbarBrand>
+                                <NavbarBrand href="/">
                                         <Image src="/asset/icon/nav-logo.svg" alt="" height="32" width="120" />
                                 </NavbarBrand>
                         </Link>

@@ -55,6 +55,7 @@ export const NavbarLeft = styled(Layout)(
                 & > * {
                         margin-left: ${theme.ruler * 3}px;
                 }
+                height: 32px;
 
                 @media ${breakPoint.md} {
                         display: none !important;

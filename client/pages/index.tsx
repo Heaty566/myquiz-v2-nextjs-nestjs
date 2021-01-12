@@ -16,13 +16,13 @@ const HomeCenter = dynamic(() => import('../style/views/index/homeCenter'), { lo
 export const HomePage: React.FunctionComponent<IndexProps> = () => {
         const [HomeBottom, check2] = useComponent<HomeBottomProps>({
                 RefComponent: dynamic(() => import('../style/views/index/homeBottom'), { loading: () => <CircleLoading marginTop={8} /> }),
-                offset: 100,
+                offset: 500,
 
                 Loading: () => <CircleLoading marginTop={8} />,
         });
         const [Footer] = useComponent<FooterProps>({
                 RefComponent: dynamic(() => import('../components/footer'), { loading: () => <CircleLoading marginTop={8} /> }),
-                offset: 100,
+                offset: 300,
                 Loading: () => <CircleLoading marginTop={8} />,
                 isRender: check2,
         });

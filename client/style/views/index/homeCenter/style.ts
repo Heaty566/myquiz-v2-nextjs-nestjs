@@ -78,7 +78,7 @@ export const CategoryContainer = styled(Layout)(
                         height: 100%;
                         width: 100%;
                         z-index: -10;
-                        clip-path: polygon(0 6.67%, 100% 0, 100% 94%, 0% 100%);
+                        transform: skewY(-4deg);
                         background-color: ${colors.white.two};
                 }
         `,

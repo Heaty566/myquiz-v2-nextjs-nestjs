@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';
 import { useSelector } from 'react-redux';
@@ -13,10 +13,11 @@ import { LoginWithSocial } from '../../../components/form/loginWithSocial';
 import { BtnFunc } from '../../../components/button';
 import { HeadMeta } from '../../../components/head';
 //*Import Redux
-import { store } from '../../../store';
+import { store, RootState } from '../../../store';
 import { UserRegisterDto } from '../../../store/auth/dto';
+import { ApiState, apiActions } from '../../../store/api';
 import { authActions } from '../../../store/auth';
-import { apiSelector } from '../../../store/api';
+// import { apiSelector } from '../../../store/api';
 export interface UserLoginProps {}
 
 const defaultValues: UserRegisterDto = {
@@ -28,28 +29,33 @@ const defaultValues: UserRegisterDto = {
 
 const UserRegister: React.FunctionComponent<UserLoginProps> = () => {
         const { register, handleSubmit } = useForm<UserRegisterDto>({ defaultValues });
-        const [errors, setErrors] = React.useState<UserRegisterDto>(defaultValues);
-        const apiState = useSelector(apiSelector);
+        const [errors, setErrors] = useState<UserRegisterDto>(defaultValues);
+        const apiState = useSelector<RootState, ApiState>((state) => state.api);
 
         const onSubmit = (data: UserRegisterDto) => store.dispatch(authActions.registerUser(data));
 
-        React.useEffect(() => {
+        useEffect(() => {
                 const { errorDetails, isError } = apiState;
+
                 if (
                         isError &&
                         errorDetails &&
-                        errorDetails.username &&
-                        errorDetails.password &&
-                        errorDetails.confirmPassword &&
-                        errorDetails.fullName
+                        (errorDetails.username || errorDetails.password || errorDetails.confirmPassword || errorDetails.fullName)
                 )
                         setErrors({
-                                password: errorDetails.username,
-                                username: errorDetails.password,
+                                password: errorDetails.password,
+                                username: errorDetails.username,
                                 confirmPassword: errorDetails.confirmPassword,
                                 fullName: errorDetails.fullName,
                         });
-        }, [apiState.isError]);
+                else setErrors(defaultValues);
+        }, [apiState]);
+
+        useEffect(() => {
+                return () => {
+                        store.dispatch(apiActions.resetState());
+                };
+        }, []);
 
         return (
                 <>

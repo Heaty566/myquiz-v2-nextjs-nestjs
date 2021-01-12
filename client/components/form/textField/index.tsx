@@ -24,10 +24,14 @@ export const TextField: React.FunctionComponent<TextFieldProps> = ({
         return (
                 <TextFieldContainer>
                         <TextFieldLabel htmlFor={name}>{label}</TextFieldLabel>
-                        <TextFieldWrapper>
-                                <TextFieldInput name={name} placeholder={placeHolder} type={type} ref={() => register} />
+                        <TextFieldWrapper className={errorMsg ? 'active' : ''}>
+                                <TextFieldInput name={name} placeholder={placeHolder} type={type} ref={(data) => register(data)} />
                         </TextFieldWrapper>
-                        <TextFieldError>{errorMsg}</TextFieldError>
+                        {errorMsg && (
+                                <TextFieldError>
+                                        {label} {errorMsg}
+                                </TextFieldError>
+                        )}
                 </TextFieldContainer>
         );
 };
@@ -44,11 +48,20 @@ export const TextFieldPassword: React.FunctionComponent<TextFieldProps> = ({ nam
         return (
                 <TextFieldContainer>
                         <TextFieldLabel htmlFor={name}>{label}</TextFieldLabel>
-                        <TextFieldPasswordInput>
-                                <TextFieldInput name={name} placeholder={placeHolder} type={isSeen ? 'text' : 'password'} ref={() => register} />
+                        <TextFieldPasswordInput className={errorMsg ? 'active' : ''}>
+                                <TextFieldInput
+                                        name={name}
+                                        placeholder={placeHolder}
+                                        type={isSeen ? 'text' : 'password'}
+                                        ref={(data) => register(data)}
+                                />
                                 <Image src={imgSrc} alt="password" height="16" width="16" onClick={() => setSeen(!isSeen)} />
                         </TextFieldPasswordInput>
-                        <TextFieldError>{errorMsg}</TextFieldError>
+                        {errorMsg && (
+                                <TextFieldError>
+                                        {label} {errorMsg}
+                                </TextFieldError>
+                        )}
                 </TextFieldContainer>
         );
 };

@@ -13,7 +13,7 @@ export class JoiValidatorPipe implements PipeTransform {
                 const { error, value } = this.schema.validate(input, { abortEarly: false });
                 if (error) {
                         const errorResponse: ApiResponse = {
-                                detail: JoiErrorMapper(error),
+                                details: JoiErrorMapper(error),
                                 message: 'Invalid input',
                         };
                         throw new BadRequestException(errorResponse);

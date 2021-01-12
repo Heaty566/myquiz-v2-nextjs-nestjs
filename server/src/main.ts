@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { router } from './router';
+import { router } from './common/router';
 import { Logger } from '@nestjs/common';
 import { createClient } from 'redis';
 

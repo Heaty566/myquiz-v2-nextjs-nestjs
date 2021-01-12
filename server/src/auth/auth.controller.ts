@@ -41,7 +41,7 @@ export class AuthController {
                 @Res() res: Response,
         ) {
                 const isExistUsername = await this.userService.findUserByField('username', body.username);
-                if (isExistUsername) throw ErrorResponse.send({ message: 'Username is taken' }, 'BadRequestException');
+                if (isExistUsername) throw ErrorResponse.send({ details: { username: 'is taken' } }, 'BadRequestException');
 
                 const newUser = await this.authService.createNewUser(body);
                 const reToken = await this.tokenService.getRefreshToken(newUser);
@@ -57,7 +57,7 @@ export class AuthController {
         @Post('/login')
         @UsePipes(new JoiValidatorPipe(vLoginUserDto))
         async loginUser(@Body() body: LoginUserDto, @Res() res: Response) {
-                const errorResponse = ErrorResponse.send({ message: 'Username or Password are invalid' }, 'BadRequestException');
+                const errorResponse = ErrorResponse.send({ details: { username: 'or Password are invalid' } }, 'BadRequestException');
 
                 const getUser = await this.userService.findUserByField('username', body.username);
                 if (!getUser) throw errorResponse;
@@ -77,14 +77,14 @@ export class AuthController {
         @UsePipes(new JoiValidatorPipe(vEmailResetPassword))
         async resetUserPassword(@Body() body: EmailResetPasswordDto): Promise<ApiResponse> {
                 const user = await this.userService.findUserByField('email', body.email);
-                if (!user) throw ErrorResponse.send({ message: 'Email is not found' }, 'BadRequestException');
+                if (!user) throw ErrorResponse.send({ details: { email: 'is not found' } }, 'BadRequestException');
 
                 const jwt = this.tokenService.generateJWT(user);
                 const key = String(new ObjectId());
                 this.redisService.setByValue(key, jwt, 30);
 
                 const isSendSuccess = await this.mailService.forgetPasswordMail(user.email, key);
-                if (!isSendSuccess) throw ErrorResponse.send({ message: 'Can not send email to ' + body.email }, 'BadRequestException');
+                if (!isSendSuccess) throw ErrorResponse.send({ details: { email: 'Can not send email to ' + body.email } }, 'BadRequestException');
 
                 return {
                         message: 'An email has been sent to your email',
@@ -99,7 +99,7 @@ export class AuthController {
         @UsePipes(new JoiValidatorPipe(vPasswordResetDtoValidator))
         async resetPasswordHandler(@Body() body: PasswordResetDto): Promise<ApiResponse> {
                 const findRedisKey = await this.redisService.getByKey(body.resetKey);
-                if (!findRedisKey) throw ErrorResponse.send({ message: 'Reset key is invalid' }, 'BadRequestException');
+                if (!findRedisKey) throw ErrorResponse.send({ details: { resetKey: 'is invalid' } }, 'BadRequestException');
 
                 const decode = this.tokenService.decodeJWT<User>(findRedisKey);
                 const user = await this.userService.findUserByField('_id', decode._id);

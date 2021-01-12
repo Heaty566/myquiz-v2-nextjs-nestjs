@@ -4,10 +4,11 @@ import Image from 'next/image';
 import { useSelector } from 'react-redux';
 
 //* Import Redux
-import { store } from '../../../store';
+import { store, RootState } from '../../../store';
 import { UserLoginDto } from '../../../store/auth/dto';
 import { authActions } from '../../../store/auth';
-import { apiSelector } from '../../../store/api';
+import { apiActions, ApiState } from '../../../store/api';
+// import { apiSelector } from '../../../store/api';
 //* Import Style
 import { AuthFormContainer, AuthContainer, AuthExtraLink, AuthForm } from '../../../style/views/user/authFormStyle';
 import { Text } from '../../../style/typography';
@@ -29,16 +30,26 @@ const UserLogin: React.FunctionComponent<UserLoginProps> = () => {
         const { register, handleSubmit } = useForm<UserLoginDto>({
                 defaultValues,
         });
-        const [error, setError] = useState<UserLoginDto>(defaultValues);
-        const apiState = useSelector(apiSelector);
+        const [errors, setErrors] = useState<UserLoginDto>(defaultValues);
+        const apiState = useSelector<RootState, ApiState>((state) => state.api);
 
-        const onSubmit = (data: UserLoginDto) => store.dispatch(authActions.loginUser(data));
+        const onSubmit = (data: UserLoginDto) => {
+                store.dispatch(authActions.loginUser(data));
+        };
 
         useEffect(() => {
                 const { errorDetails, isError } = apiState;
-                if (isError && errorDetails && errorDetails.username && errorDetails.password)
-                        setError({ password: errorDetails.username, username: errorDetails.password });
-        }, [apiState.isError]);
+
+                if (isError && errorDetails && (errorDetails.username || errorDetails.password))
+                        setErrors({ password: errorDetails.password, username: errorDetails.username });
+                else setErrors(defaultValues);
+        }, [apiState]);
+
+        useEffect(() => {
+                return () => {
+                        store.dispatch(apiActions.resetState());
+                };
+        }, []);
 
         return (
                 <>
@@ -56,10 +67,10 @@ const UserLogin: React.FunctionComponent<UserLoginProps> = () => {
                                                         name="username"
                                                         label="Username"
                                                         register={register}
-                                                        errorMsg={error.username}
+                                                        errorMsg={errors.username}
                                                         data-test="input:username"
                                                 />
-                                                <TextFieldPassword name="password" label="Password" register={register} errorMsg={error.password} />
+                                                <TextFieldPassword name="password" label="Password" register={register} errorMsg={errors.password} />
                                                 <AuthExtraLink>Forgot your password?</AuthExtraLink>
                                                 <BtnFunc label="Sign In" isApiCall={true} />
                                         </AuthForm>

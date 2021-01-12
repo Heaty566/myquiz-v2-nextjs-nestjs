@@ -11,12 +11,10 @@ export class AppController {
         /*
         this router is count visitor
         */
-        @Post('')
-        @UseInterceptors(FileInterceptor('file'))
-        async getVisitor(@UploadedFile() file: File) {
-                console.log(file);
-                const hello = await this.awsService.uploadFile(file, '123', 'user');
-                console.log(hello);
-                return { data: '12' };
-        }
+        // @Post('')
+        // @UseInterceptors(FileInterceptor('file'))
+        // async getVisitor(@UploadedFile() file: File) {
+        //         const hello = await this.awsService.uploadFile(file, '123', 'user');
+        //         return { data: '12' };
+        // }
 }

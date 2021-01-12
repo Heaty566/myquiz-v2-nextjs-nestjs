@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { loginUser, registerUser } from './action';
-import { RootState } from '..';
 
 export interface UserInfo {
         username: string;
@@ -10,7 +9,7 @@ export interface UserInfo {
         role: string;
 }
 
-interface AuthState extends UserInfo {
+export interface AuthState extends UserInfo {
         isLogin: boolean;
 }
 
@@ -27,6 +26,12 @@ const auth = createSlice({
         name: 'auth',
         initialState,
         reducers: {},
+
+        extraReducers: (builder) => {
+                builder.addCase(loginUser.fulfilled, (state, { payload }) => {
+                        state = { ...state, ...payload };
+                });
+        },
 });
 
 export const authActions = {
@@ -34,4 +39,3 @@ export const authActions = {
         registerUser,
 };
 export const authReducer = auth.reducer;
-export const authSelector = (state: RootState) => state.auth;

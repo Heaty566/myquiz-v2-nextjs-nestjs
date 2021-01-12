@@ -8,10 +8,10 @@ import * as helmet from 'helmet';
 import * as I18n from 'i18n';
 
 //* Internal import
-import { NotFoundApiHandler } from './common/exception/notfound.exception';
-import { RuntimeApiHandler } from './common/exception/runtime.exception';
-import * as doc from '../doc-v2.json';
-import { CONSTANT } from './common/constant';
+import { NotFoundApiHandler } from './exception/notfound.exception';
+import { RuntimeApiHandler } from './exception/runtime.exception';
+import * as doc from '../../doc-v2.json';
+import { CONSTANT } from './constant';
 
 //*todo fix my path deo biet nam o dau
 I18n.configure({

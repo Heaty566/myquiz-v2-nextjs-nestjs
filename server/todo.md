@@ -4,15 +4,11 @@
 - [ ] better logger
 - [ ] refactor code
 - [ ] write swagger for router
-- [ ] format response pattern
-- [ ] upload avatar
-- [ ] set up aws
-- [ ] upload image testing
-- [ ] upload avatar testing
 - [ ] save project as a kit
 - [ ] update quiz entity
 - [ ] edit msg for vi
 - [ ] build docker
+- [ ] more mock test
 
 # Today schedule
 
@@ -20,6 +16,11 @@
 
 # Done jobs
 
+- [x] ~~_format response pattern_~~ [2021-01-12]
+- [x] ~~_upload avatar_~~ [2021-01-12]
+- [x] ~~_set up aws_~~ [2021-01-12]
+- [x] ~~_upload image testing_~~ [2021-01-12]
+- [x] ~~_upload avatar testing_~~ [2021-01-12]
 - [x] ~~_confirm email by otp_~~ [2021-01-11]
 - [x] ~~_generate otp by email_~~ [2021-01-11]
 - [x] ~~_write test for otp_~~ [2021-01-11]

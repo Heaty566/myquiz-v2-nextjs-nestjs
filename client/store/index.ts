@@ -1,15 +1,18 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { authReducer } from './auth';
-import { apiReducer } from './api';
+import { apiReducer, ApiState } from './api';
+import { authReducer, AuthState } from './auth';
 
-const reducers = combineReducers({
-        auth: authReducer,
+export interface RootState {
+        api: ApiState;
+        auth: AuthState;
+}
+
+const reducers = combineReducers<RootState>({
         api: apiReducer,
+        auth: authReducer,
 });
 
 export const store = configureStore({
         reducer: reducers,
         devTools: process.env.NODE_ENV === 'production' ? false : true,
 });
-
-export type RootState = ReturnType<typeof reducers>;

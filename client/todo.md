@@ -18,6 +18,7 @@
 - [ ] add seo for home page
 - [ ] add seo for login page
 - [ ] add seo for register page
+- [ ] fix input high
 
 # Today schedule
 

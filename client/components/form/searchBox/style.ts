@@ -4,8 +4,8 @@ export const SearchBoxContainer = styled.div(
         ({ theme }) => css`
                 background-color: ${theme.colors.primary.two};
                 border-radius: 3px;
-                min-width: 200px;
-                height: 32px;
+                height: inherit;
+
                 display: grid;
                 grid-template-columns: 1fr 32px;
                 overflow: hidden;
