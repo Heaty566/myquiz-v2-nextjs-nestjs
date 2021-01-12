@@ -15,6 +15,16 @@ import { CreateUserDto } from '../../../auth/dto/createUser.dto';
 import { UpdateEmailDto } from '../dto/updateEmail.dto';
 import { RedisService } from '../../../providers/redis/redis.service';
 
+const mockS3Object = jest.fn();
+jest.mock('aws-sdk', () => {
+        return {
+                config: {
+                        update: jest.fn(),
+                },
+                S3: jest.fn(() => ({ putObject: mockS3Object })),
+        };
+});
+
 describe('userController', () => {
         let app: INestApplication;
         let userRepository: UserRepository;
@@ -226,6 +236,58 @@ describe('userController', () => {
 
                 it('Failed (reset key have been delete)', async () => {
                         const res = await reqApi('123456');
+
+                        expect(res.status).toBe(400);
+                        expect(res.body).toBeDefined();
+                });
+        });
+        describe('POST /avatar', () => {
+                const reqApi = (file) => supertest(app.getHttpServer()).post('/api/user/avatar').set({ cookie }).attach('avatar', file);
+
+                it('Pass ', async () => {
+                        mockS3Object.mockImplementation(() => {
+                                return {
+                                        promise() {
+                                                return Promise.resolve();
+                                        },
+                                };
+                        });
+
+                        const filePath = `${process.cwd()}/test/testFile/20kb.png`;
+                        const res = await reqApi(filePath);
+                        const user = await userRepository.findOne({ username: userInfo.username });
+                        expect(user.avatarUrl).toBeDefined();
+                        expect(res.status).toBe(201);
+                        expect(res.body).toBeDefined();
+                });
+                it('Failed aws reject', async () => {
+                        mockS3Object.mockImplementation(() => {
+                                return {
+                                        promise() {
+                                                return Promise.reject();
+                                        },
+                                };
+                        });
+
+                        const filePath = `${process.cwd()}/test/testFile/20kb.png`;
+                        const res = await reqApi(filePath);
+                        expect(res.status).toBe(500);
+                        expect(res.body).toBeDefined();
+                });
+                it('Failed (file type not support)', async () => {
+                        const filePath = `${process.cwd()}/test/testFile/text.txt`;
+                        const res = await reqApi(filePath);
+                        expect(res.status).toBe(400);
+                        expect(res.body).toBeDefined();
+                });
+                it('Failed (file is too big)', async () => {
+                        const filePath = `${process.cwd()}/test/testFile/4mb.png`;
+                        const res = await reqApi(filePath);
+                        expect(res.status).toBe(400);
+                        expect(res.body).toBeDefined();
+                });
+                it('Failed (no file)', async () => {
+                        const res = await supertest(app.getHttpServer()).post('/api/user/avatar').set({ cookie }).send();
 
                         expect(res.status).toBe(400);
                         expect(res.body).toBeDefined();

@@ -13,6 +13,8 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './models/user/user.module';
 import { MailModule } from './providers/mail/mail.module';
 import { RedisService } from './providers/redis/redis.service';
+import { AwsService } from './providers/aws/aws.service';
+import { AppController } from './app.controller';
 
 const Config = ConfigModule.forRoot({
         isGlobal: true,
@@ -30,14 +32,15 @@ const DBConfig = TypeOrmModule.forRoot({
 const JwtConfig = JwtModule.register({ secret: process.env.JWT_SECRET_KEY });
 
 @Module({
-        imports: [Config, DBConfig, UserModule, JwtConfig, AuthModule, TokenModule, RedisModule, MailModule],
-        controllers: [],
+        imports: [Config, DBConfig, UserModule, JwtConfig, AuthModule, TokenModule, RedisModule, MailModule, AwsService],
+        controllers: [AppController],
         providers: [
                 {
                         provide: APP_INTERCEPTOR,
                         useClass: CountVisitorInterceptor,
                 },
                 RedisService,
+                AwsService,
         ],
 })
 export class AppModule {}

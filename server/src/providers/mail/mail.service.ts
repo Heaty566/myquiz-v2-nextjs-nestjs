@@ -60,13 +60,13 @@ export class MailService {
                                 },
                         },
                 };
-                return mail.send(msg).then(
-                        () => {
+                return mail
+                        .send(msg)
+                        .then(() => {
                                 return true;
-                        },
-                        (error) => {
+                        })
+                        .catch(() => {
                                 return false;
-                        },
-                );
+                        });
         }
 }

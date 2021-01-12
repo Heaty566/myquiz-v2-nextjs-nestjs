@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards, Req, Put, UsePipes, Body, Post, Param } from '@nestjs/common';
+import { Controller, Get, UseGuards, Req, Put, UsePipes, Body, Post, Param, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { Request } from 'express';
 import * as _ from 'lodash';
 
@@ -19,6 +19,9 @@ import { otpGenerator } from '../../common/helper/otpGenerator';
 import { TokenService } from '../../providers/token/token.service';
 import { User } from './entities/user.entity';
 import { ErrorResponse } from '../../common/interfaces/ErrorResponse';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { AwsService } from '../../providers/aws/aws.service';
+import { File } from '../../common/interfaces/File';
 
 @Controller('user')
 export class UserController {
@@ -28,6 +31,7 @@ export class UserController {
                 private readonly authService: AuthService,
                 private readonly mailService: MailService,
                 private readonly tokenService: TokenService,
+                private readonly awsService: AwsService,
         ) {}
 
         @Get('')
@@ -81,6 +85,25 @@ export class UserController {
                 return {
                         message: 'An email has been sent to your email',
                 };
+        }
+
+        @Post('/avatar')
+        @UseGuards(UserAuth)
+        @UseInterceptors(FileInterceptor('avatar'))
+        async uploadAvatar(@UploadedFile() file: File, @Req() req: Request): Promise<ApiResponse> {
+                if (!file) throw ErrorResponse.send({ message: 'File is not found' }, 'BadRequestException');
+                if (!this.awsService.checkFileExtension(file)) throw ErrorResponse.send({ message: 'File is not supported' }, 'BadRequestException');
+                if (!this.awsService.checkFileSize(file, 1))
+                        throw ErrorResponse.send({ message: 'File is too big ( limit size: 1MB)' }, 'BadRequestException');
+
+                const filePath = `${req.user._id}/avatar/ `;
+                const fileName = await this.awsService.uploadFile(file, filePath, 'user');
+                if (!fileName) throw ErrorResponse.send({ message: 'Something went wrong' }, 'InternalServerErrorException');
+
+                req.user.avatarUrl = fileName;
+                await this.userService.updateUser(req.user);
+
+                return { message: 'Upload avatar success' };
         }
 
         @Put('/email/:key')
