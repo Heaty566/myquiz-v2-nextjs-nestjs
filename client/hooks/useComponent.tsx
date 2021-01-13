@@ -7,6 +7,7 @@ interface useComponentProps<T> {
         RefComponent: React.ComponentType<T>;
         offset: number;
         isRender?: boolean;
+        delay?: number;
 }
 
 export function useComponent<T>({
@@ -14,6 +15,7 @@ export function useComponent<T>({
         offset = 200,
         Loading = () => <h1>Loading...</h1>,
         isRender = true,
+        delay = 1000,
 }: useComponentProps<T>): [Function, boolean] {
         const wrapperRef = useRef<HTMLDivElement>(null);
         const [isIntersect, setIntersect] = useState(false);
@@ -31,6 +33,17 @@ export function useComponent<T>({
         }, [offset, wrapperRef.current]);
 
         useEffect(() => {
+                const intervalId = setInterval(() => {
+                        if (isRender) setIntersect(true);
+                }, delay);
+
+                return () => {
+                        clearInterval(intervalId);
+                };
+        }, []);
+
+        useEffect(() => {
+                if (delay < 500) console.error('Delay is too small');
                 handleOnIntersection();
                 window.addEventListener('scroll', handleOnIntersection);
 

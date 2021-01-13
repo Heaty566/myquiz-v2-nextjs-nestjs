@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { authActions } from '../auth';
 import { JoiError } from './dto';
 
 export interface ApiState {

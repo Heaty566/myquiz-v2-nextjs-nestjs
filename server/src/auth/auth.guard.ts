@@ -24,7 +24,7 @@ export class UserAuth implements CanActivate {
 
                 //get token and re-token from cookie
                 const refreshToken: string = req.cookies['re-token'] || '';
-                let authToken: string = req.cookies['token'] || '';
+                let authToken: string = req.cookies['auth-token'] || '';
                 if (!refreshToken) throw ErrorResponse.send({ message: 'Invalid token' }, 'UnauthorizedException');
 
                 let token = await this.tokenService.getValidToken(authToken);
@@ -34,7 +34,7 @@ export class UserAuth implements CanActivate {
                         if (!token) throw ErrorResponse.send({ message: 'Invalid token' }, 'UnauthorizedException');
 
                         authToken = String(token._id);
-                        res.cookie('token', authToken, { maxAge: CONSTANT.MINUTE * 5 });
+                        res.cookie('auth-token', authToken, { maxAge: CONSTANT.MINUTE * 5 });
                 }
 
                 //generate token if it does not exist

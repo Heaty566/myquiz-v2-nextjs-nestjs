@@ -7,13 +7,14 @@ import { useSelector } from 'react-redux';
 import { store, RootState } from '../../../store';
 import { UserLoginDto } from '../../../store/auth/dto';
 import { authActions } from '../../../store/auth';
-import { apiActions, ApiState } from '../../../store/api';
+import { ApiState } from '../../../store/api';
 // import { apiSelector } from '../../../store/api';
 //* Import Style
 import { AuthFormContainer, AuthContainer, AuthExtraLink, AuthForm } from '../../../style/views/user/authFormStyle';
 import { Text } from '../../../style/typography';
 import { Layout } from '../../../style/layout';
 //* Import Component
+import { RouterHOC } from '../../../HOC/routerHOC';
 import { LoginWithSocial } from '../../../components/form/loginWithSocial';
 import { TextField, TextFieldPassword } from '../../../components/form/textField';
 import { BtnFunc } from '../../../components/button';
@@ -26,34 +27,24 @@ const defaultValues: UserLoginDto = {
         username: '',
 };
 
-const UserLogin: React.FunctionComponent<UserLoginProps> = () => {
+const Login: React.FunctionComponent<UserLoginProps> = () => {
         const { register, handleSubmit } = useForm<UserLoginDto>({
                 defaultValues,
         });
         const [errors, setErrors] = useState<UserLoginDto>(defaultValues);
         const apiState = useSelector<RootState, ApiState>((state) => state.api);
-
-        const onSubmit = (data: UserLoginDto) => {
-                store.dispatch(authActions.loginUser(data));
-        };
+        const onSubmit = (data: UserLoginDto) => store.dispatch(authActions.loginUser(data));
 
         useEffect(() => {
                 const { errorDetails, isError } = apiState;
 
-                if (isError && errorDetails && (errorDetails.username || errorDetails.password))
-                        setErrors({ password: errorDetails.password, username: errorDetails.username });
+                if (isError && errorDetails) setErrors({ ...errors, ...errorDetails });
                 else setErrors(defaultValues);
         }, [apiState]);
 
-        useEffect(() => {
-                return () => {
-                        store.dispatch(apiActions.resetState());
-                };
-        }, []);
-
         return (
                 <>
-                        <HeadMeta pageTitle="Login" />
+                        <HeadMeta title="Login" />
                         <AuthContainer $alignItems="center" $justifyContent="center">
                                 <AuthFormContainer>
                                         <Layout $alignItems="center" $justifyContent="center" $gutter={1}>
@@ -81,4 +72,5 @@ const UserLogin: React.FunctionComponent<UserLoginProps> = () => {
         );
 };
 
-export default UserLogin;
+const LoginRouter = (props: any) => <RouterHOC Component={Login} props={props} />;
+export default LoginRouter;

@@ -15,8 +15,9 @@ import { HeadMeta } from '../../../components/head';
 //*Import Redux
 import { store, RootState } from '../../../store';
 import { UserRegisterDto } from '../../../store/auth/dto';
-import { ApiState, apiActions } from '../../../store/api';
+import { ApiState } from '../../../store/api';
 import { authActions } from '../../../store/auth';
+import { RouterHOC } from '../../../HOC/routerHOC';
 // import { apiSelector } from '../../../store/api';
 export interface UserLoginProps {}
 
@@ -27,7 +28,7 @@ const defaultValues: UserRegisterDto = {
         fullName: '',
 };
 
-const UserRegister: React.FunctionComponent<UserLoginProps> = () => {
+const Register: React.FunctionComponent<UserLoginProps> = () => {
         const { register, handleSubmit } = useForm<UserRegisterDto>({ defaultValues });
         const [errors, setErrors] = useState<UserRegisterDto>(defaultValues);
         const apiState = useSelector<RootState, ApiState>((state) => state.api);
@@ -37,29 +38,13 @@ const UserRegister: React.FunctionComponent<UserLoginProps> = () => {
         useEffect(() => {
                 const { errorDetails, isError } = apiState;
 
-                if (
-                        isError &&
-                        errorDetails &&
-                        (errorDetails.username || errorDetails.password || errorDetails.confirmPassword || errorDetails.fullName)
-                )
-                        setErrors({
-                                password: errorDetails.password,
-                                username: errorDetails.username,
-                                confirmPassword: errorDetails.confirmPassword,
-                                fullName: errorDetails.fullName,
-                        });
+                if (isError && errorDetails) setErrors({ ...errors, ...errorDetails });
                 else setErrors(defaultValues);
         }, [apiState]);
 
-        useEffect(() => {
-                return () => {
-                        store.dispatch(apiActions.resetState());
-                };
-        }, []);
-
         return (
                 <>
-                        <HeadMeta pageTitle="Register" />
+                        <HeadMeta title="Register" />
                         <AuthContainer $alignItems="center" $justifyContent="center">
                                 <AuthFormContainer>
                                         <Layout $alignItems="center" $justifyContent="center" $gutter={1}>
@@ -89,4 +74,5 @@ const UserRegister: React.FunctionComponent<UserLoginProps> = () => {
         );
 };
 
-export default UserRegister;
+const RegisterRouter = (props: any) => <RouterHOC Component={Register} props={props} />;
+export default RegisterRouter;

@@ -17,7 +17,7 @@ export const HomePage: React.FunctionComponent<IndexProps> = () => {
         const [HomeBottom, check2] = useComponent<HomeBottomProps>({
                 RefComponent: dynamic(() => import('../style/views/index/homeBottom'), { loading: () => <CircleLoading marginTop={8} /> }),
                 offset: 500,
-
+                delay: 2000,
                 Loading: () => <CircleLoading marginTop={8} />,
         });
         const [Footer] = useComponent<FooterProps>({
@@ -25,11 +25,12 @@ export const HomePage: React.FunctionComponent<IndexProps> = () => {
                 offset: 300,
                 Loading: () => <CircleLoading marginTop={8} />,
                 isRender: check2,
+                delay: 2000,
         });
 
         return (
                 <>
-                        <HeadMeta pageTitle="Home" isFollowPage={true} isIndexPage={true} />
+                        <HeadMeta title="Home" isFollowPage={true} isIndexPage={true} />
                         <HomeTop />
                         <HomeCenter />
                         <HomeBottom />

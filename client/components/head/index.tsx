@@ -2,7 +2,7 @@ import * as React from 'react';
 import Head from 'next/head';
 
 export interface HeadProps {
-        pageTitle: string;
+        title: string;
         description?: string;
         isIndexPage?: boolean;
         isFollowPage?: boolean;
@@ -12,7 +12,7 @@ export interface HeadProps {
 }
 
 export const HeadMeta: React.FunctionComponent<HeadProps> = ({
-        pageTitle = '',
+        title = 'MyQuiz',
         isIndexPage = false,
         isFollowPage = true,
         description = 'My Quiz is an awesome platform to make Your Awesome Quiz And Become Your Most Unstoppable Self',
@@ -24,6 +24,7 @@ export const HeadMeta: React.FunctionComponent<HeadProps> = ({
         const metaIsFollowPage = isFollowPage ? 'follow' : 'nofollow';
         const metaRobots = `${metaIndexPage},${metaIsFollowPage}`;
         const canonicalLink = canonical;
+        const pageTitle = title === 'Home' ? 'MyQuiz' : `${title} | MyQuiz`;
 
         return (
                 <Head>
@@ -32,7 +33,7 @@ export const HeadMeta: React.FunctionComponent<HeadProps> = ({
                         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0" />
                         <meta name="google-site-verification" content="BWOjVaLMrQlDDZSMNRtScpbtQTBOWSuuZLoFe6IwjV4" />
                         {/* common header */}
-                        <title>{pageTitle} | MyQuiz</title>
+                        <title>{pageTitle}</title>
                         <meta name="description" content={description} />
                         <meta name="robots" content={metaRobots} />
                         <meta name="keywords" content={keyword} />

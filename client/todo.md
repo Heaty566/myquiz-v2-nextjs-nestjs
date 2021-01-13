@@ -14,16 +14,18 @@
 - [ ] handle update email with dto
 - [ ] user page
 - [ ] user edit page
-- [ ] change background style
 - [ ] add seo for home page
 - [ ] add seo for login page
 - [ ] add seo for register page
 - [ ] fix input high
+- [ ] navbar with user
+- [ ] navbar menu
 
 # Today schedule
 
 # Done jobs
 
+- [x] ~~_change background style_~~ [2021-01-14]
 - [x] ~~_writing test for login_~~ [2021-01-11]
 - [x] ~~_writing test for register_~~ [2021-01-11]
 - [x] ~~_writing test for index_~~ [2021-01-11]
