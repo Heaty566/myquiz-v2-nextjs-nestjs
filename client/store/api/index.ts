@@ -29,7 +29,7 @@ const reducer = createSlice({
                         state.isError = true;
                 },
         },
-        extraReducers: (builder) => {},
+        extraReducers: () => {},
 });
 
 export const apiActions = {

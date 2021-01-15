@@ -15,10 +15,10 @@ services:
                 expose:
                         - 4000
                 env_file:
-                        - ./data-dev/config/server.env
+                        - ./data-test/config/server.env
         nginx:
                 image: nginx:1.15-alpine
                 volumes:
-                        - ./data-dev/nginx:/etc/nginx/conf.d
+                        - ./data-test/nginx:/etc/nginx/conf.d
                 ports:
                         - 80:80

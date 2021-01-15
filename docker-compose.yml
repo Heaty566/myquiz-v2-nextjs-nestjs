@@ -1,23 +1,18 @@
 version: "3"
 services:
         redis:
-<<<<<<< HEAD
-                image: redis
-                ports:
-                        - 7000:6379
-
-=======
                 image: "redis:alpine"
                 expose:
                         - 6379
->>>>>>> e4d01bfac93416d1cae1d2595125f86e0121adfb
         server:
+                build: ./server
                 image: heaty566/myquiz-v2-server:latest
                 expose:
                         - 4000
                 env_file:
                         - ./data/config/server.env
         client:
+                build: "./client"
                 image: heaty566/myquiz-v2-client:latest
                 expose:
                         - 3000

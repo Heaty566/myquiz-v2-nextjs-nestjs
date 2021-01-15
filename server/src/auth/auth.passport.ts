@@ -15,7 +15,7 @@ export class GoogleStrategy extends PassportStrategy(Google, 'google') {
                 super({
                         clientID: process.env.GOOGLE_CLIENT_ID,
                         clientSecret: process.env.GOOGLE_SECRET,
-                        callbackURL: `${callbackPrefix}/google/callback`,
+                        callbackURL: `https://www.heaty566.com/api/auth/google/callback`,
                         scope: ['email', 'profile'],
                 });
         }
@@ -38,7 +38,7 @@ export class FacebookStrategy extends PassportStrategy(Facebook, 'facebook') {
                 super({
                         clientID: process.env.FACEBOOK_CLIENT_ID,
                         clientSecret: process.env.FACEBOOK_SECRET,
-                        callbackURL: `${callbackPrefix}/facebook/callback`,
+                        callbackURL: `${process.env.SERVER_URL}${callbackPrefix}/facebook/callback`,
                 });
         }
 
@@ -60,7 +60,7 @@ export class GithubStrategy extends PassportStrategy(Github, 'github') {
                 super({
                         clientID: process.env.GITHUB_CLIENT_ID,
                         clientSecret: process.env.GITHUB_SECRET,
-                        callbackURL: `${callbackPrefix}/github/callback`,
+                        callbackURL: `${process.env.SERVER_URL}${callbackPrefix}/github/callback`,
                 });
         }
 

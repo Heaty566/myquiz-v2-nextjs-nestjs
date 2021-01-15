@@ -6,9 +6,7 @@
 - [ ] fix icon black on Iphone
 - [ ] fix short name wrong on Iphone
 - [ ] set up amazon cloudfront
-- [ ] compression add image
 - [ ] check minifame
-- [ ] navbar menu in mobile
 - [ ] forget password
 - [ ] write form modal
 - [ ] handle update email with dto
@@ -17,14 +15,17 @@
 - [ ] add seo for home page
 - [ ] add seo for login page
 - [ ] add seo for register page
-- [ ] fix input high
-- [ ] navbar with user
-- [ ] navbar menu
+- [ ] fix navbar button (too size)
 
 # Today schedule
 
 # Done jobs
 
+- [x] ~~_compression add image_~~ [2021-01-16]
+- [x] ~~_navbar menu in mobile_~~ [2021-01-14]
+- [x] ~~_fix input high_~~ [2021-01-14]
+- [x] ~~_navbar with user_~~ [2021-01-14]
+- [x] ~~_navbar menu_~~ [2021-01-14]
 - [x] ~~_change background style_~~ [2021-01-14]
 - [x] ~~_writing test for login_~~ [2021-01-11]
 - [x] ~~_writing test for register_~~ [2021-01-11]

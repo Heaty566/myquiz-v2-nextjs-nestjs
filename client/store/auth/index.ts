@@ -27,12 +27,24 @@ const initialState: AuthState = {
 const auth = createSlice({
         name: 'auth',
         initialState,
-        reducers: {},
+        reducers: {
+                resetAuth: () => {
+                        return initialState;
+                },
+        },
         extraReducers: (builder) => {
                 builder.addCase(getUser.fulfilled, (state, { payload }: PayloadAction<UserInfo>) => {
                         const newState = Object.assign(state, payload);
                         newState.isLogin = true;
                         return newState;
+                });
+                builder.addCase(loginUser.fulfilled, (state) => {
+                        state.isLogin = true;
+                        return state;
+                });
+                builder.addCase(registerUser.fulfilled, (state) => {
+                        state.isLogin = true;
+                        return state;
                 });
         },
 });
@@ -41,5 +53,6 @@ export const authActions = {
         loginUser,
         registerUser,
         getUser,
+        resetAuth: auth.actions.resetAuth,
 };
 export const authReducer = auth.reducer;
