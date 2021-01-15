@@ -1,9 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { RootState } from '..';
-
-export interface JoiError {
-        [key: string]: string;
-}
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { JoiError } from './dto';
 
 export interface ApiState {
         isLoading: boolean;
@@ -20,24 +16,23 @@ const reducer = createSlice({
         name: 'api',
         initialState,
         reducers: {
-                initGetRes: (state) => {
-                        state.isLoading = false;
+                initReq: (state) => {
+                        state.isLoading = true;
                 },
                 resetState: (state) => {
-                        state.isLoading = true;
+                        state.isLoading = false;
                         state.errorDetails = initialState.errorDetails;
                         state.isError = initialState.isError;
                 },
-                updateErrorDetails: (state, { payload }: { payload: JoiError }) => {
+                updateErrorDetails: (state, { payload }: PayloadAction<JoiError>) => {
                         state.errorDetails = payload;
                         state.isError = true;
                 },
         },
+        extraReducers: () => {},
 });
 
 export const apiActions = {
         ...reducer.actions,
 };
-
 export const apiReducer = reducer.reducer;
-export const apiSelector = (state: RootState) => state.api;

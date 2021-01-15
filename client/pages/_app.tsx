@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import Cookies from 'universal-cookie';
+
 import { Provider } from 'react-redux';
 import '../i18n';
 
@@ -15,7 +16,8 @@ import { Navbar } from '../components/navbar';
 
 //* Redux import
 import { store } from '../store';
-
+import { apiActions } from '../store/api';
+import { authActions } from '../store/auth';
 export interface AppProps {
         Component: React.FunctionComponent;
         pageProps: any;
@@ -23,28 +25,32 @@ export interface AppProps {
 
 const App: React.FunctionComponent<AppProps> = ({ Component, pageProps }) => {
         const { i18n } = useTranslation();
+        const cookies = new Cookies();
+        const reToken = cookies.get('re-token');
 
         useEffect(() => {
-                const cookies = new Cookies();
                 const lang = cookies.get('lang');
                 i18n.changeLanguage(lang);
         }, []);
-        useEffect(() => {
-                console.log(process.env.SERVER_URL);
-        });
-        return (
-                <>
-                        <Provider store={store}>
-                                <ThemeProvider theme={variable}>
-                                        <GlobalStyle />
 
-                                        <header>
-                                                <Navbar />
-                                        </header>
-                                        <Component {...pageProps} />
-                                </ThemeProvider>
-                        </Provider>
-                </>
+        useEffect(() => {
+                store.dispatch(apiActions.resetState());
+        }, [Component]);
+
+        useEffect(() => {
+                if (reToken) store.dispatch(authActions.getUser());
+        }, [reToken]);
+
+        return (
+                <Provider store={store}>
+                        <ThemeProvider theme={variable}>
+                                <GlobalStyle />
+                                <header>
+                                        <Navbar />
+                                </header>
+                                <Component {...pageProps} />
+                        </ThemeProvider>
+                </Provider>
         );
 };
 

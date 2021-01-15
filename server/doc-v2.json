@@ -285,6 +285,72 @@
                                 }
                         }
                 },
+                "/api/user/email/:key": {
+                        "put": {
+                                "tags": ["user"],
+                                "summary": "update user email with otp ke ",
+                                "responses": {
+                                        "201": {
+                                                "description": "update user email with otp key",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "$ref": "#/components/schemas/CommonResponseApi"
+                                                                }
+                                                        }
+                                                }
+                                        },
+                                        "400": {
+                                                "description": "opt key doesn't exist or expired",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "$ref": "#/components/schemas/BadRequestApi"
+                                                                }
+                                                        }
+                                                }
+                                        }
+                                }
+                        }
+                },
+                "/api/user/email": {
+                        "post": {
+                                "tags": ["user"],
+                                "summary": "request otp key to update email",
+                                "requestBody": {
+                                        "content": {
+                                                "application/json": {
+                                                        "schema": {
+                                                                "$ref": "#/components/schemas/UpdateEmailDto"
+                                                        }
+                                                }
+                                        },
+                                        "required": true
+                                },
+                                "responses": {
+                                        "201": {
+                                                "description": "this will send an email with otp key to user",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "$ref": "#/components/schemas/CommonResponseApi"
+                                                                }
+                                                        }
+                                                }
+                                        },
+                                        "400": {
+                                                "description": "invalid input or email is taken",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "$ref": "#/components/schemas/BadRequestApi"
+                                                                }
+                                                        }
+                                                }
+                                        }
+                                }
+                        }
+                },
                 "/api/auth/google": {
                         "get": {
                                 "tags": ["auth"],
@@ -437,13 +503,104 @@
                                                 "content": {
                                                         "application/json": {
                                                                 "schema": {
-                                                                        "$ref": "#/components/schemas/BadRequestApi"
+                                                                        "$ref": "#/components/schemas/CommonResponseApi"
                                                                 }
                                                         }
                                                 }
                                         },
                                         "400": {
                                                 "description": "invalid input",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "$ref": "#/components/schemas/BadRequestApi"
+                                                                }
+                                                        }
+                                                }
+                                        },
+                                        "401": {
+                                                "description": "Invalid token",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "$ref": "#/components/schemas/BadRequestApi"
+                                                                }
+                                                        }
+                                                }
+                                        }
+                                }
+                        }
+                },
+                "/api/user/avatar": {
+                        "post": {
+                                "tags": ["user"],
+                                "summary": "update user avatar",
+                                "parameters": [
+                                        {
+                                                "name": "lang",
+                                                "in": "cookie",
+                                                "description": "allow server service multiple language",
+                                                "required": false,
+                                                "style": "form",
+                                                "explode": true,
+                                                "schema": {
+                                                        "type": "string"
+                                                },
+                                                "example": "vi"
+                                        },
+                                        {
+                                                "name": "re-token",
+                                                "in": "cookie",
+                                                "required": true,
+                                                "style": "form",
+                                                "explode": true,
+                                                "schema": {
+                                                        "type": "string"
+                                                },
+                                                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                                        },
+                                        {
+                                                "name": "auth-token",
+                                                "in": "cookie",
+                                                "required": false,
+                                                "style": "form",
+                                                "explode": true,
+                                                "schema": {
+                                                        "type": "string"
+                                                },
+                                                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                                        }
+                                ],
+                                "requestBody": {
+                                        "content": {
+                                                "multipart/form-data": {
+                                                        "schema": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                        "avatar": {
+                                                                                "description": "user avatar image",
+                                                                                "type": "string",
+                                                                                "format": "binary"
+                                                                        }
+                                                                }
+                                                        }
+                                                }
+                                        },
+                                        "required": true
+                                },
+                                "responses": {
+                                        "200": {
+                                                "description": "return message",
+                                                "content": {
+                                                        "application/json": {
+                                                                "schema": {
+                                                                        "$ref": "#/components/schemas/CommonResponseApi"
+                                                                }
+                                                        }
+                                                }
+                                        },
+                                        "400": {
+                                                "description": "file is too big, file type is not supported, invalid input",
                                                 "content": {
                                                         "application/json": {
                                                                 "schema": {
@@ -549,41 +706,20 @@
                                         }
                                 }
                         }
-                },
-                "/api/visitor": {
-                        "get": {
-                                "tags": ["system"],
-                                "parameters": [
-                                        {
-                                                "name": "lang",
-                                                "in": "cookie",
-                                                "description": "allow server service multiple language",
-                                                "required": false,
-                                                "style": "form",
-                                                "explode": true,
-                                                "schema": {
-                                                        "type": "string"
-                                                },
-                                                "example": "vi"
-                                        }
-                                ],
-                                "responses": {
-                                        "200": {
-                                                "description": "return number of visitor in current session",
-                                                "content": {
-                                                        "application/json": {
-                                                                "schema": {
-                                                                        "$ref": "#/components/schemas/SystemVisitor"
-                                                                }
-                                                        }
-                                                }
-                                        }
-                                }
-                        }
                 }
         },
         "components": {
                 "schemas": {
+                        "UpdateEmailDto": {
+                                "type": "object",
+                                "properties": {
+                                        "email": {
+                                                "type": "string",
+                                                "example": "example@gmail.com"
+                                        }
+                                }
+                        },
+
                         "UserInfo": {
                                 "type": "object",
                                 "properties": {

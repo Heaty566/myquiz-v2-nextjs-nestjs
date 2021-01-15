@@ -1,7 +1,5 @@
 import React from 'react';
 import Image from 'next/image';
-
-//* Style import
 import { SearchBoxContainer, SearchBoxBtn, SearchBoxTextField } from './style';
 
 export interface FormSearchBoxProps {

@@ -1,18 +1,20 @@
-import { Controller, Get } from '@nestjs/common';
-import { ApiResponse } from './common/dto/response.dto';
+import { Controller, Get, Post, UploadedFile, UseInterceptors, UsePipes } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { File } from './common/interfaces/File';
+import { AwsService } from './providers/aws/aws.service';
 
 //* Internal import
-import { RedisService } from './redis/redis.service';
-@Controller()
+@Controller('/hello')
 export class AppController {
-        constructor(private readonly redisService: RedisService) {}
+        constructor(private readonly awsService: AwsService) {}
 
         /*
         this router is count visitor
         */
-        @Get('/visitor')
-        async getVisitor(): Promise<ApiResponse> {
-                const total = await this.redisService.getByKey('countVisitor');
-                return { data: total };
-        }
+        // @Post('')
+        // @UseInterceptors(FileInterceptor('file'))
+        // async getVisitor(@UploadedFile() file: File) {
+        //         const hello = await this.awsService.uploadFile(file, '123', 'user');
+        //         return { data: '12' };
+        // }
 }

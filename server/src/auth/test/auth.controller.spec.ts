@@ -2,16 +2,25 @@ import * as supertest from 'supertest';
 import { INestApplication } from '@nestjs/common';
 
 //* Internal import
-import { fakeUser } from '../../../test/fakeEnity';
-import { UserRepository } from '../../user/entities/userRepository.entity';
+import { fakeUser } from '../../../test/fakeEntity';
+import { UserRepository } from '../../models/user/entities/userRepository.entity';
 import { initTestModule } from '../../../test/initTest';
 import { CreateUserDto } from '../dto/createUser.dto';
-import { User } from '../../user/entities/user.entity';
+import { User } from '../../models/user/entities/user.entity';
 import { LoginUserDto } from '../dto/LoginUser.dto';
 import { AuthService } from '../auth.service';
 import { EmailResetPasswordDto, PasswordResetDto } from '../dto/resetPassword';
-import { RedisService } from '../../redis/redis.service';
-import { TokenService } from '../../token/token.service';
+import { RedisService } from '../../providers/redis/redis.service';
+import { TokenService } from '../../providers/token/token.service';
+import { defuse } from '../../../test/testHelper';
+
+let mockObj = Promise.resolve();
+jest.mock('@sendgrid/mail', () => {
+        return {
+                setApiKey: jest.fn(),
+                send: jest.fn(() => mockObj),
+        };
+});
 
 describe('AuthController', () => {
         let app: INestApplication;
@@ -92,7 +101,6 @@ describe('AuthController', () => {
                 it('Failed (incorrect password)', async () => {
                         loginUserDto.password = 'helloworld';
                         const res = await reqApi(loginUserDto);
-
                         expect(res.status).toBe(400);
                 });
         });
@@ -120,6 +128,14 @@ describe('AuthController', () => {
 
                 it('Failed (email does not exist in database)', async () => {
                         const res = await reqApi({ email: 'example@gmail.com' });
+                        expect(res.status).toBe(400);
+                        expect(res.body).toBeDefined();
+                });
+                it('Failed (email does not exist in database)', async () => {
+                        mockObj = defuse(new Promise((resolve, reject) => reject(new Error('Oops'))));
+
+                        const res = await reqApi({ email: 'hello@gmail.com' });
+
                         expect(res.status).toBe(400);
                         expect(res.body).toBeDefined();
                 });
@@ -153,7 +169,7 @@ describe('AuthController', () => {
         });
 
         afterAll(async () => {
-                await app.close();
                 await userRepository.clear();
+                await app.close();
         });
 });

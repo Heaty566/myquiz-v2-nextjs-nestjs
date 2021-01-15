@@ -1,4 +1,4 @@
 export const CONSTANT = {
-        DAY: 86400,
-        MINUTE: 60,
+        DAY: 86400000,
+        MINUTE: 60000,
 };

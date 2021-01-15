@@ -1,22 +1,23 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { loginUser, registerUser } from './action';
-import { RootState } from '..';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { loginUser, registerUser, getUser } from './action';
 
 export interface UserInfo {
         username: string;
         fullName: string;
         email: string;
+        avatarUrl: string;
         isPremium: boolean;
         role: string;
 }
 
-interface AuthState extends UserInfo {
+export interface AuthState extends UserInfo {
         isLogin: boolean;
 }
 
 const initialState: AuthState = {
         email: '',
         fullName: '',
+        avatarUrl: '',
         isLogin: false,
         isPremium: false,
         role: 'USER',
@@ -26,12 +27,32 @@ const initialState: AuthState = {
 const auth = createSlice({
         name: 'auth',
         initialState,
-        reducers: {},
+        reducers: {
+                resetAuth: () => {
+                        return initialState;
+                },
+        },
+        extraReducers: (builder) => {
+                builder.addCase(getUser.fulfilled, (state, { payload }: PayloadAction<UserInfo>) => {
+                        const newState = Object.assign(state, payload);
+                        newState.isLogin = true;
+                        return newState;
+                });
+                builder.addCase(loginUser.fulfilled, (state) => {
+                        state.isLogin = true;
+                        return state;
+                });
+                builder.addCase(registerUser.fulfilled, (state) => {
+                        state.isLogin = true;
+                        return state;
+                });
+        },
 });
 
 export const authActions = {
         loginUser,
         registerUser,
+        getUser,
+        resetAuth: auth.actions.resetAuth,
 };
 export const authReducer = auth.reducer;
-export const authSelector = (state: RootState) => state.auth;

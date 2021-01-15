@@ -10,8 +10,9 @@ export const errorMsg = (override?: Record<string, any>) => {
                 'number.base': `should be a number`,
                 'number.min': `should be greater than or equal {#limit}`,
                 'number.max': `should be less than or equal {#limit}`,
-                'any.required': `should not be empty`,
+                'any.required': `is required`,
                 'any.only': `should be match with`,
+                'string.empty': `should not be empty`,
                 'boolean.base': `should be a boolean`,
                 ...override,
         };

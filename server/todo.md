@@ -4,18 +4,27 @@
 - [ ] better logger
 - [ ] refactor code
 - [ ] write swagger for router
-- [ ] format response pattern
-- [ ] upload avatar
-- [ ] set up aws
-- [ ] upload image testing
-- [ ] upload avatar testing
 - [ ] save project as a kit
 - [ ] update quiz entity
+- [ ] edit msg for vi
+- [ ] build docker
+- [ ] more mock test
 
 # Today schedule
 
+- [ ] launch app build frontend
+
 # Done jobs
 
+- [x] ~~_format response pattern_~~ [2021-01-12]
+- [x] ~~_upload avatar_~~ [2021-01-12]
+- [x] ~~_set up aws_~~ [2021-01-12]
+- [x] ~~_upload image testing_~~ [2021-01-12]
+- [x] ~~_upload avatar testing_~~ [2021-01-12]
+- [x] ~~_confirm email by otp_~~ [2021-01-11]
+- [x] ~~_generate otp by email_~~ [2021-01-11]
+- [x] ~~_write test for otp_~~ [2021-01-11]
+- [x] ~~_create form for otp mail_~~ [2021-01-11]
 - [x] ~~_write swagger for login, change password_~~ [2021-01-10]
 - [x] ~~_create git hub for pattern_~~ [2021-01-10]
 - [x] ~~_update user information when login with provider_~~ [2021-01-10]

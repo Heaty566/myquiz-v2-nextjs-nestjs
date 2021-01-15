@@ -5,12 +5,14 @@ services:
                 expose:
                         - 6379
         server:
+                build: ./server
                 image: heaty566/myquiz-v2-server:latest
                 expose:
                         - 4000
                 env_file:
                         - ./data/config/server.env
         client:
+                build: "./client"
                 image: heaty566/myquiz-v2-client:latest
                 expose:
                         - 3000

@@ -2,7 +2,7 @@ import * as Joi from 'joi';
 
 //* Internal import
 import { errorMsg } from './messageErrorMapper.joi';
-import { User } from '../../user/entities/user.entity';
+import { User } from '../../models/user/entities/user.entity';
 
 export function userJoiSchema(field: keyof User) {
         switch (field) {

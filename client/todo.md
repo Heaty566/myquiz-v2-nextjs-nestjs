@@ -3,28 +3,37 @@
 - [ ] add show result for search box
 - [ ] fix slide in home page optimize
 - [ ] add screen reader
-- [ ] writing test for login
-- [ ] writing test for register
-- [ ] writing test for index
-- [ ] writing test for useComponent
-- [ ] writing test for useDebounce
-- [ ] writing test for search box
 - [ ] fix icon black on Iphone
 - [ ] fix short name wrong on Iphone
-- [ ] set up env for auto deploy
-- [ ] set ci/cd
 - [ ] set up amazon cloudfront
-- [ ] compression add image
 - [ ] check minifame
-- [ ] navbar menu
+- [ ] forget password
+- [ ] write form modal
+- [ ] handle update email with dto
+- [ ] user page
+- [ ] user edit page
 - [ ] add seo for home page
 - [ ] add seo for login page
 - [ ] add seo for register page
+- [ ] fix navbar button (too size)
 
 # Today schedule
 
 # Done jobs
 
+- [x] ~~_compression add image_~~ [2021-01-16]
+- [x] ~~_navbar menu in mobile_~~ [2021-01-14]
+- [x] ~~_fix input high_~~ [2021-01-14]
+- [x] ~~_navbar with user_~~ [2021-01-14]
+- [x] ~~_navbar menu_~~ [2021-01-14]
+- [x] ~~_change background style_~~ [2021-01-14]
+- [x] ~~_writing test for login_~~ [2021-01-11]
+- [x] ~~_writing test for register_~~ [2021-01-11]
+- [x] ~~_writing test for index_~~ [2021-01-11]
+- [x] ~~_writing test for useComponent_~~ [2021-01-11]
+- [x] ~~_writing test for useDebounce_~~ [2021-01-11]
+- [x] ~~_writing test for search box_~~ [2021-01-11]
+- [x] ~~_set up env for auto deploy_~~ [2021-01-11]
 - [x] ~~_hide next code_~~ [2021-01-03]
 - [x] ~~_hide code on production_~~ [2021-01-03]
 - [x] ~~_set import structure_~~ [2021-01-02]

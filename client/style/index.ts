@@ -1,4 +1,4 @@
-import { createGlobalStyle, DefaultTheme } from 'styled-components';
+import { createGlobalStyle, DefaultTheme, css } from 'styled-components';
 import { rotateAnimation, fadeInAnimation } from './animation';
 
 export const breakPoint = {
@@ -75,52 +75,55 @@ export const variable: DefaultTheme = {
         },
 };
 
-export const GlobalStyle = createGlobalStyle`
+export const GlobalStyle = createGlobalStyle(
+        () => css`
+                *,
+                *::before,
+                *::after {
+                        padding: 0;
+                        margin: 0;
+                        box-sizing: border-box;
+                }
 
-  *, *::before, *::after {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-  }
+                html {
+                        font-size: 16px;
+                        font-family: Arial, Helvetica, sans-serif;
+                }
 
-  html {
-    font-size: 16px;
-     font-family: Arial, Helvetica, sans-serif;
-  }
+                a {
+                        cursor: pointer;
+                }
 
- a{
-         cursor: pointer;
- }
+                a,
+                li {
+                        text-decoration: none;
+                }
 
-  a,li {
-        text-decoration: none;
-  }
+                ul {
+                        list-style: none;
+                }
 
-  ul {
-          list-style: none;
-  }
+                button,
+                input {
+                        border: none;
+                        outline: none;
+                        background-color: transparent;
+                }
 
-  button, input {
-        border: none;
-        outline: none;
-        background-color: transparent;
-  }
+                body {
+                        min-height: 100vh;
+                        width: 100%;
+                        position: relative;
+                }
 
-  body {
-    min-height: 100vh;
-    width: 100%;
-    position: relative;
-  }
-
-  #__next {
-          min-height: inherit;
-          display: flex;
-          flex-direction: column;
-          & > *:nth-child(2){
-                  flex:1;
-                  padding-top: 64px;
-          }
-  }
-
-
-`;
+                #__next {
+                        min-height: inherit;
+                        display: flex;
+                        flex-direction: column;
+                        & > *:nth-child(2) {
+                                flex: 1;
+                                padding-top: 64px;
+                        }
+                }
+        `,
+);

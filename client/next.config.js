@@ -6,4 +6,7 @@ module.exports = {
                 DOMAIN: process.env.DOMAIN,
                 FB_APP_ID: process.env.FB_APP_ID,
         },
+        images: {
+                deviceSizes: [480, 576, 768, 992, 1200, 1600],
+        },
 };

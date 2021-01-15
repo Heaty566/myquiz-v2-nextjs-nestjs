@@ -1,29 +1,20 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { http } from '../../service/http';
+import { UserLoginDto } from './dto';
+import { ApiResponse } from '../api/dto';
 import { UserInfo } from '.';
-import { UserLoginDto, UserRegisterDto } from './dto';
-import { apiActions } from '../api';
 
-export const loginUser = createAsyncThunk<{}, UserLoginDto, {}>('loginUser', async (input, thunkApi) => {
-        const { dispatch } = thunkApi;
-        try {
-                const res = await http.post<UserInfo>('/auth/login', input);
-                console.log(res);
-        } catch (err) {
-                dispatch(apiActions.updateErrorDetails(err.data));
-        }
-
-        return {};
+export const loginUser = createAsyncThunk<null, UserLoginDto>('loginUser', async (input) => {
+        await http.post<ApiResponse<null>>('/auth/login', input);
+        return null;
 });
 
-export const registerUser = createAsyncThunk<{}, UserRegisterDto, {}>('registerUser', async (input, thunkApi) => {
-        const { dispatch } = thunkApi;
-        try {
-                const res = await http.post<UserRegisterDto>('/auth/register', input);
-                console.log(res);
-        } catch (err) {
-                dispatch(apiActions.updateErrorDetails(err.data));
-        }
+export const registerUser = createAsyncThunk<null, UserLoginDto>('registerUser', async (input) => {
+        await http.post<ApiResponse<null>>('/auth/register', input);
+        return null;
+});
 
-        return {};
+export const getUser = createAsyncThunk<UserInfo>('getUser', async () => {
+        const res = await http.get<ApiResponse<UserInfo>>('/user');
+        return res.data.data;
 });
