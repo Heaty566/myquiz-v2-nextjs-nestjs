@@ -9,3 +9,12 @@ export interface UserRegisterDto {
         fullName: string;
         confirmPassword: string;
 }
+
+export interface ForgotPasswordDto {
+        email: string;
+}
+export interface ForgotPasswordUpdateDto {
+        newPassword: string;
+        resetKey: string;
+        confirmPassword: string;
+}

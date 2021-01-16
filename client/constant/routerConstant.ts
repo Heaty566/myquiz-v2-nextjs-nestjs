@@ -3,7 +3,7 @@ export const ROUTER = {
         login: '/user/login',
         register: '/user/register',
         home: '/',
-        forgotPassword: '/',
+        forgotPassword: '/user/forgot-password',
         memberPrice: '/',
         createNewQuiz: '/',
         takeQuiz: '/',

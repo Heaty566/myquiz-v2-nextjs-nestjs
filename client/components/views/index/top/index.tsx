@@ -1,12 +1,14 @@
 import React from 'react';
 import Image from 'next/image';
+
+//* Import
 import { BannerBtn, BannerContainer, BannerContent, BannerImg, BannerSide, ITopContainer, HomeFeatureContainer, ImgWrapper } from './style';
+import { limitStringLength } from '../../../../helper/stringFormat';
+import { useSlideShow } from '../../../../hooks/useSlideShow';
+import { CirclePagination } from '../../../common/pagination';
 import { Text } from '../../../../style/typography';
 import { Layout } from '../../../../style/layout';
 import { Box } from '../../../../style/common';
-import { useSlideShow } from '../../../../hooks/useSlideShow';
-import { CirclePagination } from '../../../common/pagination';
-import { limitStringLength } from '../../../../helper/stringFormat';
 export interface HomeTopProps {}
 
 const slideData = [
@@ -43,7 +45,7 @@ const slideData = [
 ];
 
 const HomeTop: React.FunctionComponent<HomeTopProps> = () => {
-        const [setClassName, currentSlide] = useSlideShow(5, 5000);
+        const [setClassName, setCurrentSlide, currentSlide] = useSlideShow(5, 5000);
 
         return (
                 <ITopContainer>
@@ -72,7 +74,7 @@ const HomeTop: React.FunctionComponent<HomeTopProps> = () => {
                                         </ImgWrapper>
                                 </BannerImg>
                                 <BannerSide>
-                                        <CirclePagination />
+                                        <CirclePagination length={5} current={currentSlide} setCurrent={setCurrentSlide} />
                                         <BannerContent>
                                                 <Text as="h3" $type="h3" $color="white">
                                                         {limitStringLength(slideData[currentSlide].title, 25)}

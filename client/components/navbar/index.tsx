@@ -2,18 +2,21 @@ import React, { useCallback, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Cookies from 'universal-cookie';
+
+//* Import
 import { NavbarContainer, NavbarBrand, NavbarLeft, NavbarBtnMobile } from './style';
-import { store } from '../../store';
+import { useClickOutSide } from '../../hooks/useClickOutSide';
+import { FormSearchBox } from '../form/searchBox';
+import { useSelector } from 'react-redux';
 import { authActions } from '../../store/auth';
+import { store } from '../../store';
 import { BtnLink } from '../button';
 import { ROUTER } from '../../constant/routerConstant';
-import { NavbarUser } from './user';
 import { NavbarMenu } from './menu';
-import { FormSearchBox } from '../form/searchBox';
+import { NavbarUser } from './user';
 import { RootState } from '../../store/index';
 import { AuthState } from '../../store/auth';
-import { useSelector } from 'react-redux';
-import { useClickOutSide } from '../../hooks/useClickOutSide';
+
 export interface NavbarProps {}
 
 export const Navbar: React.FunctionComponent<NavbarProps> = () => {
@@ -31,7 +34,7 @@ export const Navbar: React.FunctionComponent<NavbarProps> = () => {
         return (
                 <NavbarContainer $alignItems="center" $justifyContent="space-between">
                         <Link href={ROUTER.home}>
-                                <NavbarBrand href="/">
+                                <NavbarBrand href={ROUTER.home}>
                                         <Image src="/asset/icon/nav-logo.svg" alt="" height="32" width="120" />
                                 </NavbarBrand>
                         </Link>

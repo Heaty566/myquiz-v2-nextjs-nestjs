@@ -1,4 +1,4 @@
 import { TextFieldPasswordInput } from './password/style';
-import { TextFieldWrapper } from './text/style';
+import { TextFieldInput } from './text/style';
 
-export { TextFieldPasswordInput, TextFieldWrapper };
+export { TextFieldPasswordInput, TextFieldInput as TextFieldWrapper };

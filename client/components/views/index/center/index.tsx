@@ -1,6 +1,8 @@
 import * as React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+
+//* Import
 import { CategoryContainer, FeatureContainer, CategoryCard, ICenterContainer, FeatureCard } from './style';
 import { Layout } from '../../../../style/layout';
 import { Box } from '../../../../style/common';

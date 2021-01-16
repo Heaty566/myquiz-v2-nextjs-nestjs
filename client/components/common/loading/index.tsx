@@ -1,4 +1,6 @@
 import * as React from 'react';
+
+//* Import
 import { Circle, LoadingContainer } from './style';
 
 export interface CircleLoadingProps {

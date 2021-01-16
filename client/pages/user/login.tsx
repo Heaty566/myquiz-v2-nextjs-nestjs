@@ -4,16 +4,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
 
-//* Import Redux
+//* Import Component
 import { store, RootState } from '../../store';
 import { UserLoginDto } from '../../store/auth/dto';
 import { authActions } from '../../store/auth';
 import { ApiState } from '../../store/api';
-//* Import Style
 import { AuthFormContainer, AuthContainer, AuthExtraLink, AuthForm } from '../../components/views/user/authFormStyle';
 import { Text } from '../../style/typography';
 import { Layout } from '../../style/layout';
-//* Import Component
 import { ROUTER } from '../../constant/routerConstant';
 import { RouterHOC } from '../../HOC/routerHOC';
 import { FormWithSocial } from '../../components/form/WithSocial';
@@ -36,9 +34,9 @@ const Login: React.FunctionComponent<UserLoginProps> = () => {
         const onSubmit = (data: UserLoginDto) => store.dispatch(authActions.loginUser(data));
 
         useEffect(() => {
-                const { errorDetails, isError } = apiState;
+                const { isError, errorDetails } = apiState;
 
-                if (isError && errorDetails) setErrors({ ...errors, ...errorDetails });
+                if (isError) setErrors({ ...defaultValues, ...errorDetails });
                 else setErrors(defaultValues);
         }, [apiState]);
 
@@ -54,13 +52,7 @@ const Login: React.FunctionComponent<UserLoginProps> = () => {
                                                 <Image src="/asset/icon/nav-logo.svg" alt="" height="32" width="120" />
                                         </Layout>
                                         <AuthForm onSubmit={handleSubmit(onSubmit)}>
-                                                <TextField
-                                                        name="username"
-                                                        label="Username"
-                                                        register={register}
-                                                        errorMsg={errors.username}
-                                                        data-test="input:username"
-                                                />
+                                                <TextField name="username" label="Username" register={register} errorMsg={errors.username} />
                                                 <TextFieldPassword name="password" label="Password" register={register} errorMsg={errors.password} />
                                                 <Link href={ROUTER.forgotPassword}>
                                                         <AuthExtraLink>Forgot your password?</AuthExtraLink>

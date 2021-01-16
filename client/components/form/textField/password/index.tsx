@@ -1,7 +1,9 @@
 import * as React from 'react';
 import Image from 'next/image';
+
+//* Import
+import { TextFieldContainer, TextFieldErrorMsg, TextFieldLabel, FieldInput } from '../style.share';
 import { TextFieldPasswordInput } from './style';
-import { TextFieldContainer, TextFieldError, TextFieldLabel, TextFieldInput } from '../style.share';
 
 export interface TextFieldPasswordProps {
         name: string;
@@ -31,18 +33,19 @@ export const TextFieldPassword: React.FunctionComponent<TextFieldPasswordProps> 
                 <TextFieldContainer>
                         <TextFieldLabel htmlFor={name}>{label}</TextFieldLabel>
                         <TextFieldPasswordInput className={errorMsg ? 'active' : ''}>
-                                <TextFieldInput
+                                <FieldInput
                                         name={name}
                                         placeholder={placeHolder}
                                         type={isSeen ? 'text' : 'password'}
                                         ref={(data) => register(data)}
+                                        autoComplete="off"
                                 />
                                 <Image src={imgSrc} alt="password" height="16" width="16" onClick={() => setSeen(!isSeen)} />
                         </TextFieldPasswordInput>
                         {errorMsg && (
-                                <TextFieldError>
+                                <TextFieldErrorMsg>
                                         {label} {errorMsg}
-                                </TextFieldError>
+                                </TextFieldErrorMsg>
                         )}
                 </TextFieldContainer>
         );

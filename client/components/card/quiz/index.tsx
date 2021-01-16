@@ -1,5 +1,7 @@
 import * as React from 'react';
 import Image from 'next/image';
+
+//* Import
 import { QuizCardContainer, QuizStar } from './style';
 import { Text } from '../../../style/typography';
 import { Layout } from '../../../style/layout';

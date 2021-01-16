@@ -1,4 +1,6 @@
 import * as React from 'react';
+
+//* Import
 import { IBottomContainer, QuizCardWrapper, UserPlanCardContainer, QuizCardContainer } from './style';
 import { QuizCard, CardUserPlan } from '../../../card';
 import { Text } from '../../../../style/typography';

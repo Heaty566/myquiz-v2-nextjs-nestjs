@@ -154,14 +154,14 @@ describe('AuthController', () => {
                 });
 
                 it('Pass', async () => {
-                        const res = await reqApi({ password: user.password, confirmPassword: user.password, resetKey: 'value' });
+                        const res = await reqApi({ newPassword: user.password, confirmPassword: user.password, resetKey: 'value' });
 
                         expect(res.status).toBe(200);
                         expect(res.body).toBeDefined();
                 });
 
                 it('Failed (reset key have been delete)', async () => {
-                        const res = await reqApi({ password: user.password, confirmPassword: user.password, resetKey: 'value' });
+                        const res = await reqApi({ newPassword: user.password, confirmPassword: user.password, resetKey: 'value' });
 
                         expect(res.status).toBe(400);
                         expect(res.body).toBeDefined();

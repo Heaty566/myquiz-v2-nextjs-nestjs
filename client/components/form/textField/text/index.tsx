@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { TextFieldWrapper } from './style';
-import { TextFieldContainer, TextFieldError, TextFieldLabel, TextFieldInput } from '../style.share';
+
+//* Import
+import { TextFieldContainer, TextFieldErrorMsg, TextFieldLabel, FieldInput } from '../style.share';
+import { TextFieldInput } from './style';
 export interface TextFieldProps {
         name: string;
         label: string;
@@ -21,13 +23,13 @@ export const TextField: React.FunctionComponent<TextFieldProps> = ({
         return (
                 <TextFieldContainer>
                         <TextFieldLabel htmlFor={name}>{label}</TextFieldLabel>
-                        <TextFieldWrapper className={errorMsg ? 'active' : ''}>
-                                <TextFieldInput name={name} placeholder={placeHolder} type={type} ref={(data) => register(data)} />
-                        </TextFieldWrapper>
+                        <TextFieldInput className={errorMsg ? 'active' : ''}>
+                                <FieldInput name={name} placeholder={placeHolder} type={type} ref={(data) => register(data)} autoComplete="on" />
+                        </TextFieldInput>
                         {errorMsg && (
-                                <TextFieldError>
+                                <TextFieldErrorMsg>
                                         {label} {errorMsg}
-                                </TextFieldError>
+                                </TextFieldErrorMsg>
                         )}
                 </TextFieldContainer>
         );

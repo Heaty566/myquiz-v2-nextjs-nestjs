@@ -13,7 +13,7 @@ export class MailService {
          * @param key the key for reset password
          */
         forgetPasswordMail(receiver: string, key: string) {
-                const link = `${process.env.CLIENT_URL}/user/reset-password?key=${key}`;
+                const link = `${process.env.CLIENT_URL}/user/forgot-password/${key}`;
                 const content = `We heard that you lost your MyQuiz password. Sorry about that! 
                                <br/>
                                But don’t worry! You can use the following link to reset your password: 
@@ -56,7 +56,7 @@ export class MailService {
                         </div>`,
                         mailSettings: {
                                 sandboxMode: {
-                                        enable: process.env.NODE_ENV === 'test',
+                                        enable: process.env.SENDGRID_SAND_BOX === 'ACTIVE',
                                 },
                         },
                 };

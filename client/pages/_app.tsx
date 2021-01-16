@@ -4,20 +4,15 @@ import React, { useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import Cookies from 'universal-cookie';
-
 import { Provider } from 'react-redux';
 import '../i18n';
 
-//* Style import
-import { GlobalStyle, variable } from '../style';
-
-//* Components import
-import { Navbar } from '../components/navbar';
-
-//* Redux import
+//* Import
 import { store } from '../store';
-import { apiActions } from '../store/api';
+import { GlobalStyle, variable } from '../style';
 import { authActions } from '../store/auth';
+import { apiActions } from '../store/api';
+import { Navbar } from '../components/navbar';
 export interface AppProps {
         Component: React.FunctionComponent;
         pageProps: any;

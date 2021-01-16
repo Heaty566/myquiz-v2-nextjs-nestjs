@@ -1,4 +1,6 @@
 import styled, { css } from 'styled-components';
+
+//* Import
 import { Layout } from '../../../style/layout';
 
 export const QuizStar = styled(Layout)(
