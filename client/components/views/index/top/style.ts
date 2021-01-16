@@ -1,4 +1,6 @@
 import styled, { css } from 'styled-components';
+
+//* Import
 import { breakPoint } from '../../../../style';
 import { PaginationContainer } from '../../../common/pagination/style';
 import { Layout } from '../../../../style/layout';
@@ -79,20 +81,19 @@ export const ImgWrapper = styled.div`
         width: 100%;
         & > .slide {
                 transition: 1s;
-                transform: translateX(100%);
                 position: absolute;
+                opacity: 0;
                 left: 0;
                 display: inline;
                 width: 100%;
                 &.slide__in {
-                        transform: translateX(0);
+                        opacity: 1;
                 }
                 &.slide__out {
-                        transform: translateX(-100%);
+                        opacity: 0;
                 }
                 &.slide__reset {
-                        transform: translateX(100%);
-                        transition: 0s;
+                        opacity: 0;
                 }
         }
 `;
@@ -168,7 +169,7 @@ export const BannerBtn = styled(Layout)(
 
 export const HomeFeatureContainer = styled.section(
         ({ theme: { colors, ruler, fontSize } }) => css`
-                max-width: 700px;
+                max-width: 800px;
                 padding: ${ruler * 1.5}px;
 
                 & > *:not(:last-child) {

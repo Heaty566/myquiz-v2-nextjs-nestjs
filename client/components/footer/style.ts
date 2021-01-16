@@ -1,7 +1,9 @@
 import styled, { css } from 'styled-components';
+
+//* Import
+import { LangContainer } from '../common/langSelect/style';
 import { breakPoint } from '../../style';
 import { Layout } from '../../style/layout';
-import { LangContainer } from '../common/langSelect/style';
 
 export const FooterContainerTop = styled(Layout)(
         ({ theme: { ruler } }) => css`

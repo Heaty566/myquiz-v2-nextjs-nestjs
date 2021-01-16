@@ -103,7 +103,7 @@ export class AuthController {
 
                 const decode = this.tokenService.decodeJWT<User>(findRedisKey);
                 const user = await this.userService.findUserByField('_id', decode._id);
-                user.password = await this.authService.encryptString(body.password, 10);
+                user.password = await this.authService.encryptString(body.newPassword, 10);
 
                 await this.userService.updateUser(user);
                 this.redisService.deleteByKey(body.resetKey);

@@ -11,7 +11,7 @@ export class EmailResetPasswordDto {
 }
 
 export class PasswordResetDto {
-        password: string;
+        newPassword: string;
         confirmPassword: string;
         resetKey: string;
 }
@@ -21,6 +21,6 @@ export const vEmailResetPassword = Joi.object({
 });
 export const vPasswordResetDtoValidator = Joi.object({
         resetKey: Joi.string().required(),
-        password: getJoiSchema('password'),
-        confirmPassword: getJoiSchema('password').valid(Joi.ref('password')),
+        newPassword: getJoiSchema('password'),
+        confirmPassword: getJoiSchema('password').valid(Joi.ref('newPassword')),
 });

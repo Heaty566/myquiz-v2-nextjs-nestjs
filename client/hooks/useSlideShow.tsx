@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-export function useSlideShow(total: number, delay: number): [Function, number] {
+export function useSlideShow(total: number, delay: number): [Function, Function, number] {
         const [current, setCurrent] = useState(0);
         const [isFocus, setIsFocus] = useState(true);
         function circle(value: number) {
@@ -39,5 +39,5 @@ export function useSlideShow(total: number, delay: number): [Function, number] {
                 };
         }, [isFocus]);
 
-        return [setActive, current];
+        return [setActive, setCurrent, current];
 }

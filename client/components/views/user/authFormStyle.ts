@@ -1,7 +1,9 @@
 import styled, { css } from 'styled-components';
-import { breakPoint } from '../../../style';
-import { Layout } from '../../../style/layout';
+
+//* Import
 import { BtnFuncContainer } from '../../button/style';
+import { Layout } from '../../../style/layout';
+import { breakPoint } from '../../../style';
 
 export const AuthFormContainer = styled.div(
         ({ theme: { ruler, fontSize, animation, colors } }) => css`

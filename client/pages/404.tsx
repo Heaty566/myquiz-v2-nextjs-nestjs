@@ -1,10 +1,8 @@
 import * as React from 'react';
 
-//* Import style
+//* Import
 import { NotFoundContainer, NotFoundWrapper } from '../components/views/404/style';
 import { Text } from '../style/typography';
-
-//* Import Component
 import { seoHead } from '../helper/seoHead';
 import { ROUTER } from '../constant/routerConstant';
 import { BtnLink } from '../components/button';

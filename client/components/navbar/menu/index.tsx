@@ -1,8 +1,10 @@
 import * as React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { AuthState } from '../../../store/auth';
+
+//* Import
 import { NavbarMenuList, NavbarMenuItem, NavbarMenuLink, NavbarDivider } from './style';
+import { AuthState } from '../../../store/auth';
 import { ROUTER } from '../../../constant/routerConstant';
 export interface NavbarMenuProps {
         user: AuthState;

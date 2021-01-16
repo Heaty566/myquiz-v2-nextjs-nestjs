@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
-//* Import style
+
+//* Import
 import { LangContainer, LangSel, LangOption } from './style';
 
 export interface LangBtnProps {}

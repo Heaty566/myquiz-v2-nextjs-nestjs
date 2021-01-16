@@ -47,6 +47,9 @@ export const variable: DefaultTheme = {
                 dark: {
                         one: '#171717',
                 },
+                green: {
+                        one: '#27ae60',
+                },
                 font: {
                         black: '#171717',
                         white: '#fefefe',
@@ -87,7 +90,7 @@ export const GlobalStyle = createGlobalStyle(
 
                 html {
                         font-size: 16px;
-                        font-family: Arial, Helvetica, sans-serif;
+                        font-family: 'Roboto', sans-serif;
                 }
 
                 a {

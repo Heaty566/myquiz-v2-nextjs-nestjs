@@ -1,26 +1,14 @@
 import styled, { css } from 'styled-components';
+
+//* Import
 import { Layout } from '../../../style/layout';
 
 export const NavbarUserContainer = styled(Layout)(() => css``);
 
-export const NavbarUserBtn = styled.div(
-        ({ theme: { ruler, colors } }) => css`
-                margin-left: ${ruler}px;
+export const NavbarUserBtn = styled.button(
+        ({ theme: { ruler } }) => css`
+                height: 28px;
+                margin-right: ${ruler}px !important;
                 cursor: pointer;
-                &:hover div {
-                        background-color: ${colors.primary.one};
-                }
-
-                & div {
-                        transition: 0.2s;
-                        background-color: ${colors.primary.two};
-                        border-radius: 50%;
-                        width: ${ruler}px;
-                        height: ${ruler}px;
-                }
-
-                & div:nth-child(2) {
-                        margin: ${0.5 * ruler}px 0;
-                }
         `,
 );

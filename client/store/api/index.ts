@@ -1,15 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { JoiError } from './dto';
 
+import { forgotPasswordCreate, forgotPasswordUpdate } from '../auth/action';
+
 export interface ApiState {
         isLoading: boolean;
         errorDetails: JoiError;
         isError: boolean;
+        message: string;
 }
 const initialState: ApiState = {
         isLoading: false,
         errorDetails: {},
         isError: false,
+        message: '',
 };
 
 const reducer = createSlice({
@@ -20,16 +24,34 @@ const reducer = createSlice({
                         state.isLoading = true;
                 },
                 resetState: (state) => {
-                        state.isLoading = false;
-                        state.errorDetails = initialState.errorDetails;
-                        state.isError = initialState.isError;
+                        const newState = { ...state };
+                        newState.isLoading = false;
+                        newState.errorDetails = initialState.errorDetails;
+                        newState.isError = initialState.isError;
+                        newState.message = '';
+                        return newState;
                 },
                 updateErrorDetails: (state, { payload }: PayloadAction<JoiError>) => {
-                        state.errorDetails = payload;
-                        state.isError = true;
+                        const newState = { ...state };
+                        newState.errorDetails = payload;
+                        newState.isError = true;
+                        return newState;
                 },
         },
-        extraReducers: () => {},
+        extraReducers: (builder) => {
+                builder.addCase(forgotPasswordCreate.fulfilled, (state, { payload }) => {
+                        const newState = { ...state };
+                        newState.message = payload.message;
+
+                        return newState;
+                });
+                builder.addCase(forgotPasswordUpdate.fulfilled, (state, { payload }) => {
+                        const newState = { ...state };
+                        newState.message = payload.message;
+
+                        return newState;
+                });
+        },
 });
 
 export const apiActions = {

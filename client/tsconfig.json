@@ -68,7 +68,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "hooks/useComponent.js"
+    "hooks/useComponent.js",
+    "pages/user/forgot-password"
   ],
   "exclude": [
     "node_modules"

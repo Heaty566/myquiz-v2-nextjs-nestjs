@@ -37,6 +37,9 @@ export interface Theme {
                 dark: {
                         one: string;
                 };
+                green: {
+                        one: string;
+                };
                 font: {
                         black: string;
                         white: string;

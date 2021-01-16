@@ -4,16 +4,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
 
-//*Import Style
+//* Import
 import { AuthFormContainer, AuthContainer, AuthExtraLink, AuthForm } from '../../components/views/user/authFormStyle';
-import { Text } from '../../style/typography';
-import { Layout } from '../../style/layout';
-//*Import Component
 import { TextField, TextFieldPassword } from '../../components/form/textField';
 import { FormWithSocial } from '../../components/form/WithSocial';
+import { Text } from '../../style/typography';
+import { Layout } from '../../style/layout';
 import { BtnFunc } from '../../components/button';
 import { seoHead } from '../../helper/seoHead';
-//*Import Redux
 import { store, RootState } from '../../store';
 import { UserRegisterDto } from '../../store/auth/dto';
 import { ApiState } from '../../store/api';
@@ -38,9 +36,9 @@ const Register: React.FunctionComponent<UserLoginProps> = () => {
         const onSubmit = (data: UserRegisterDto) => store.dispatch(authActions.registerUser(data));
 
         useEffect(() => {
-                const { errorDetails, isError } = apiState;
+                const { isError, errorDetails } = apiState;
 
-                if (isError && errorDetails) setErrors({ ...errors, ...errorDetails });
+                if (isError) setErrors({ ...defaultValues, ...errorDetails });
                 else setErrors(defaultValues);
         }, [apiState]);
 
@@ -51,7 +49,7 @@ const Register: React.FunctionComponent<UserLoginProps> = () => {
                                 <AuthFormContainer>
                                         <Layout $alignItems="center" $justifyContent="center" $gutter={1}>
                                                 <Text as="h1" $type="h3" $textAlign="center">
-                                                        Login with
+                                                        Register with
                                                 </Text>
                                                 <Image src="/asset/icon/nav-logo.svg" alt="" height="32" width="120" />
                                         </Layout>

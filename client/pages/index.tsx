@@ -1,10 +1,9 @@
 import * as React from 'react';
 import dynamic from 'next/dynamic';
 
-//*Import style
+//* Import
 import { seoHead } from '../helper/seoHead';
 import { HomeBottomProps } from '../components/views/index/bottom';
-//*Import Component
 import { CircleLoading } from '../components/common/loading';
 import { FooterProps } from '../components/footer';
 import { useComponent } from '../hooks/useComponent';

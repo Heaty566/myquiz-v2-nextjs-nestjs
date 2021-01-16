@@ -16,7 +16,7 @@ export const TextFieldLabel = styled.label(
         `,
 );
 
-export const TextFieldInput = styled.input(
+export const FieldInput = styled.input(
         ({ theme: { fontSize } }) => css`
                 display: block;
                 width: 100%;
@@ -32,7 +32,7 @@ export const TextFieldInput = styled.input(
         `,
 );
 
-export const TextFieldError = styled.span(
+export const TextFieldErrorMsg = styled.span(
         ({ theme: { colors, fontSize, animation, ruler } }) => css`
                 margin-top: ${ruler * 0.5}px;
                 animation: 1s ${animation.fadeIn};
@@ -40,6 +40,17 @@ export const TextFieldError = styled.span(
                 display: block;
                 font-weight: bold;
                 color: ${colors.red.one};
+        `,
+);
+
+export const TextFieldSuccessMsg = styled.span(
+        ({ theme: { colors, fontSize, animation, ruler } }) => css`
+                margin-top: ${ruler * 0.5}px;
+                animation: 1s ${animation.fadeIn};
+                font-size: ${fontSize.h4}px;
+                display: block;
+                font-weight: bold;
+                color: ${colors.green.one};
         `,
 );
 

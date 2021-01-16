@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { loginUser, registerUser, getUser } from './action';
+import { loginUser, registerUser, getUser, forgotPasswordCreate, forgotPasswordUpdate } from './action';
 
 export interface UserInfo {
         username: string;
@@ -54,5 +54,7 @@ export const authActions = {
         registerUser,
         getUser,
         resetAuth: auth.actions.resetAuth,
+        forgotPasswordCreate,
+        forgotPasswordUpdate,
 };
 export const authReducer = auth.reducer;
