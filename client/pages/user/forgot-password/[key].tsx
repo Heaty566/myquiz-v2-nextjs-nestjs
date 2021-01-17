@@ -1,38 +1,37 @@
-import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 //* Import
-import { store, RootState } from '../../../store';
+import { useRouter } from 'next/router';
+import { AuthFormContainer, AuthFormWrapper, AuthFormTitle, AuthFormSuccessMsg } from '../../../components/views/user/form';
+import { InputPassword } from '../../../components/form/input/inputPassword';
+import { BtnFunc } from '../../../components/btnFunc';
 import { ForgotPasswordUpdateDto } from '../../../store/auth/dto';
-import { authActions } from '../../../store/auth';
-import { ApiState } from '../../../store/api';
-import { AuthFormContainer, AuthContainer, AuthForm } from '../../../components/views/user/authFormStyle';
-import { Text } from '../../../style/typography';
-import { RouterHOC } from '../../../HOC/routerHOC';
-import { TextFieldPassword } from '../../../components/form/textField';
-import { TextFieldSuccessMsg } from '../../../components/form/textField/style.share';
-import { BtnFunc } from '../../../components/button';
-import { seoHead } from '../../../helper/seoHead';
-import { useLoading } from '../../../hooks/useLoading';
+import { useForm } from 'react-hook-form';
 import { ROUTER } from '../../../constant/routerConstant';
+import { RootState, store } from '../../../store';
+import { authActions } from '../../../store/auth';
+import { useSelector } from 'react-redux';
+import { ApiState } from '../../../store/api';
+import { RouterHOC } from '../../../HOC/routerHOC';
+import { seoHead } from '../../../helper/seoHead';
 
-export interface UserLoginProps {}
+export interface LoginProps {}
 
-const defaultValues: ForgotPasswordUpdateDto = { confirmPassword: '', newPassword: '', resetKey: '' };
+const initialValue: ForgotPasswordUpdateDto = {
+        confirmPassword: '',
+        newPassword: '',
+        resetKey: '',
+};
 
-const Login: React.FunctionComponent<UserLoginProps> = () => {
-        const { register, handleSubmit } = useForm<ForgotPasswordUpdateDto>({
-                defaultValues,
-        });
-
+const Register: React.FunctionComponent<LoginProps> = () => {
+        const authState = useSelector<RootState, ApiState>((state) => state.api);
         const router = useRouter();
-        const [errors, setErrors] = useState<ForgotPasswordUpdateDto>(defaultValues);
-        const apiState = useSelector<RootState, ApiState>((state) => state.api);
-        const isLoading = useLoading();
+        const { register, handleSubmit } = useForm<ForgotPasswordUpdateDto>({
+                defaultValues: initialValue,
+        });
+        const [errors, setErrors] = useState<ForgotPasswordUpdateDto>(initialValue);
 
-        const onSubmit = (data: ForgotPasswordUpdateDto) => {
+        const handleOnSubmit = (data: ForgotPasswordUpdateDto) => {
                 const { key = '' } = router.query;
                 if (typeof key === 'string') {
                         store.dispatch(authActions.forgotPasswordUpdate({ ...data, resetKey: key }));
@@ -40,45 +39,41 @@ const Login: React.FunctionComponent<UserLoginProps> = () => {
         };
 
         useEffect(() => {
-                const { isError, errorDetails, message } = apiState;
+                const { isError, errorDetails, message } = authState;
 
-                if (isError) setErrors({ ...defaultValues, ...errorDetails });
-                else setErrors(defaultValues);
+                if (isError) setErrors({ ...initialValue, ...errorDetails });
+                else setErrors(initialValue);
 
                 if (message) setTimeout(() => router.push(ROUTER.login), 2000);
-        }, [apiState]);
+        }, [authState.isError, authState.message]);
 
         return (
                 <>
-                        {seoHead({ title: 'Forgot Password' })}
-                        <AuthContainer $alignItems="center" $justifyContent="center">
-                                <AuthFormContainer>
-                                        <Text as="h1" $type="h3" $textAlign="center">
-                                                Reset Password
-                                        </Text>
-                                        {apiState.message && <TextFieldSuccessMsg>{apiState.message}</TextFieldSuccessMsg>}
-
-                                        <AuthForm onSubmit={handleSubmit(onSubmit)}>
-                                                <TextFieldPassword
-                                                        name="newPassword"
-                                                        label="New Password"
-                                                        register={register}
-                                                        errorMsg={errors.newPassword}
-                                                />
-                                                <TextFieldPassword
-                                                        name="confirmPassword"
-                                                        label="Confirm Password"
-                                                        register={register}
-                                                        errorMsg={errors.confirmPassword}
-                                                />
-
-                                                <BtnFunc label="Update Password" isLoading={isLoading} />
-                                        </AuthForm>
-                                </AuthFormContainer>
-                        </AuthContainer>
+                        {seoHead({ title: 'Reset Password', keyword: 'reset password, recovery password' })}
+                        <AuthFormContainer onSubmit={handleSubmit(handleOnSubmit)}>
+                                <AuthFormWrapper>
+                                        <AuthFormTitle>
+                                                <span>Reset Your Password</span>
+                                        </AuthFormTitle>
+                                        {authState.message && <AuthFormSuccessMsg>{authState.message}</AuthFormSuccessMsg>}
+                                        <InputPassword
+                                                errorMessage={errors.newPassword}
+                                                label="New Password"
+                                                name="newPassword"
+                                                register={register}
+                                        />
+                                        <InputPassword
+                                                errorMessage={errors.confirmPassword}
+                                                label="Confirm Password"
+                                                name="confirmPassword"
+                                                register={register}
+                                        />
+                                        <BtnFunc label="Update" />
+                                </AuthFormWrapper>
+                        </AuthFormContainer>
                 </>
         );
 };
 
-const LoginRouter = (props: any) => <RouterHOC Component={Login} props={props} />;
-export default LoginRouter;
+const RegisterRouter = (props: any) => <RouterHOC Component={Register} props={props} />;
+export default RegisterRouter;

@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
+
+//* Import
 import { RootState } from '../store';
 import { AuthState } from '../store/auth';
-import { useSelector } from 'react-redux';
 export interface UserRouterProps {
         Component: Function;
         props: any;

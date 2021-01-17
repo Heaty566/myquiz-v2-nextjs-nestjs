@@ -59,6 +59,7 @@ export default class MyDocument extends Document {
                                         <meta name="msapplication-TileColor" content="#ffffff" />
                                         <meta name="msapplication-TileImage" content="/asset/share/ms-icon-144x144.png" />
                                         <meta name="theme-color" content="#ffffff" />
+
                                         <link rel="preconnect" href="https://fonts.gstatic.com" />
                                         <link
                                                 href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap"

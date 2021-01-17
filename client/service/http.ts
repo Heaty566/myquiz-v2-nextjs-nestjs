@@ -1,8 +1,11 @@
 import axios, { AxiosError } from 'axios';
+import Cookies from 'universal-cookie';
+
+//* Import
+import { ApiResponse } from '../store/api/dto';
 import { apiActions } from '../store/api';
 import { store } from '../store';
-import { ApiResponse } from '../store/api/dto';
-import Cookies from 'universal-cookie';
+
 axios.defaults.baseURL = process.env.SERVER_URL;
 axios.defaults.withCredentials = true;
 

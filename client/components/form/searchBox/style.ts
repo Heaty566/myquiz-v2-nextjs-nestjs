@@ -1,40 +1,45 @@
 import styled, { css } from 'styled-components';
 
-export const SearchBoxContainer = styled.div(
-        ({ theme }) => css`
-                background-color: ${theme.colors.primary.two};
-                border-radius: 3px;
-                height: inherit;
+//* Import
 
-                display: grid;
-                grid-template-columns: 1fr 32px;
+export const SearchBoxContainer = styled.div(
+        ({ theme: { colors, borderRadius } }) => css`
+                display: flex;
+                justify-content: space-between;
+                background-color: ${colors.primary.two};
+                height: 35px;
+                min-width: 255px;
+                border-radius: ${borderRadius.sm}px;
                 overflow: hidden;
-                transition: 0.2s ease-in-out;
+                transition: 0.2s;
                 &:focus-within {
-                        box-shadow: 0 0 0 2px ${theme.colors.primary.one};
+                        box-shadow: 0 0 0 2px ${colors.primary.one};
                 }
         `,
 );
 
-export const SearchBoxTextField = styled.input(
-        ({ theme }) => css`
-                text-indent: ${theme.ruler}px;
-                padding-right: ${theme.ruler}px;
-                font-size: 16px;
-                color: ${theme.colors.font.white};
+export const SearchBoxInput = styled.input(
+        ({ theme: { ruler, colors, fontSize } }) => css`
+                flex: 1;
 
+                padding: 0 ${ruler}px;
+                color: ${colors.font.white};
+                font-size: ${fontSize[16]}px;
                 &::placeholder {
-                        color: ${theme.colors.font.white};
-                        opacity: 0.6;
+                        color: ${colors.font.white};
+                        opacity: 0.8;
+                }
+                &:focus::placeholder {
+                        opacity: 1;
                 }
         `,
 );
 
 export const SearchBoxBtn = styled.button(
-        ({ theme }) => css`
+        ({ theme: { colors } }) => css`
+                height: 100%;
                 cursor: pointer;
-                background-color: ${theme.colors.primary.one};
-                padding: ${theme.ruler}px;
-                height: inherit;
+                padding: 10px 12px;
+                background-color: ${colors.primary.one};
         `,
 );

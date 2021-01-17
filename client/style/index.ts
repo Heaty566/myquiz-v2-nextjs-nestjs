@@ -35,11 +35,6 @@ export const variable: DefaultTheme = {
                         two: '#7D818B',
                         three: '#9DA0A8',
                 },
-                orange: {
-                        one: '#F3AA92',
-                        two: '#F5BBA8',
-                        three: '#F8CCBE',
-                },
                 white: {
                         one: '#fefefe',
                         two: '#f5f7fa',
@@ -62,16 +57,20 @@ export const variable: DefaultTheme = {
                 one: 'linear-gradient(97.8deg, #5375e2 0.25%, #5375e2 49.61%, #f87986 100%)',
         },
         fontSize: {
-                h1: 40,
-                h2: 32,
-                h3: 24,
-                h4: 16,
-                h5: 13,
-                p1: 16,
-                p2: 14,
-                p3: 13,
+                40: 40,
+                32: 32,
+                24: 24,
+                16: 16,
+                14: 14,
+        },
+        borderRadius: {
+                sm: 2,
         },
         ruler: 8,
+
+        boxShadow: {
+                one: '0px 1px 2px rgba(0, 0, 0, 0.25)',
+        },
         animation: {
                 rotate: rotateAnimation,
                 fadeIn: fadeInAnimation,
@@ -126,6 +125,7 @@ export const GlobalStyle = createGlobalStyle(
                         & > *:nth-child(2) {
                                 flex: 1;
                                 padding-top: 64px;
+                                height: 100%;
                         }
                 }
         `,

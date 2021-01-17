@@ -2,65 +2,29 @@ import styled, { css } from 'styled-components';
 
 //* Import
 import { breakPoint } from '../../style';
-import { Layout } from '../../style/layout';
 
-export const NavbarContainer = styled(Layout)(
-        ({ theme: { ruler, colors } }) => css`
+export const NavbarContainer = styled.header(
+        ({ theme: { ruler, boxShadow, colors } }) => css`
                 position: fixed;
                 width: 100%;
+                height: 64px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 ${8 * ruler}px;
                 z-index: 999;
-                top: 0;
-                left: 0;
-                padding: 0 ${ruler * 8}px;
-                box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
-                background: ${colors.white.one};
-                height: ${ruler * 8}px;
+                background-color: ${colors.white.one};
+                box-shadow: ${boxShadow.one};
+
                 @media ${breakPoint.md} {
-                        padding: 0 ${ruler * 2}px;
+                        padding: 0 ${2 * ruler}px;
                 }
         `,
 );
 
-export const NavbarBrand = styled.a`
-        flex-shrink: 0;
-`;
-
-export const NavbarBtnMobile = styled.button(
-        ({ theme: { ruler, colors } }) => css`
-                display: none;
-                width: 48px;
-                cursor: pointer;
-
-                @media ${breakPoint.md} {
-                        display: block;
-                }
-
-                & > * {
-                        transition: 0.2s;
-                        height: 6px;
-                        background-color: ${colors.primary.one};
-
-                        &:nth-child(2) {
-                                margin: ${ruler}px 0;
-                                width: 75%;
-                        }
-                }
-
-                &.active *:nth-child(2) {
-                        transform: translateX(33%);
-                }
-        `,
-);
-
-export const NavbarLeft = styled(Layout)(
-        ({ theme }) => css`
-                & > * {
-                        margin-left: ${theme.ruler * 3}px;
-                }
-                height: 32px;
-
-                @media ${breakPoint.md} {
-                        display: none !important;
-                }
+export const NavBrand = styled.a(
+        () => css`
+                flex-shrink: 0;
+                display: inline-block;
         `,
 );
