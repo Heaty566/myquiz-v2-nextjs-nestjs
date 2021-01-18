@@ -55,7 +55,7 @@ const Login: React.FunctionComponent<LoginProps> = () => {
                                         <Link href={ROUTER.forgotPassword}>
                                                 <AuthFormLink href={ROUTER.forgotPassword}>Forgot your password?</AuthFormLink>
                                         </Link>
-                                        <BtnFunc label="Sign In" />
+                                        <BtnFunc label="Register" />
                                         <LoginSocial />
                                 </AuthFormWrapper>
                         </AuthFormContainer>

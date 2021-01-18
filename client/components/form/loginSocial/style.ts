@@ -12,7 +12,9 @@ export const SocialLink = style.a<{ $color: string; $background: string }>(
                 color: ${$color};
                 border-radius: ${borderRadius.sm}px;
                 background-color: ${$background};
-
+                &:hover {
+                        filter: brightness(0.95);
+                }
                 &:not(:last-child) {
                         margin-bottom: ${ruler}px;
                 }

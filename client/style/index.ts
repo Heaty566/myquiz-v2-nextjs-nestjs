@@ -47,7 +47,7 @@ export const variable: DefaultTheme = {
                 },
                 font: {
                         black: '#171717',
-                        white: '#fefefe',
+                        white: '#ffffff',
                 },
         },
         stroke: {
