@@ -49,7 +49,8 @@ export const NavDropDownLink = styled.a(
                 font-size: ${fontSize[16]}px;
                 font-weight: bold;
                 transition: 0.2s;
-
+                width: 100%;
+                cursor: pointer;
                 &:hover {
                         background-color: ${colors.white.two};
                         color: ${colors.primary.one};

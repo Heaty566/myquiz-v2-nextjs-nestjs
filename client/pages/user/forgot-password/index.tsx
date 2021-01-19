@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
 
 //* Import
 import { AuthFormContainer, AuthFormWrapper, AuthFormTitle, AuthFormSuccessMsg } from '../../../components/views/user/form';
 import { InputText } from '../../../components/form/input/inputText';
-import { BtnFunc } from '../../../components/btnFunc';
 import { ForgotPasswordDto } from '../../../store/auth/dto';
-import { useForm } from 'react-hook-form';
+import { BtnFunc } from '../../../components/btnFunc';
+import { RouterHOC } from '../../../HOC/routerHOC';
 import { RootState, store } from '../../../store';
 import { authActions } from '../../../store/auth';
-import { useSelector } from 'react-redux';
-import { ApiState } from '../../../store/api';
-import { RouterHOC } from '../../../HOC/routerHOC';
 import { seoHead } from '../../../helper/seoHead';
+import { ApiState } from '../../../store/api';
 
 export interface LoginProps {}
 
@@ -19,8 +19,8 @@ const initialValue: ForgotPasswordDto = {
         email: '',
 };
 
-const Register: React.FunctionComponent<LoginProps> = () => {
-        const authState = useSelector<RootState, ApiState>((state) => state.api);
+const ForgotPassword: React.FunctionComponent<LoginProps> = () => {
+        const apiState = useSelector<RootState, ApiState>((state) => state.api);
 
         const { register, handleSubmit } = useForm<ForgotPasswordDto>({
                 defaultValues: initialValue,
@@ -32,11 +32,11 @@ const Register: React.FunctionComponent<LoginProps> = () => {
         };
 
         useEffect(() => {
-                const { isError, errorDetails } = authState;
+                const { isError, errorDetails } = apiState;
 
                 if (isError) setErrors({ ...initialValue, ...errorDetails });
                 else setErrors(initialValue);
-        }, [authState.isError]);
+        }, [apiState.isError]);
 
         return (
                 <>
@@ -48,15 +48,15 @@ const Register: React.FunctionComponent<LoginProps> = () => {
                                         </AuthFormTitle>
 
                                         <h4>Enter your email address and we’ll send you a recovery link.</h4>
-                                        {authState.message && <AuthFormSuccessMsg>{authState.message}</AuthFormSuccessMsg>}
+                                        {apiState.message && <AuthFormSuccessMsg>{apiState.message}</AuthFormSuccessMsg>}
                                         <InputText errorMessage={errors.email} label="Email" name="email" register={register} />
 
-                                        <BtnFunc label="Send An Email" />
+                                        <BtnFunc label="Send An Email" isLoading={apiState.isLoading} />
                                 </AuthFormWrapper>
                         </AuthFormContainer>
                 </>
         );
 };
 
-const RegisterRouter = (props: any) => <RouterHOC Component={Register} props={props} />;
-export default RegisterRouter;
+const ForgotPasswordRouter = (props: any) => <RouterHOC Component={ForgotPassword} props={props} />;
+export default ForgotPasswordRouter;

@@ -142,11 +142,12 @@ export const HomeSlideLink = styled.a(
 
 //*-------------------Counter section-----------
 export const HomeCounterContainer = styled.div(
-        ({ theme: {} }) => css`
+        ({ theme: { ruler } }) => css`
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
+                padding: 0 ${ruler * 2}px;
         `,
 );
 export const HomeCounterWrapper = styled.div(

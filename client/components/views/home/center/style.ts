@@ -2,11 +2,12 @@ import styled, { css } from 'styled-components';
 import { breakPoint } from '../../../../style';
 
 export const HomeCenterContainer = styled.section(({ theme: {} }) => css``);
+//* --------------- Home Card Section --------------------------------------
 export const HomeCardMainTitle = styled.h1(
         ({ theme: { ruler, colors, fontSize } }) => css`
                 margin-bottom: ${ruler * 4}px;
                 color: ${colors.primary.two};
-                font-size: ${fontSize[32]}px;
+                font-size: ${fontSize[40]}px;
                 text-align: center;
                 @media ${breakPoint.sm} {
                         font-size: ${fontSize[24]}px;
@@ -124,5 +125,70 @@ export const HomeCardLink = styled.li(
                 display: inline-block;
                 opacity: 0.8;
                 width: 100%;
+        `,
+);
+
+//*-------------------Home Features section -------------------------
+
+export const HomeFeatureContainer = styled.section(
+        () =>
+                css`
+                        min-height: 700px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        flex-direction: column;
+                `,
+);
+export const HomeFeatureMainTitle = styled.h1(
+        ({ theme: { fontSize, ruler } }) => css`
+                font-size: ${fontSize[40]}px;
+                text-align: center;
+                margin-bottom: ${ruler * 4}px;
+                @media ${breakPoint.md} {
+                        font-size: ${fontSize[24]}px;
+                }
+        `,
+);
+export const HomeFeatureWrapper = styled.div(
+        ({ theme: { ruler } }) => css`
+                display: grid;
+                grid-template-columns: repeat(3, 280px);
+                column-gap: ${ruler * 8}px;
+                row-gap: ${ruler * 4}px;
+
+                @media ${breakPoint.lg} {
+                        grid-template-columns: repeat(2, 280px);
+                        column-gap: ${ruler * 4}px;
+                }
+                @media ${breakPoint.md} {
+                        grid-template-columns: repeat(1, 280px);
+                        column-gap: ${ruler * 4}px;
+                }
+        `,
+);
+export const HomeFeatureItem = styled.div(
+        () => css`
+                display: flex;
+                align-items: center;
+
+                flex-direction: column;
+                max-width: 280px;
+                text-align: center;
+        `,
+);
+export const HomeFeatureImage = styled.div(
+        ({ theme: { ruler } }) => css`
+                margin-bottom: ${ruler * 2}px;
+        `,
+);
+export const HomeFeatureTitle = styled.h2(
+        ({ theme: { ruler } }) => css`
+                margin-bottom: ${ruler}px;
+        `,
+);
+export const HomeFeatureText = styled.p(
+        () => css`
+                opacity: 0.8;
         `,
 );

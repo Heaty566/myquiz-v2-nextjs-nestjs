@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import Link from 'next/link';
 
 //* Import
@@ -7,7 +8,6 @@ import { InputText } from '../../components/form/input/inputText';
 import { InputPassword } from '../../components/form/input/inputPassword';
 import { BtnFunc } from '../../components/btnFunc';
 import { UserLoginDto } from '../../store/auth/dto';
-import { useForm } from 'react-hook-form';
 import { LoginSocial } from '../../components/form/loginSocial';
 import { ROUTER } from '../../constant/routerConstant';
 import { RootState, store } from '../../store';
@@ -25,7 +25,7 @@ const initialValue: UserLoginDto = {
 };
 
 const Login: React.FunctionComponent<LoginProps> = () => {
-        const authState = useSelector<RootState, ApiState>((state) => state.api);
+        const apiState = useSelector<RootState, ApiState>((state) => state.api);
         const { register, handleSubmit } = useForm<UserLoginDto>({
                 defaultValues: initialValue,
         });
@@ -36,11 +36,11 @@ const Login: React.FunctionComponent<LoginProps> = () => {
         };
 
         useEffect(() => {
-                const { isError, errorDetails } = authState;
+                const { isError, errorDetails } = apiState;
 
                 if (isError) setErrors({ ...initialValue, ...errorDetails });
                 else setErrors(initialValue);
-        }, [authState.isError]);
+        }, [apiState.isError]);
 
         return (
                 <>
@@ -55,7 +55,7 @@ const Login: React.FunctionComponent<LoginProps> = () => {
                                         <Link href={ROUTER.forgotPassword}>
                                                 <AuthFormLink href={ROUTER.forgotPassword}>Forgot your password?</AuthFormLink>
                                         </Link>
-                                        <BtnFunc label="Register" />
+                                        <BtnFunc label="Sign In" isLoading={apiState.isLoading} />
                                         <LoginSocial />
                                 </AuthFormWrapper>
                         </AuthFormContainer>

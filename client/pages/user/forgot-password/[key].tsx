@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/router';
 
 //* Import
-import { useRouter } from 'next/router';
 import { AuthFormContainer, AuthFormWrapper, AuthFormTitle, AuthFormSuccessMsg } from '../../../components/views/user/form';
-import { InputPassword } from '../../../components/form/input/inputPassword';
-import { BtnFunc } from '../../../components/btnFunc';
-import { ForgotPasswordUpdateDto } from '../../../store/auth/dto';
-import { useForm } from 'react-hook-form';
-import { ROUTER } from '../../../constant/routerConstant';
 import { RootState, store } from '../../../store';
-import { authActions } from '../../../store/auth';
-import { useSelector } from 'react-redux';
-import { ApiState } from '../../../store/api';
+import { InputPassword } from '../../../components/form/input/inputPassword';
+import { ForgotPasswordUpdateDto } from '../../../store/auth/dto';
+import { ROUTER } from '../../../constant/routerConstant';
+import { BtnFunc } from '../../../components/btnFunc';
 import { RouterHOC } from '../../../HOC/routerHOC';
 import { seoHead } from '../../../helper/seoHead';
+import { authActions } from '../../../store/auth';
+import { ApiState } from '../../../store/api';
+import { useSelector } from 'react-redux';
 
 export interface LoginProps {}
 
@@ -23,8 +23,8 @@ const initialValue: ForgotPasswordUpdateDto = {
         resetKey: '',
 };
 
-const Register: React.FunctionComponent<LoginProps> = () => {
-        const authState = useSelector<RootState, ApiState>((state) => state.api);
+const ForgotPasswordUpdate: React.FunctionComponent<LoginProps> = () => {
+        const apiState = useSelector<RootState, ApiState>((state) => state.api);
         const router = useRouter();
         const { register, handleSubmit } = useForm<ForgotPasswordUpdateDto>({
                 defaultValues: initialValue,
@@ -39,13 +39,13 @@ const Register: React.FunctionComponent<LoginProps> = () => {
         };
 
         useEffect(() => {
-                const { isError, errorDetails, message } = authState;
+                const { isError, errorDetails, message } = apiState;
 
                 if (isError) setErrors({ ...initialValue, ...errorDetails });
                 else setErrors(initialValue);
 
                 if (message) setTimeout(() => router.push(ROUTER.login), 2000);
-        }, [authState.isError, authState.message]);
+        }, [apiState.isError, apiState.message]);
 
         return (
                 <>
@@ -55,7 +55,7 @@ const Register: React.FunctionComponent<LoginProps> = () => {
                                         <AuthFormTitle>
                                                 <span>Reset Your Password</span>
                                         </AuthFormTitle>
-                                        {authState.message && <AuthFormSuccessMsg>{authState.message}</AuthFormSuccessMsg>}
+                                        {apiState.message && <AuthFormSuccessMsg>{apiState.message}</AuthFormSuccessMsg>}
                                         <InputPassword
                                                 errorMessage={errors.newPassword}
                                                 label="New Password"
@@ -68,12 +68,12 @@ const Register: React.FunctionComponent<LoginProps> = () => {
                                                 name="confirmPassword"
                                                 register={register}
                                         />
-                                        <BtnFunc label="Update" />
+                                        <BtnFunc label="Update" isLoading={apiState.isLoading} />
                                 </AuthFormWrapper>
                         </AuthFormContainer>
                 </>
         );
 };
 
-const RegisterRouter = (props: any) => <RouterHOC Component={Register} props={props} />;
-export default RegisterRouter;
+const ForgotPasswordUpdateRouter = (props: any) => <RouterHOC Component={ForgotPasswordUpdate} props={props} />;
+export default ForgotPasswordUpdateRouter;

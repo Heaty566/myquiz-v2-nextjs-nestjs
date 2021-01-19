@@ -32,38 +32,38 @@ interface SlideData extends SlideItem {
 const slideData: SlideData[] = [
         {
                 _id: 0,
-                title: 'Organize Your Study',
-                imageUrl: '/page/home/images/slide-1.png',
+                title: 'Quit Studying and Take a Test',
+                imageUrl: '/page/home/images/slide-2.png',
                 content:
-                        'Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit aute irure tempor cupidatat incididunt sint deserunt ut voluptate aute id deserunt nisi.',
+                        'Taking a test is not just a passive mechanism for assessing how much people know, according to new research. It actually helps people learn, and it works better than a number of other studying techniques.',
         },
         {
                 _id: 1,
-                title: 'Slide 1',
-                imageUrl: '/page/home/images/slide-2.png',
+                title: 'Frequent Tests Can Enhance College Learning',
+                imageUrl: '/page/home/images/slide-3.png',
                 content:
-                        'eneric paraguay handcrafted array concrete kina mobile garden silver tuna dollar music home driver emulation online invoice high-level disintermediate islands invoice tasty central portals bacon reboot sas account web-enabled savings granular chips analyzing licensed rustic generation kyat square district synergized moldovan navigating uzbekistan indiana assimilated delaware handcrafted account fully-configurable mesh firewall rica turkey connecting optimize accountability solution-oriented leu lats pink human fresh-thinking.',
+                        'Just don’t hide in the back of the room and be invisible. Moreover, don’t hesitate to ask questions in class; if you’re wondering about something, chances are that someone else is too. If you think of a question outside of class time, visit the professor during office hours (that’s the purpose of office hours) or send an emai',
         },
         {
                 _id: 2,
-                title: 'Slide 2',
-                imageUrl: '/page/home/images/slide-3.png',
+                title: 'Some Notes on Note-taking',
+                imageUrl: '/page/home/images/slide-1.png',
                 content:
-                        'ixel electronics asynchronous plum clicks-and-mortar hybrid communities bypass washington generating wireless computers account forecast pants virginia georgia land interface dynamic success ball credit direct repurpose bedfordshire awesome consultant quantifying incredible sausages clothing clicks-and-mortar robust connecting tactics even-keeled bike neural organic process books architect enable digital practical.',
+                        'I went to college long before the era of laptops, so I learned to take notes the old-fashioned way: ink on paper. But that does not mean my note-taking system was simple. Indeed it was an intricate hieroglyphic language, in which asterisks and underscoring and check marks and exclamation points all had precise meaning, if only to me.',
         },
         {
                 _id: 3,
-                title: 'Slide 3',
+                title: '21 Easy-to-Follow Tips',
                 imageUrl: '/page/home/images/slide-4.png',
                 content:
-                        'ivide transmitting incubate payment indexing accountability specialist electronics soft producer overriding global expedite indiana pci viaduct sausages small dynamic sleek recontextualize compress tcp programmable franc concrete cotton',
+                        'It’s about that time again. Sleepy college towns will begin to awaken, abuzz with an excitement that only college students can inspire. Young scholars will soon arrive on college and university campuses, ready, or not so ready, to take on the world of higher education.   ',
         },
         {
                 _id: 4,
-                title: 'Slide 4',
+                title: 'Practicing Useful Annotation Strategies',
                 imageUrl: '/page/home/images/slide-5.png',
                 content:
-                        'orest burgs awesome liaison fresh international ptimization operations virtual partnerships withdrawal dobra supply-chains white idaho microchip multi-channelled agent mobile car lime thx function-based account exe rubber borders garden up-sized steel tasty multi-state 1080p index greenland fuchsia analyzing payment specialist thx withdrawal forward payment borders object-oriented fresh christmas transition.',
+                        'When students have finished their responses, whip around the room to have share their thoughts. Ask: Are there any differences in how you write notes on, say, a novel or poem as opposed to a history textbook chapter? What are the uses of book annotations?',
         },
 ];
 
@@ -129,3 +129,5 @@ export const HomeTop: React.FunctionComponent<HomeTopProps> = () => {
                 </HomeTopContainer>
         );
 };
+
+export default HomeTop;

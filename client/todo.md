@@ -21,6 +21,10 @@
 
 # Done jobs
 
+- [x] ~~_logout button_~~ [2021-01-19]
+- [x] ~~_loading_~~ [2021-01-19]
+- [x] ~~_auto complete of password_~~ [2021-01-19]
+- [x] ~~_font size wrong_~~ [2021-01-19]
 - [x] ~~_compression add image_~~ [2021-01-16]
 - [x] ~~_navbar menu in mobile_~~ [2021-01-14]
 - [x] ~~_fix input high_~~ [2021-01-14]

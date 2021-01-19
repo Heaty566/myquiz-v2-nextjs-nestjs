@@ -18,7 +18,12 @@ export const InputPassword: React.FunctionComponent<InputPasswordProps> = ({ err
                 <InputPasswordContainer>
                         <InputPasswordLabel htmlFor={name}>{label}</InputPasswordLabel>
                         <InputPasswordFieldWrapper>
-                                <InputPasswordField name={name} ref={(value) => register(value)} type={isShow ? 'text' : 'password'} />
+                                <InputPasswordField
+                                        autoComplete="off"
+                                        name={name}
+                                        ref={(value) => register(value)}
+                                        type={isShow ? 'text' : 'password'}
+                                />
                                 <Image
                                         src={`/asset/icons/${isShow ? '' : 'in'}visible.svg`}
                                         alt="invisible"

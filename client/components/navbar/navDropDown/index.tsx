@@ -12,6 +12,7 @@ export interface NavDropDownProps {
         isActive: boolean;
         register: React.RefObject<HTMLElement>;
         handleOnClick: Function;
+        handleOnLogout: Function;
 }
 
 const arrData = [
@@ -59,7 +60,7 @@ const arrData = [
         },
 ];
 
-export const NavDropDown: React.FunctionComponent<NavDropDownProps> = ({ authState, isActive, register, handleOnClick }) => {
+export const NavDropDown: React.FunctionComponent<NavDropDownProps> = ({ authState, isActive, register, handleOnClick, handleOnLogout }) => {
         return (
                 <NavDropDownContainer className={`${isActive && 'active'}`} ref={register}>
                         {arrData.map((item) => {
@@ -83,6 +84,14 @@ export const NavDropDown: React.FunctionComponent<NavDropDownProps> = ({ authSta
                                         </Link>
                                 );
                         })}
+                        <NavDropDownItem onClick={() => handleOnLogout()}>
+                                <NavDropDownLink as="button">
+                                        <NavDropDownIcon>
+                                                <Image src={`/asset/icons/logout.svg`} alt="logout" height="24" width="24" />
+                                        </NavDropDownIcon>
+                                        Logout
+                                </NavDropDownLink>
+                        </NavDropDownItem>
                 </NavDropDownContainer>
         );
 };

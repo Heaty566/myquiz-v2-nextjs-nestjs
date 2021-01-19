@@ -12,6 +12,7 @@ export const BtnCommonStyle = css(
                 background-color: ${colors.primary.one};
                 transition: 0.2s;
                 cursor: pointer;
+                display: inline-block;
 
                 font-family: 'Roboto', sans-serif;
                 &:hover {

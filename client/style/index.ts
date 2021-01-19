@@ -87,6 +87,43 @@ export const GlobalStyle = createGlobalStyle(
                         box-sizing: border-box;
                 }
 
+                /* roboto-regular - vietnamese_latin */
+                @font-face {
+                        font-family: 'Roboto';
+                        font-style: normal;
+                        font-weight: 400;
+                        src: url('/asset/fonts/roboto-v20-vietnamese_latin-regular.eot'); /* IE9 Compat Modes */
+                        src: local(''), url('/asset/fonts/roboto-v20-vietnamese_latin-regular.eot?#iefix') format('embedded-opentype'),
+                                /* IE6-IE8 */ url('/asset/fonts/roboto-v20-vietnamese_latin-regular.woff2') format('woff2'),
+                                /* Super Modern Browsers */ url('/asset/fonts/roboto-v20-vietnamese_latin-regular.woff') format('woff'),
+                                /* Modern Browsers */ url('/asset/fonts/roboto-v20-vietnamese_latin-regular.ttf') format('truetype'),
+                                /* Safari, Android, iOS */ url('/asset/fonts/roboto-v20-vietnamese_latin-regular.svg#Roboto') format('svg'); /* Legacy iOS */
+                }
+                /* roboto-500 - vietnamese_latin */
+                @font-face {
+                        font-family: 'Roboto';
+                        font-style: normal;
+                        font-weight: 500;
+                        src: url('/asset/fonts/roboto-v20-vietnamese_latin-500.eot'); /* IE9 Compat Modes */
+                        src: local(''), url('/asset/fonts/roboto-v20-vietnamese_latin-500.eot?#iefix') format('embedded-opentype'),
+                                /* IE6-IE8 */ url('/asset/fonts/roboto-v20-vietnamese_latin-500.woff2') format('woff2'),
+                                /* Super Modern Browsers */ url('/asset/fonts/roboto-v20-vietnamese_latin-500.woff') format('woff'),
+                                /* Modern Browsers */ url('/asset/fonts/roboto-v20-vietnamese_latin-500.ttf') format('truetype'),
+                                /* Safari, Android, iOS */ url('/asset/fonts/roboto-v20-vietnamese_latin-500.svg#Roboto') format('svg'); /* Legacy iOS */
+                }
+                /* roboto-700 - vietnamese_latin */
+                @font-face {
+                        font-family: 'Roboto';
+                        font-style: normal;
+                        font-weight: 700;
+                        src: url('/asset/fonts/roboto-v20-vietnamese_latin-700.eot'); /* IE9 Compat Modes */
+                        src: local(''), url('/asset/fonts/roboto-v20-vietnamese_latin-700.eot?#iefix') format('embedded-opentype'),
+                                /* IE6-IE8 */ url('/asset/fonts/roboto-v20-vietnamese_latin-700.woff2') format('woff2'),
+                                /* Super Modern Browsers */ url('/asset/fonts/roboto-v20-vietnamese_latin-700.woff') format('woff'),
+                                /* Modern Browsers */ url('/asset/fonts/roboto-v20-vietnamese_latin-700.ttf') format('truetype'),
+                                /* Safari, Android, iOS */ url('/asset/fonts/roboto-v20-vietnamese_latin-700.svg#Roboto') format('svg'); /* Legacy iOS */
+                }
+
                 html {
                         font-size: 16px;
                         font-family: 'Roboto', sans-serif;
