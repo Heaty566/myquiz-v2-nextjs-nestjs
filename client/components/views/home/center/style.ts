@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import { breakPoint } from '../../../../style';
 
-export const HomeCenterContainer = styled.section(({ theme: {} }) => css``);
+export const HomeCenterContainer = styled.div(({ theme: {} }) => css``);
 //* --------------- Home Card Section --------------------------------------
 export const HomeCardMainTitle = styled.h1(
         ({ theme: { ruler, colors, fontSize } }) => css`
@@ -14,7 +14,7 @@ export const HomeCardMainTitle = styled.h1(
                 }
         `,
 );
-export const HomeCardContainer = styled.div(
+export const HomeCardContainer = styled.section(
         ({ theme: { ruler, colors } }) => css`
                 margin: ${ruler * 8}px 0;
                 min-height: 800px;
@@ -98,11 +98,13 @@ export const HomeCardImage = styled.div(
                 flex: 1;
         `,
 );
-export const HomeCardTitle = styled.h3(
-        ({ theme: { ruler, fontSize } }) => css`
+export const HomeCardTitle = styled.h2(
+        ({ theme: { ruler, fontSize, colors } }) => css`
                 margin-bottom: ${ruler * 2}px;
                 font-size: ${fontSize[24]}px;
+                font-weight: bold;
                 transition: 0.2s;
+                color: ${colors.primary.one};
         `,
 );
 export const HomeCardContent = styled.div(
@@ -120,11 +122,22 @@ export const HomeCardList = styled.ul(
                 margin-right: ${ruler}px;
         `,
 );
-export const HomeCardLink = styled.li(
-        ({ theme: {} }) => css`
+export const HomeCardListItem = styled.li(
+        ({ theme: { colors } }) => css`
                 display: inline-block;
                 opacity: 0.8;
                 width: 100%;
+                color: ${colors.font.black};
+        `,
+);
+export const HomeCardListText = styled.h3(
+        ({ theme: { colors, fontSize } }) => css`
+                display: inline-block;
+                opacity: 0.8;
+                width: 100%;
+                font-size: ${fontSize[16]}px;
+
+                color: ${colors.font.black};
         `,
 );
 

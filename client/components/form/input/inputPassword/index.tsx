@@ -23,7 +23,10 @@ export const InputPassword: React.FunctionComponent<InputPasswordProps> = ({ err
                                         name={name}
                                         ref={(value) => register(value)}
                                         type={isShow ? 'text' : 'password'}
+                                        id={name}
+                                        $isShow={isShow}
                                 />
+
                                 <Image
                                         src={`/asset/icons/${isShow ? '' : 'in'}visible.svg`}
                                         alt="invisible"

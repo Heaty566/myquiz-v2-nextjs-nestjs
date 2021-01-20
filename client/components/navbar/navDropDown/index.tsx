@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 //* Import
 import { ROUTER } from '../../../constant/routerConstant';
-import { NavDropDownContainer, NavDropDownItem, NavDropDownLink, NavDropDownIcon } from './style';
+import { NavDropDownContainer, NavDropDownItem, NavDropDownLink, NavDropDownIcon, NavDropDownList } from './style';
 import { AuthState } from '../../../store/auth';
 
 export interface NavDropDownProps {
@@ -62,36 +62,40 @@ const arrData = [
 
 export const NavDropDown: React.FunctionComponent<NavDropDownProps> = ({ authState, isActive, register, handleOnClick, handleOnLogout }) => {
         return (
-                <NavDropDownContainer className={`${isActive && 'active'}`} ref={register}>
-                        {arrData.map((item) => {
-                                if (item.isLogin && item.isLogin === authState.isLogin) return null;
+                <NavDropDownContainer className={`${isActive && 'active'}`} ref={register} role="navigation">
+                        <NavDropDownList>
+                                {arrData.map((item) => {
+                                        if (item.isLogin && item.isLogin === authState.isLogin) return null;
 
-                                return (
-                                        <Link href={item.link} key={item.label}>
-                                                <NavDropDownItem onClick={() => handleOnClick()}>
-                                                        <NavDropDownLink href={item.link}>
-                                                                <NavDropDownIcon>
-                                                                        <Image
-                                                                                src={`/asset/icons/${item.imageUrl}`}
-                                                                                alt={item.label}
-                                                                                height="24"
-                                                                                width="24"
-                                                                        />
-                                                                </NavDropDownIcon>
-                                                                {item.label}
-                                                        </NavDropDownLink>
-                                                </NavDropDownItem>
-                                        </Link>
-                                );
-                        })}
-                        <NavDropDownItem onClick={() => handleOnLogout()}>
-                                <NavDropDownLink as="button">
-                                        <NavDropDownIcon>
-                                                <Image src={`/asset/icons/logout.svg`} alt="logout" height="24" width="24" />
-                                        </NavDropDownIcon>
-                                        Logout
-                                </NavDropDownLink>
-                        </NavDropDownItem>
+                                        return (
+                                                <Link href={item.link} key={item.label}>
+                                                        <NavDropDownItem onClick={() => handleOnClick()}>
+                                                                <NavDropDownLink href={item.link}>
+                                                                        <NavDropDownIcon>
+                                                                                <Image
+                                                                                        src={`/asset/icons/${item.imageUrl}`}
+                                                                                        alt={item.label}
+                                                                                        height="24"
+                                                                                        width="24"
+                                                                                />
+                                                                        </NavDropDownIcon>
+                                                                        {item.label}
+                                                                </NavDropDownLink>
+                                                        </NavDropDownItem>
+                                                </Link>
+                                        );
+                                })}
+                                {authState.isLogin && (
+                                        <NavDropDownItem onClick={() => handleOnLogout()}>
+                                                <NavDropDownLink as="button">
+                                                        <NavDropDownIcon>
+                                                                <Image src={`/asset/icons/logout.svg`} alt="logout" height="24" width="24" />
+                                                        </NavDropDownIcon>
+                                                        Logout
+                                                </NavDropDownLink>
+                                        </NavDropDownItem>
+                                )}
+                        </NavDropDownList>
                 </NavDropDownContainer>
         );
 };

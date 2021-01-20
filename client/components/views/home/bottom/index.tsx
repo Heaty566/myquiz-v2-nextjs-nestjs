@@ -22,6 +22,7 @@ import {
         HomeQuizCardTitle,
         HomeQuizCardWrapper,
 } from './style';
+import Link from 'next/link';
 
 interface MemberCard {
         title: string;
@@ -135,24 +136,26 @@ export const HomeBottom: React.FunctionComponent<HomeBottomProps> = () => {
                 <HomeBottomContainer>
                         <HomeQuizCardContainer>
                                 <HomeQuizCardMainTitle>Trending on MyQuiz</HomeQuizCardMainTitle>
-                                <HomeQuizCardWrapper>
+                                <HomeQuizCardWrapper role="main">
                                         {quizCardData.map((item) => (
-                                                <HomeQuizCardItem href={item.url} key={item.title}>
-                                                        <HomeQuizCardTitle>{item.title}</HomeQuizCardTitle>
-                                                        <HomeQuizCardAuthor>{item.author}</HomeQuizCardAuthor>
-                                                        <HomeQuizCardBottom>
-                                                                <HomeQuizCardQuestion>{item.questions} Questions</HomeQuizCardQuestion>
-                                                                <HomeQuizCardCounter>
-                                                                        <Image
-                                                                                src="/asset/icons/star.svg"
-                                                                                alt={`${item.questions} stars`}
-                                                                                height="20"
-                                                                                width="20"
-                                                                        />
-                                                                        <span>{item.star}</span>
-                                                                </HomeQuizCardCounter>
-                                                        </HomeQuizCardBottom>
-                                                </HomeQuizCardItem>
+                                                <Link href="/" key={item.title}>
+                                                        <HomeQuizCardItem href={item.url}>
+                                                                <HomeQuizCardTitle>{item.title}</HomeQuizCardTitle>
+                                                                <HomeQuizCardAuthor>{item.author}</HomeQuizCardAuthor>
+                                                                <HomeQuizCardBottom>
+                                                                        <HomeQuizCardQuestion>{item.questions} Questions</HomeQuizCardQuestion>
+                                                                        <HomeQuizCardCounter>
+                                                                                <Image
+                                                                                        src="/asset/icons/star.svg"
+                                                                                        alt={`${item.questions} stars`}
+                                                                                        height="20"
+                                                                                        width="20"
+                                                                                />
+                                                                                <span>{item.star}</span>
+                                                                        </HomeQuizCardCounter>
+                                                                </HomeQuizCardBottom>
+                                                        </HomeQuizCardItem>
+                                                </Link>
                                         ))}
                                 </HomeQuizCardWrapper>
                         </HomeQuizCardContainer>

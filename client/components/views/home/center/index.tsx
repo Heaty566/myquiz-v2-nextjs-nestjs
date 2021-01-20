@@ -1,11 +1,13 @@
 import * as React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
+
 import {
         HomeCardContainer,
         HomeCardImage,
         HomeCardItem,
         HomeCardList,
-        HomeCardLink,
+        HomeCardListItem,
         HomeCardContent,
         HomeCardTitle,
         HomeCardWrapper,
@@ -18,6 +20,7 @@ import {
         HomeFeatureTitle,
         HomeFeatureImage,
         HomeFeatureWrapper,
+        HomeCardListText,
 } from './style';
 
 export interface HomeCardSubject {
@@ -120,19 +123,23 @@ export const HomeCenter: React.FunctionComponent<HomeCenterProps> = () => {
                                 <HomeCardMainTitle>Explore Your Favorite Subject</HomeCardMainTitle>
                                 <HomeCardWrapper>
                                         {homeCardSubjectData.map((item) => (
-                                                <HomeCardItem key={item.title}>
-                                                        <HomeCardContent>
-                                                                <HomeCardTitle>{item.title}</HomeCardTitle>
-                                                                <HomeCardList>
-                                                                        {item.contentList.map((childItem) => (
-                                                                                <HomeCardLink key={childItem}>{childItem}</HomeCardLink>
-                                                                        ))}
-                                                                </HomeCardList>
-                                                        </HomeCardContent>
-                                                        <HomeCardImage>
-                                                                <Image src={item.imageSrc} height="160" width="200" alt={item.title} />
-                                                        </HomeCardImage>
-                                                </HomeCardItem>
+                                                <Link href="/" key={item.title}>
+                                                        <HomeCardItem href="/">
+                                                                <HomeCardContent>
+                                                                        <HomeCardTitle>{item.title}</HomeCardTitle>
+                                                                        <HomeCardList>
+                                                                                {item.contentList.map((childItem) => (
+                                                                                        <HomeCardListItem key={childItem}>
+                                                                                                <HomeCardListText>{childItem}</HomeCardListText>
+                                                                                        </HomeCardListItem>
+                                                                                ))}
+                                                                        </HomeCardList>
+                                                                </HomeCardContent>
+                                                                <HomeCardImage>
+                                                                        <Image src={item.imageSrc} height="160" width="200" alt={item.title} />
+                                                                </HomeCardImage>
+                                                        </HomeCardItem>
+                                                </Link>
                                         ))}
                                 </HomeCardWrapper>
                         </HomeCardContainer>

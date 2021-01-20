@@ -40,14 +40,14 @@ const ForgotPassword: React.FunctionComponent<LoginProps> = () => {
 
         return (
                 <>
-                        {seoHead({ title: 'Forgot Password', keyword: 'reset password, recovery password' })}
-                        <AuthFormContainer onSubmit={handleSubmit(handleOnSubmit)}>
-                                <AuthFormWrapper>
+                        {seoHead({ title: 'Forgot Password', canonical: '/user/forgot-password', keyword: 'reset password, recovery password' })}
+                        <AuthFormContainer>
+                                <AuthFormWrapper onSubmit={handleSubmit(handleOnSubmit)} role="form">
                                         <AuthFormTitle>
                                                 <span>Forgot Password</span>
                                         </AuthFormTitle>
 
-                                        <h4>Enter your email address and we’ll send you a recovery link.</h4>
+                                        <p>Enter your email address and we’ll send you a recovery link.</p>
                                         {apiState.message && <AuthFormSuccessMsg>{apiState.message}</AuthFormSuccessMsg>}
                                         <InputText errorMessage={errors.email} label="Email" name="email" register={register} />
 

@@ -46,9 +46,9 @@ const Register: React.FunctionComponent<LoginProps> = () => {
 
         return (
                 <>
-                        {seoHead({ title: 'Login' })}
-                        <AuthFormContainer onSubmit={handleSubmit(handleOnSubmit)}>
-                                <AuthFormWrapper>
+                        {seoHead({ title: 'Register', canonical: '/user/register' })}
+                        <AuthFormContainer>
+                                <AuthFormWrapper onSubmit={handleSubmit(handleOnSubmit)} role="form">
                                         <AuthFormTitle>
                                                 <span>Register New Account</span>
                                         </AuthFormTitle>

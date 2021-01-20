@@ -14,7 +14,7 @@ export const InputText: React.FunctionComponent<InputTextProps> = ({ errorMessag
         return (
                 <InputTextContainer>
                         <InputTextLabel htmlFor={name}>{label}</InputTextLabel>
-                        <InputTextField autoComplete="on" name={name} ref={(value) => register(value)} />
+                        <InputTextField autoComplete="on" name={name} ref={(value) => register(value)} id={name} />
                         {errorMessage && <InputTextError>{`${label} ${errorMessage}`}</InputTextError>}
                 </InputTextContainer>
         );

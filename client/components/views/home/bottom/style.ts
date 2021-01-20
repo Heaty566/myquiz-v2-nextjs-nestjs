@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 import { breakPoint } from '../../../../style';
 import { BtnLinkContainer } from '../../../btnLink/style';
 
-export const HomeBottomContainer = styled.div(
+export const HomeBottomContainer = styled.main(
         ({ theme: { ruler } }) => css`
                 display: flex;
                 justify-content: center;
@@ -13,7 +13,7 @@ export const HomeBottomContainer = styled.div(
 );
 
 //* -----------Home Quiz Section ------------------------
-export const HomeQuizCardContainer = styled.div(
+export const HomeQuizCardContainer = styled.section(
         ({ theme: { ruler, colors } }) => css`
                 display: flex;
                 justify-content: center;
@@ -27,7 +27,7 @@ export const HomeQuizCardContainer = styled.div(
                 }
         `,
 );
-export const HomeQuizCardWrapper = styled.section(
+export const HomeQuizCardWrapper = styled.div(
         ({ theme: { ruler } }) => css`
                 display: grid;
                 grid-template-columns: repeat(3, 286px);
@@ -54,7 +54,7 @@ export const HomeQuizCardMainTitle = styled.h1(
                 margin-bottom: ${ruler * 3}px;
         `,
 );
-export const HomeQuizCardTitle = styled.h1(
+export const HomeQuizCardTitle = styled.h2(
         ({ theme: { fontSize } }) => css`
                 font-size: ${fontSize[16]}px;
         `,
@@ -168,7 +168,7 @@ export const HomeMemberCardSubTitle = styled.p(
                 margin: 0 ${ruler * 2}px;
         `,
 );
-export const HomeMemberCardPrice = styled.h2(
+export const HomeMemberCardPrice = styled.h3(
         ({ theme: { fontSize } }) => css`
                 font-size: ${fontSize[40]}px;
 

@@ -44,9 +44,9 @@ const Login: React.FunctionComponent<LoginProps> = () => {
 
         return (
                 <>
-                        {seoHead({ title: 'Login' })}
-                        <AuthFormContainer onSubmit={handleSubmit(handleOnSubmit)}>
-                                <AuthFormWrapper>
+                        {seoHead({ title: 'Login', canonical: '/user/login' })}
+                        <AuthFormContainer>
+                                <AuthFormWrapper onSubmit={handleSubmit(handleOnSubmit)} role="form">
                                         <AuthFormTitle>
                                                 <span>Login Your Account</span>
                                         </AuthFormTitle>

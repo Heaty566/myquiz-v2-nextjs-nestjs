@@ -27,7 +27,7 @@ export const HomePage: React.FunctionComponent<IndexProps> = () => {
         });
         return (
                 <>
-                        {seoHead({ title: 'Home', isIndexPage: true, isFollowPage: true })}
+                        {seoHead({ title: 'Home', isIndexPage: true, isFollowPage: true, canonical: '/' })}
                         <main>
                                 <HomeTop />
                                 <HomeCenter />

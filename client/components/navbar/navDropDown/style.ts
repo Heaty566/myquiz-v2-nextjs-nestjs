@@ -8,6 +8,7 @@ export const NavDropDownContainer = styled.nav(
                 position: absolute;
                 top: 100%;
                 right: ${ruler * 8}px;
+                z-index: 999;
                 width: 300px;
                 background-color: ${colors.white.one};
                 padding: ${ruler * 2}px 0;
@@ -29,6 +30,11 @@ export const NavDropDownContainer = styled.nav(
         `,
 );
 
+export const NavDropDownList = styled.ul(
+        ({ theme: { ruler } }) => css`
+                /* margin-bottom: ${ruler * 3}px; */
+        `,
+);
 export const NavDropDownItem = styled.li(
         ({ theme: { ruler } }) => css`
                 /* margin-bottom: ${ruler * 3}px; */

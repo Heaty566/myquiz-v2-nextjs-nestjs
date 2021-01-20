@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 import { breakPoint } from '../../../style';
 import { BtnFuncContainer } from '../../btnFunc/style';
 
-export const AuthFormContainer = styled.section(
+export const AuthFormContainer = styled.main(
         ({ theme: { colors, background } }) => css`
                 background: ${background.one};
                 display: flex;

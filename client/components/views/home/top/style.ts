@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import { breakPoint } from '../../../../style';
 
-export const HomeTopContainer = styled.section(
+export const HomeTopContainer = styled.div(
         ({ theme: { background, ruler } }) => css`
                 margin-bottom: ${ruler * 8}px;
 
@@ -21,9 +21,12 @@ export const HomeTopContainer = styled.section(
                 }
         `,
 );
-export const HomeTopTitle = styled.h1(
-        ({ theme: { fontSize, colors } }) => css`
+
+//*-------------------Slide Show section-----------
+export const HomeSlideShowMainTitle = styled.h1(
+        ({ theme: { fontSize, colors, ruler } }) => css`
                 font-size: ${fontSize[40]}px;
+                margin-bottom: ${ruler * 8}px;
                 text-align: center;
                 color: ${colors.font.white};
                 @media ${breakPoint.md} {
@@ -34,17 +37,13 @@ export const HomeTopTitle = styled.h1(
                 }
         `,
 );
-
-//*-------------------Slide Show section-----------
-export const HomeSlideShowContainer = styled.div(
-        ({ theme: { ruler, colors } }) => css`
+export const HomeSlideShowWrapper = styled.div(
+        ({ theme: { colors } }) => css`
                 max-width: 1080px;
-                margin: ${ruler * 8}px auto 0 auto;
                 height: 350px;
-                background-color: ${colors.grey.one};
                 display: flex;
+                background-color: ${colors.grey.one};
                 overflow: hidden;
-
                 @media ${breakPoint.xl} {
                         width: 90%;
                 }
@@ -53,6 +52,14 @@ export const HomeSlideShowContainer = styled.div(
                         height: 500px;
                         flex-direction: column;
                 }
+        `,
+);
+export const HomeSlideShowContainer = styled.section(
+        ({ theme: { ruler } }) => css`
+                margin: ${ruler * 8}px auto 0 auto;
+                display: flex;
+                align-items: center;
+                flex-direction: column;
         `,
 );
 export const HomeSlideImage = styled.div(
@@ -141,7 +148,7 @@ export const HomeSlideLink = styled.a(
 );
 
 //*-------------------Counter section-----------
-export const HomeCounterContainer = styled.div(
+export const HomeCounterContainer = styled.section(
         ({ theme: { ruler } }) => css`
                 display: flex;
                 flex-direction: column;

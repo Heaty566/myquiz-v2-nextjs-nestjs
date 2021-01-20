@@ -49,9 +49,9 @@ const ForgotPasswordUpdate: React.FunctionComponent<LoginProps> = () => {
 
         return (
                 <>
-                        {seoHead({ title: 'Reset Password', keyword: 'reset password, recovery password' })}
-                        <AuthFormContainer onSubmit={handleSubmit(handleOnSubmit)}>
-                                <AuthFormWrapper>
+                        {seoHead({ title: 'Reset Password', canonical: '/user/forgot-password', keyword: 'reset password, recovery password' })}
+                        <AuthFormContainer>
+                                <AuthFormWrapper onSubmit={handleSubmit(handleOnSubmit)} role="form">
                                         <AuthFormTitle>
                                                 <span>Reset Your Password</span>
                                         </AuthFormTitle>

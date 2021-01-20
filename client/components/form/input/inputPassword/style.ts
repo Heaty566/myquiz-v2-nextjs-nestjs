@@ -16,10 +16,15 @@ export const InputPasswordLabel = styled.label(
 export const InputPasswordFieldWrapper = styled.div(
         ({ theme: { colors, ruler } }) => css`
                 ${InputCommonStyle}
-                padding-right:  ${ruler * 2}px;
-                display: flex;
-                justify-content: space-between;
+
                 align-items: center;
+                position: relative;
+                & > div {
+                        position: absolute !important;
+                        right: ${ruler}px;
+                        top: 50%;
+                        transform: translateY(-50%);
+                }
                 &:focus-within {
                         box-shadow: 0 0 0 1px ${colors.primary.one};
                 }
@@ -29,12 +34,15 @@ export const InputPasswordFieldWrapper = styled.div(
                 }
         `,
 );
-export const InputPasswordField = styled.input(
-        ({ theme: { ruler } }) => css`
+export const InputPasswordField = styled.input<{ $isShow: boolean }>(
+        ({ theme: { ruler }, $isShow }) => css`
                 width: 100%;
-
+                display: block;
+                text-indent: ${ruler * 2}px;
                 height: 100%;
-                padding: 0 ${ruler}px 0 ${ruler * 2}px;
+                height: 35px;
+                font-size: ${$isShow ? '16px' : '20px'};
+                padding-right: ${ruler * 4}px;
         `,
 );
 export const InputPasswordError = styled.div(

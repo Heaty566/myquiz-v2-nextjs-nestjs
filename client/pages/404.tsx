@@ -12,7 +12,7 @@ export interface NotFoundProps {}
 const NotFound: React.FunctionComponent<NotFoundProps> = () => {
         return (
                 <>
-                        {seoHead({ title: 'Not Found' })}
+                        {seoHead({ title: 'Not Found', canonical: '/not-found' })}
                         <NotFoundContainer>
                                 <NotFoundWrapper>
                                         <NotFoundTitle>
