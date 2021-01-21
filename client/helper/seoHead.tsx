@@ -6,7 +6,7 @@ export interface HeadProps {
         description?: string;
         isIndexPage?: boolean;
         isFollowPage?: boolean;
-        canonical?: string;
+        canonical: string;
         keyword?: string;
         imageUrl?: string;
 }
@@ -23,7 +23,7 @@ export const seoHead = ({
         const metaIndexPage = isIndexPage ? 'index' : 'noindex';
         const metaIsFollowPage = isFollowPage ? 'follow' : 'nofollow';
         const metaRobots = `${metaIndexPage},${metaIsFollowPage}`;
-        const canonicalLink = canonical;
+        const canonicalLink = process.env.DOMAIN + canonical;
         const pageTitle = title === 'Home' ? 'MyQuiz' : `${title} | MyQuiz`;
 
         return (

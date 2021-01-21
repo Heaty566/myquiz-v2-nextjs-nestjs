@@ -1,25 +1,23 @@
 import React from 'react';
+import Link from 'next/link';
 
 //* Import
-import { FooterContainer, FooterContainerTop, FooterAuthor, FooterCol, FooterColContainer } from './style';
-import { LangSelect } from '../common/langSelect';
-import { Text } from '../../style/typography';
-
+import { FooterContainer, FooterContainerTop, FooterAuthor, FooterList, FooterListContainer, FooterItem, FooterLink } from './style';
 export interface FooterProps {}
 
 const listContent = [
         [
                 {
-                        text: 'MyQuiz for Business',
+                        text: 'MyQuiz For Business',
                 },
                 {
-                        text: 'Teacher on MyQuiz',
+                        text: 'Teacher On MyQuiz',
                 },
                 {
-                        text: 'About us',
+                        text: 'About Us',
                 },
                 {
-                        text: 'Contact us',
+                        text: 'Contact Us',
                 },
         ],
         [
@@ -27,13 +25,13 @@ const listContent = [
                         text: 'Careers',
                 },
                 {
-                        text: 'Privacy policy and cookie policy',
+                        text: 'Privacy Policy And Cookie Policy',
                 },
                 {
                         text: 'Blog',
                 },
                 {
-                        text: 'Help and Support',
+                        text: 'Help And Support',
                 },
                 {
                         text: 'Terms',
@@ -44,25 +42,24 @@ const listContent = [
 const Footer: React.FunctionComponent<FooterProps> = () => {
         return (
                 <FooterContainer>
-                        <FooterContainerTop $alignItems="flex-start" $justifyContent="space-between">
-                                <FooterColContainer $gutter={4}>
+                        <FooterContainerTop>
+                                <FooterListContainer>
                                         {listContent.map((col, index) => {
                                                 return (
-                                                        <FooterCol key={index}>
-                                                                {col.map((item, indexTwo) => (
-                                                                        <li key={indexTwo}>
-                                                                                <Text $type="p3" as="a" $color="white">
-                                                                                        {item.text}
-                                                                                </Text>
-                                                                        </li>
+                                                        <FooterList key={index}>
+                                                                {col.map((item) => (
+                                                                        <FooterItem key={item.text}>
+                                                                                <Link href="/">
+                                                                                        <FooterLink href="/">{item.text}</FooterLink>
+                                                                                </Link>
+                                                                        </FooterItem>
                                                                 ))}
-                                                        </FooterCol>
+                                                        </FooterList>
                                                 );
                                         })}
-                                </FooterColContainer>
-                                <LangSelect />
+                                </FooterListContainer>
                         </FooterContainerTop>
-                        <FooterAuthor>
+                        <FooterAuthor href="https://www.heaty566.com/" target="_blank">
                                 DEVELOPED BY HEATY566
                                 <br />
                                 Copyright © 2020 Haley Pham

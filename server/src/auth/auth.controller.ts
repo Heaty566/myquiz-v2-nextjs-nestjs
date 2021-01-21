@@ -41,6 +41,7 @@ export class AuthController {
                 @Res() res: Response,
         ) {
                 const isExistUsername = await this.userService.findUserByField('username', body.username);
+
                 if (isExistUsername) throw ErrorResponse.send({ details: { username: 'is taken' } }, 'BadRequestException');
 
                 const newUser = await this.authService.createNewUser(body);

@@ -15,6 +15,7 @@ export const errorMsg = (override?: Record<string, any>) => {
                 'any.only': `should be match`,
                 'string.empty': `should not be empty`,
                 'boolean.base': `should be a boolean`,
+                'array.length': 'should be length equal',
                 ...override,
         };
 };

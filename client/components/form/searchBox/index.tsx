@@ -1,19 +1,16 @@
-import React from 'react';
+import * as React from 'react';
 import Image from 'next/image';
 
 //* Import
-import { SearchBoxContainer, SearchBoxBtn, SearchBoxTextField } from './style';
+import { SearchBoxContainer, SearchBoxBtn, SearchBoxInput } from './style';
+export interface SearchBoxProps {}
 
-export interface FormSearchBoxProps {
-        placeholder: string;
-}
-
-export const FormSearchBox: React.FunctionComponent<FormSearchBoxProps> = ({ placeholder = '' }) => {
+export const SearchBox: React.FunctionComponent<SearchBoxProps> = () => {
         return (
                 <SearchBoxContainer>
-                        <SearchBoxTextField type="text" placeholder={placeholder} />
+                        <SearchBoxInput placeholder="Search..." />
                         <SearchBoxBtn>
-                                <Image src="/asset/icon/search-glass.svg" alt="" height="16" width="16" />
+                                <Image height="15" width="14" src="/asset/icons/search-glass.svg" alt="search button" />
                         </SearchBoxBtn>
                 </SearchBoxContainer>
         );

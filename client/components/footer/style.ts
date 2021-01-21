@@ -1,18 +1,11 @@
 import styled, { css } from 'styled-components';
 
 //* Import
-import { LangContainer } from '../common/langSelect/style';
 import { breakPoint } from '../../style';
-import { Layout } from '../../style/layout';
 
-export const FooterContainerTop = styled(Layout)(
+export const FooterContainerTop = styled.div(
         ({ theme: { ruler } }) => css`
                 margin-bottom: ${ruler * 2}px;
-                @media ${breakPoint.md} {
-                        & > ${LangContainer} {
-                                display: none;
-                        }
-                }
         `,
 );
 
@@ -26,32 +19,43 @@ export const FooterContainer = styled.footer(
         `,
 );
 
-export const FooterColContainer = styled(Layout)(
-        ({}) => css`
-                @media ${breakPoint.md} {
-                        flex-direction: column;
-                }
-        `,
-);
+export const FooterListContainer = styled.div(({}) => css``);
 
-export const FooterCol = styled.ul(
+export const FooterList = styled.ul(
         ({ theme: { ruler } }) => css`
-                & > li {
-                        cursor: pointer;
-                        margin-bottom: ${ruler * 0.5}px;
+                display: inline-block;
+                @media ${breakPoint.sm} {
+                        display: block;
                 }
-                @media ${breakPoint.md} {
-                        & > li {
-                                margin-bottom: ${ruler}px;
-                        }
+
+                height: 100%;
+                vertical-align: top;
+                margin-right: ${ruler * 4}px;
+        `,
+);
+export const FooterItem = styled.li(
+        ({ theme: { ruler } }) => css`
+                display: block;
+                margin: ${ruler}px;
+        `,
+);
+export const FooterLink = styled.a(
+        ({ theme: { colors } }) => css`
+                display: block;
+                color: ${colors.font.white};
+                font-weight: 500;
+                transition: 0.2s;
+                &:hover {
+                        text-decoration: underline;
                 }
         `,
 );
 
-export const FooterAuthor = styled.div(
+export const FooterAuthor = styled.a(
         ({ theme: { colors, fontSize } }) => css`
                 text-align: center;
+                display: block;
                 color: ${colors.font.white};
-                font-size: ${fontSize.p3}px;
+                font-size: ${fontSize[14]}px;
         `,
 );

@@ -1,27 +1,25 @@
 import styled, { css } from 'styled-components';
 
-//* Import
-import { Layout } from '../../../style/layout';
-import { breakPoint } from '../../../style';
-
-export const NotFoundContainer = styled(Layout)(
+export const NotFoundContainer = styled.section(
         ({ theme: { colors } }) => css`
+                display: flex;
+                justify-content: center;
+                align-items: center;
                 background-color: ${colors.white.two};
         `,
 );
+
+export const NotFoundTitle = styled.h1(
+        ({ theme: { ruler } }) => css`
+                font-size: ${ruler * 8}px;
+        `,
+);
+export const NotFoundText = styled.h4(({ theme: {} }) => css``);
+
 export const NotFoundWrapper = styled.div(
         ({ theme: { ruler } }) => css`
                 text-align: center;
                 padding: 16px;
-
-                @media ${breakPoint.sm} {
-                        & > h1 {
-                                font-size: 96px;
-                        }
-                }
-                & > h1 {
-                        font-size: 64px;
-                }
 
                 & > * {
                         margin-bottom: ${ruler * 2}px;

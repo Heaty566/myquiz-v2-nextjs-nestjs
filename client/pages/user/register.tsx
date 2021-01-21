@@ -1,77 +1,73 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import Image from 'next/image';
 import Link from 'next/link';
-import { useSelector } from 'react-redux';
 
 //* Import
-import { AuthFormContainer, AuthContainer, AuthExtraLink, AuthForm } from '../../components/views/user/authFormStyle';
-import { TextField, TextFieldPassword } from '../../components/form/textField';
-import { FormWithSocial } from '../../components/form/WithSocial';
-import { Text } from '../../style/typography';
-import { Layout } from '../../style/layout';
-import { BtnFunc } from '../../components/button';
-import { seoHead } from '../../helper/seoHead';
-import { store, RootState } from '../../store';
+import { AuthFormContainer, AuthFormWrapper, AuthFormTitle, AuthFormLink } from '../../components/views/user/form';
+import { InputText } from '../../components/form/input/inputText';
+import { InputPassword } from '../../components/form/input/inputPassword';
+import { BtnFunc } from '../../components/btnFunc';
 import { UserRegisterDto } from '../../store/auth/dto';
-import { ApiState } from '../../store/api';
-import { authActions } from '../../store/auth';
+import { LoginSocial } from '../../components/form/loginSocial';
 import { ROUTER } from '../../constant/routerConstant';
+import { RootState, store } from '../../store';
+import { authActions } from '../../store/auth';
+import { useSelector } from 'react-redux';
+import { ApiState } from '../../store/api';
 import { RouterHOC } from '../../HOC/routerHOC';
-import { useLoading } from '../../hooks/useLoading';
-export interface UserLoginProps {}
+import { seoHead } from '../../helper/seoHead';
 
-const defaultValues: UserRegisterDto = {
-        password: '',
+export interface LoginProps {}
+
+const initialValue: UserRegisterDto = {
         username: '',
+        password: '',
         confirmPassword: '',
         fullName: '',
 };
 
-const Register: React.FunctionComponent<UserLoginProps> = () => {
-        const { register, handleSubmit } = useForm<UserRegisterDto>({ defaultValues });
-        const [errors, setErrors] = useState<UserRegisterDto>(defaultValues);
+const Register: React.FunctionComponent<LoginProps> = () => {
         const apiState = useSelector<RootState, ApiState>((state) => state.api);
-        const isLoading = useLoading();
-        const onSubmit = (data: UserRegisterDto) => store.dispatch(authActions.registerUser(data));
+        const { register, handleSubmit } = useForm<UserRegisterDto>({
+                defaultValues: initialValue,
+        });
+        const [errors, setErrors] = useState<UserRegisterDto>(initialValue);
+
+        const handleOnSubmit = (data: UserRegisterDto) => {
+                store.dispatch(authActions.registerUser(data));
+        };
 
         useEffect(() => {
                 const { isError, errorDetails } = apiState;
 
-                if (isError) setErrors({ ...defaultValues, ...errorDetails });
-                else setErrors(defaultValues);
-        }, [apiState]);
+                if (isError) setErrors({ ...initialValue, ...errorDetails });
+                else setErrors(initialValue);
+        }, [apiState.isError]);
 
         return (
                 <>
-                        {seoHead({ title: 'Register' })}
-                        <AuthContainer $alignItems="center" $justifyContent="center">
-                                <AuthFormContainer>
-                                        <Layout $alignItems="center" $justifyContent="center" $gutter={1}>
-                                                <Text as="h1" $type="h3" $textAlign="center">
-                                                        Register with
-                                                </Text>
-                                                <Image src="/asset/icon/nav-logo.svg" alt="" height="32" width="120" />
-                                        </Layout>
-                                        <AuthForm onSubmit={handleSubmit(onSubmit)}>
-                                                <TextField name="fullName" label="Full name" register={register} errorMsg={errors.fullName} />
-                                                <TextField name="username" label="Username" register={register} errorMsg={errors.username} />
-                                                <TextFieldPassword name="password" label="Password" register={register} errorMsg={errors.password} />
-                                                <TextFieldPassword
-                                                        name="confirmPassword"
-                                                        label="Confirm Password"
-                                                        register={register}
-                                                        errorMsg={errors.confirmPassword}
-                                                />
-                                                <Link href={ROUTER.login}>
-                                                        <AuthExtraLink>Sign in instead?</AuthExtraLink>
-                                                </Link>
-                                                <BtnFunc label="Sign Up" isLoading={isLoading} />
-                                        </AuthForm>
-
-                                        <FormWithSocial />
-                                </AuthFormContainer>
-                        </AuthContainer>
+                        {seoHead({ title: 'Register', canonical: '/user/register' })}
+                        <AuthFormContainer>
+                                <AuthFormWrapper onSubmit={handleSubmit(handleOnSubmit)} role="form">
+                                        <AuthFormTitle>
+                                                <span>Register New Account</span>
+                                        </AuthFormTitle>
+                                        <InputText errorMessage={errors.fullName} label="Full Name" name="fullName" register={register} />
+                                        <InputText errorMessage={errors.username} label="Username" name="username" register={register} />
+                                        <InputPassword errorMessage={errors.password} label="Password" name="password" register={register} />
+                                        <InputPassword
+                                                errorMessage={errors.confirmPassword}
+                                                label="Confirm Password"
+                                                name="confirmPassword"
+                                                register={register}
+                                        />
+                                        <Link href={ROUTER.login}>
+                                                <AuthFormLink href={ROUTER.login}>Sign in instead?</AuthFormLink>
+                                        </Link>
+                                        <BtnFunc label="Sign Up" isLoading={apiState.isLoading} />
+                                        <LoginSocial />
+                                </AuthFormWrapper>
+                        </AuthFormContainer>
                 </>
         );
 };

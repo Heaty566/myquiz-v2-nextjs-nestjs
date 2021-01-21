@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 
 //* Internal import
-import { UserRepository } from './entities/userRepository.entity';
+import { UserRepository } from './entities/user.repository';
 import { TokenRepository } from '../../providers/token/entities/token.repository';
 import { TokenService } from '../../providers/token/token.service';
 import { AuthService } from '../../auth/auth.service';

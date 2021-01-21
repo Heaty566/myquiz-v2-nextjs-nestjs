@@ -25,11 +25,6 @@ export interface Theme {
                         two: string;
                         three: string;
                 };
-                orange: {
-                        one: string;
-                        two: string;
-                        three: string;
-                };
                 white: {
                         one: string;
                         two: string;
@@ -52,14 +47,17 @@ export interface Theme {
                 one: string;
         };
         fontSize: {
-                h1: number;
-                h2: number;
-                h3: number;
-                h4: number;
-                h5: number;
-                p1: number;
-                p2: number;
-                p3: number;
+                40: number;
+                32: number;
+                24: number;
+                16: number;
+                14: number;
+        };
+        borderRadius: {
+                sm: number;
+        };
+        boxShadow: {
+                one: string;
         };
         ruler: number;
         animation: {

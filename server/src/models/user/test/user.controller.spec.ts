@@ -2,7 +2,7 @@ import { INestApplication } from '@nestjs/common';
 import * as supertest from 'supertest';
 
 //* Internal import
-import { UserRepository } from '../entities/userRepository.entity';
+import { UserRepository } from '../entities/user.repository';
 import { fakeUser } from '../../../../test/fakeEntity';
 import { ChangePasswordDto } from '../dto/changePassword.dto';
 import { fakeData } from '../../../../test/fakeData';

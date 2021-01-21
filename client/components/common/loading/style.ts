@@ -24,7 +24,6 @@ export const Circle = styled.div<{ $size?: number }>(
                         animation: ${animation.rotate} 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
                         border-color: ${colors.primary.one} transparent transparent transparent;
                 }
-
                 & div:nth-child(1) {
                         animation-delay: -0.45s;
                 }

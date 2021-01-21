@@ -40,9 +40,8 @@ const App: React.FunctionComponent<AppProps> = ({ Component, pageProps }) => {
                 <Provider store={store}>
                         <ThemeProvider theme={variable}>
                                 <GlobalStyle />
-                                <header>
-                                        <Navbar />
-                                </header>
+                                <Navbar />
+
                                 <Component {...pageProps} />
                         </ThemeProvider>
                 </Provider>

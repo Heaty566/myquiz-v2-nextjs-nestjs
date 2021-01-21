@@ -1,7 +1,7 @@
 import { INestApplication } from '@nestjs/common';
 
 //* Internal import
-import { UserRepository } from '../../models/user/entities/userRepository.entity';
+import { UserRepository } from '../../models/user/entities/user.repository';
 import { fakeUser } from '../../../test/fakeEntity';
 import { initTestModule } from '../../../test/initTest';
 import { AuthService } from '../auth.service';
