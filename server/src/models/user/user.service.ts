@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ObjectId } from 'mongodb';
 
 //* Internal import
-import { UserRepository } from './entities/userRepository.entity';
+import { UserRepository } from './entities/user.repository';
 import { User } from './entities/user.entity';
 
 @Injectable()
@@ -19,10 +19,6 @@ export class UserService {
         }
 
         async findUserByField(field: keyof User, value: any): Promise<User> {
-                if (field === '_id') {
-                        return await this.userRepository.findOne({ _id: new ObjectId(value) });
-                }
-
-                return await this.userRepository.findOne({ [`${field}`]: value });
+                return await this.userRepository.findOneByField(field, value);
         }
 }

@@ -7,7 +7,7 @@ import { TokenRepository } from '../entities/token.repository';
 import { initTestModule } from '../../../../test/initTest';
 import { TokenService } from '../token.service';
 import { fakeUser } from '../../../../test/fakeEntity';
-import { UserRepository } from '../../../models/user/entities/userRepository.entity';
+import { UserRepository } from '../../../models/user/entities/user.repository';
 import { User } from '../../../models/user/entities/user.entity';
 import { Token } from '../entities/token.entity';
 

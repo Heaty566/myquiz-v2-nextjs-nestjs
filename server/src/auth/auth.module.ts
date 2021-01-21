@@ -4,7 +4,7 @@ import { JwtModule } from '@nestjs/jwt';
 
 //* Internal import
 import { FacebookStrategy, GithubStrategy, GoogleStrategy } from './auth.passport';
-import { UserRepository } from '../models/user/entities/userRepository.entity';
+import { UserRepository } from '../models/user/entities/user.repository';
 import { TokenRepository } from '../providers/token/entities/token.repository';
 import { TokenService } from '../providers/token/token.service';
 import { AuthController } from './auth.controller';

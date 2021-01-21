@@ -2,7 +2,7 @@ import { INestApplication } from '@nestjs/common';
 import { ObjectId } from 'mongodb';
 
 //* Internal import
-import { UserRepository } from '../entities/userRepository.entity';
+import { UserRepository } from '../entities/user.repository';
 import { fakeUser } from '../../../../test/fakeEntity';
 import { initTestModule } from '../../../../test/initTest';
 import { AuthService } from '../../../auth/auth.service';

@@ -2,6 +2,7 @@ import * as Joi from 'joi';
 
 //* Internal import
 import { userJoiSchema } from './user.validator';
+import { quizJoiSchema } from './quiz.validator';
 
 /**
  *
@@ -25,4 +26,4 @@ export function joiSchemaGenerator<T>(cb: CallableFunction) {
 
         return { getJoiSchema, getJoiSchemas };
 }
-export { userJoiSchema };
+export { userJoiSchema, quizJoiSchema };

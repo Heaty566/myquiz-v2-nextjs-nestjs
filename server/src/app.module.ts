@@ -15,6 +15,8 @@ import { MailModule } from './providers/mail/mail.module';
 import { RedisService } from './providers/redis/redis.service';
 import { AwsService } from './providers/aws/aws.service';
 import { AppController } from './app.controller';
+import { QuizModule } from './models/quiz/quiz.module';
+import { Quiz } from './models/quiz/entities/quiz.entity';
 
 const Config = ConfigModule.forRoot({
         isGlobal: true,
@@ -26,13 +28,13 @@ const DBConfig = TypeOrmModule.forRoot({
         synchronize: true,
         keepConnectionAlive: true,
         useUnifiedTopology: true,
-        entities: [User, Token],
+        entities: [User, Token, Quiz],
 });
 
 const JwtConfig = JwtModule.register({ secret: process.env.JWT_SECRET_KEY });
 
 @Module({
-        imports: [Config, DBConfig, UserModule, JwtConfig, AuthModule, TokenModule, RedisModule, MailModule, AwsService],
+        imports: [Config, DBConfig, UserModule, JwtConfig, AuthModule, TokenModule, RedisModule, MailModule, AwsService, QuizModule],
         controllers: [AppController],
         providers: [
                 {

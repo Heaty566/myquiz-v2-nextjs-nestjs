@@ -3,7 +3,7 @@ import { INestApplication } from '@nestjs/common';
 
 //* Internal import
 import { fakeUser } from '../../../test/fakeEntity';
-import { UserRepository } from '../../models/user/entities/userRepository.entity';
+import { UserRepository } from '../../models/user/entities/user.repository';
 import { initTestModule } from '../../../test/initTest';
 import { CreateUserDto } from '../dto/createUser.dto';
 import { User } from '../../models/user/entities/user.entity';
