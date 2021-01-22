@@ -38,6 +38,10 @@ export class User {
 
         @Column()
         role: UserRole;
+
+        @Column()
+        quizIds: Array<ObjectId>;
+
         constructor(username?: string, password?: string, fullName?: string) {
                 this.username = username;
                 this.password = password;
@@ -49,5 +53,6 @@ export class User {
                 this.githubId = '';
                 this.isPremium = false;
                 this.role = UserRole.USER;
+                this.quizIds = [];
         }
 }

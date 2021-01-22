@@ -8,10 +8,9 @@ const { getJoiSchemas } = joiSchemaGenerator<Quiz>(quizJoiSchema);
 
 export class CreateQuizDto {
         name: string;
-        createDate: Date;
         questions: Question[];
 }
 
 export const vCreateQuizDto = Joi.object({
-        ...getJoiSchemas(['createDate', 'name', 'questions']),
+        ...getJoiSchemas(['name', 'questions']),
 });

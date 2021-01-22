@@ -15,14 +15,14 @@ export class GoogleStrategy extends PassportStrategy(Google, 'google') {
                 super({
                         clientID: process.env.GOOGLE_CLIENT_ID,
                         clientSecret: process.env.GOOGLE_SECRET,
-                        callbackURL: `https://www.heaty566.com/api/auth/google/callback`,
+                        callbackURL: `${process.env.SERVER_URL}${callbackPrefix}/google/callback`,
                         scope: ['email', 'profile'],
                 });
         }
 
         async validate(accessToken: string, refreshToken: string, profile: any, done: GoogleCallback): Promise<any> {
                 const { id, displayName } = profile;
-                const user = await this.userService.findUserByField('googleId', id);
+                const user = await this.userService.getOneFindField('googleId', id);
                 if (!user) {
                         const newUser = await this.authService.createNewUserByOtherProvider(displayName, id, 'googleId');
                         done(null, newUser);
@@ -44,7 +44,7 @@ export class FacebookStrategy extends PassportStrategy(Facebook, 'facebook') {
 
         async validate(accessToken: string, refreshToken: string, profile: any, done: any): Promise<any> {
                 const { id, displayName } = profile;
-                const user = await this.userService.findUserByField('facebookId', id);
+                const user = await this.userService.getOneFindField('facebookId', id);
                 if (!user) {
                         const newUser = await this.authService.createNewUserByOtherProvider(displayName, id, 'facebookId');
                         done(null, newUser);
@@ -66,7 +66,7 @@ export class GithubStrategy extends PassportStrategy(Github, 'github') {
 
         async validate(accessToken: string, refreshToken: string, profile: any, done: any): Promise<any> {
                 const { id, displayName } = profile;
-                const user = await this.userService.findUserByField('githubId', id);
+                const user = await this.userService.getOneFindField('githubId', id);
                 if (!user) {
                         const newUser = await this.authService.createNewUserByOtherProvider(displayName, id, 'githubId');
                         done(null, newUser);

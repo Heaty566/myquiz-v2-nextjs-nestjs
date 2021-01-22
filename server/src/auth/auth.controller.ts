@@ -40,11 +40,16 @@ export class AuthController {
                 body: CreateUserDto,
                 @Res() res: Response,
         ) {
-                const isExistUsername = await this.userService.findUserByField('username', body.username);
-
+                const isExistUsername = await this.userService.getOneFindField('username', body.username);
                 if (isExistUsername) throw ErrorResponse.send({ details: { username: 'is taken' } }, 'BadRequestException');
 
-                const newUser = await this.authService.createNewUser(body);
+                const encryptedPassword = await this.authService.encryptString(body.password);
+                const user = new User();
+                user.username = body.username;
+                user.password = encryptedPassword;
+                user.fullName = body.fullName;
+
+                const newUser = await this.authService.updateOrSave(user);
                 const reToken = await this.tokenService.getRefreshToken(newUser);
 
                 return res.cookie('re-token', reToken, { maxAge: 180 * CONSTANT.DAY }).send();
@@ -60,7 +65,7 @@ export class AuthController {
         async loginUser(@Body() body: LoginUserDto, @Res() res: Response) {
                 const errorResponse = ErrorResponse.send({ details: { username: 'or Password are invalid' } }, 'BadRequestException');
 
-                const getUser = await this.userService.findUserByField('username', body.username);
+                const getUser = await this.userService.getOneFindField('username', body.username);
                 if (!getUser) throw errorResponse;
 
                 const isCorrectPassword = await this.authService.compareEncrypt(body.password, getUser.password);
@@ -77,7 +82,7 @@ export class AuthController {
         @Post('/reset-password')
         @UsePipes(new JoiValidatorPipe(vEmailResetPassword))
         async resetUserPassword(@Body() body: EmailResetPasswordDto): Promise<ApiResponse> {
-                const user = await this.userService.findUserByField('email', body.email);
+                const user = await this.userService.getOneFindField('email', body.email);
                 if (!user) throw ErrorResponse.send({ details: { email: 'is not found' } }, 'BadRequestException');
 
                 const jwt = this.tokenService.generateJWT(user);
@@ -103,10 +108,10 @@ export class AuthController {
                 if (!findRedisKey) throw ErrorResponse.send({ details: { resetKey: 'is invalid' } }, 'BadRequestException');
 
                 const decode = this.tokenService.decodeJWT<User>(findRedisKey);
-                const user = await this.userService.findUserByField('_id', decode._id);
+                const user = await this.userService.getOneFindField('_id', decode._id);
                 user.password = await this.authService.encryptString(body.newPassword, 10);
 
-                await this.userService.updateUser(user);
+                await this.userService.updateOrSave(user);
                 this.redisService.deleteByKey(body.resetKey);
                 return {
                         message: 'Update user success',

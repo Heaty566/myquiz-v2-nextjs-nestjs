@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongodb';
 import { Column, Entity, ObjectIdColumn } from 'typeorm';
 import { Question } from './question.entity';
+import * as moment from 'moment';
 
 @Entity()
 export class Quiz {
@@ -18,4 +19,9 @@ export class Quiz {
 
         @Column()
         questions: Array<Question>;
+
+        constructor() {
+                this.createDate = moment().toDate();
+                this.questions = [];
+        }
 }

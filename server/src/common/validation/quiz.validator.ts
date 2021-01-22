@@ -8,7 +8,7 @@ import { JoiCusArray } from './extend/cusArray';
 export function quizJoiSchema(field: keyof Quiz) {
         switch (field) {
                 case 'name':
-                        return Joi.string().min(5).max(40).trim().lowercase().required().messages(errorMsg());
+                        return Joi.string().min(5).max(40).trim().required().messages(errorMsg());
                 case 'createDate':
                         return Joi.date().required().messages(errorMsg());
 
