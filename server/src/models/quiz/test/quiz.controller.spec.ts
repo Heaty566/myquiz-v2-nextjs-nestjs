@@ -10,7 +10,6 @@ import { User } from '../../../models/user/entities/user.entity';
 import { CreateQuizDto } from '../dto/createQuiz.dto';
 import { Quiz } from '../entities/quiz.entity';
 import { ObjectId } from 'mongodb';
-import { In } from 'typeorm';
 
 describe('quizController', () => {
         let app: INestApplication;
@@ -29,8 +28,8 @@ describe('quizController', () => {
                 quizRepository = module.get<QuizRepository>(QuizRepository);
         });
 
-        describe('Get /api', () => {
-                const callApi = () => supertest(app.getHttpServer()).get('/api/quiz').set({ cookie }).send();
+        describe('Get /api/quiz/user', () => {
+                const callApi = (userCookie) => supertest(app.getHttpServer()).get('/api/quiz/user').set({ cookie: userCookie }).send();
 
                 beforeAll(async () => {
                         const dummyQuiz = fakeQuiz();
@@ -43,11 +42,65 @@ describe('quizController', () => {
                         await userRepository.save(userInfo);
                 });
 
-                it('123', async () => {
-                        const hello = await callApi();
-                        console.log(hello.body);
+                it('Pass', async () => {
+                        const res = await callApi(cookie);
+                        expect(res.body.data).toHaveLength(2);
+                        expect(res.status).toBe(200);
+                });
+                it('Failed (user invalid)', async () => {
+                        const res = await callApi('');
+
+                        expect(res.body.message).toBeDefined();
+                        expect(res.body.data).toBeUndefined();
+                        expect(res.status).toBe(401);
                 });
         });
+        describe('Get /api/quiz/:id', () => {
+                const callApi = (id: ObjectId) => supertest(app.getHttpServer()).get(`/api/quiz/${id}`).send();
+                let quizId: ObjectId;
+                beforeAll(async () => {
+                        const dummyQuiz = fakeQuiz();
+                        const quiz = await quizRepository.save(dummyQuiz);
+                        quizId = quiz._id;
+                });
+
+                it('Pass', async () => {
+                        const res = await callApi(quizId);
+
+                        expect(res.body.data).toBeDefined();
+                        expect(res.body.data._id).toBe(String(quizId));
+                        expect(res.status).toBe(200);
+                });
+                it('Failed (quiz does not exist)', async () => {
+                        const res = await callApi(new ObjectId());
+
+                        expect(res.body.data).toBeUndefined();
+                        expect(res.status).toBe(400);
+                });
+        });
+        describe('Get /api/search/query', () => {
+                const callApi = (name: string) => supertest(app.getHttpServer()).get(`/api/quiz/search?name=${name}`).send();
+                let quizId: Quiz;
+                beforeAll(async () => {
+                        const dummyQuiz = fakeQuiz();
+                        const quiz = await quizRepository.save(dummyQuiz);
+                        quizId = quiz;
+                });
+
+                it('Pass', async () => {
+                        const res = await callApi(quizId.name);
+
+                        expect(res.body.data).toBeDefined();
+                        expect(res.status).toBe(200);
+                });
+                it('Failed (quiz does not exist)', async () => {
+                        const res = await callApi('hello');
+
+                        expect(res.body.data).toHaveLength(0);
+                        expect(res.status).toBe(200);
+                });
+        });
+
         describe('Post /api/quiz', () => {
                 let clientInput: CreateQuizDto;
 

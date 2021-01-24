@@ -81,7 +81,7 @@ export class AuthController {
          */
         @Post('/reset-password')
         @UsePipes(new JoiValidatorPipe(vEmailResetPassword))
-        async resetUserPassword(@Body() body: EmailResetPasswordDto): Promise<ApiResponse> {
+        async resetUserPassword(@Body() body: EmailResetPasswordDto): Promise<ApiResponse<void>> {
                 const user = await this.userService.getOneFindField('email', body.email);
                 if (!user) throw ErrorResponse.send({ details: { email: 'is not found' } }, 'BadRequestException');
 
@@ -103,7 +103,7 @@ export class AuthController {
          */
         @Put('/reset-password')
         @UsePipes(new JoiValidatorPipe(vPasswordResetDtoValidator))
-        async resetPasswordHandler(@Body() body: PasswordResetDto): Promise<ApiResponse> {
+        async resetPasswordHandler(@Body() body: PasswordResetDto): Promise<ApiResponse<void>> {
                 const findRedisKey = await this.redisService.getByKey(body.resetKey);
                 if (!findRedisKey) throw ErrorResponse.send({ details: { resetKey: 'is invalid' } }, 'BadRequestException');
 

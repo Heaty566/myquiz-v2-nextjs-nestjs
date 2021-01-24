@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Put, Param, Delete, UsePipes, UseGuards, Req, ValidationPipe, Get } from '@nestjs/common';
+import { Controller, Post, Body, Put, Param, Delete, UsePipes, UseGuards, Req, Get, Query } from '@nestjs/common';
 import { UserAuth } from '../../auth/auth.guard';
 import { JoiValidatorPipe } from '../../common/validation/validator.pipe';
 import { CreateQuizDto, vCreateQuizDto } from './dto/createQuiz.dto';
@@ -8,21 +8,36 @@ import { ApiResponse } from '../../common/interfaces/ApiResponse';
 import { ErrorResponse } from '../../common/interfaces/ErrorResponse';
 import { Quiz } from './entities/quiz.entity';
 import { UserService } from '../user/user.service';
+import { QuizQuery } from './dto/quizQuery';
 
 @Controller('quiz')
 export class QuizController {
         constructor(private readonly quizService: QuizService, private readonly userService: UserService) {}
 
-        @Get('/')
+        @Get('/user')
         @UseGuards(UserAuth)
-        async getAllQuizOfUser(@Req() req: Request) {
-                return await this.quizService.getQuizByIds(req.user.quizIds);
+        async getAllQuizOfUser(@Req() req: Request): Promise<ApiResponse<Quiz[]>> {
+                const quizzes = await this.quizService.getQuizByIds(req.user.quizIds);
+                return { data: quizzes };
+        }
+
+        @Get('/search')
+        async getQuizzes(@Query() { name = '', order = 'ASC', skip = 0, take = 20 }: QuizQuery): Promise<ApiResponse<Quiz[]>> {
+                const quizzes = await this.quizService.getQuizzesByName(name, { order: { name: order }, skip, take });
+                return { data: quizzes };
+        }
+        @Get('/:id')
+        async getQuizById(@Param('id') id: string): Promise<ApiResponse<Quiz>> {
+                const quiz = await this.quizService.getOneFindField('_id', id);
+                if (!quiz) throw ErrorResponse.send({ message: 'Quiz with the given id was not found' }, 'BadRequestException');
+
+                return { data: quiz };
         }
 
         @Post('/')
         @UsePipes(new JoiValidatorPipe(vCreateQuizDto))
         @UseGuards(UserAuth)
-        async createNewQuiz(@Body() body: CreateQuizDto, @Req() req: Request): Promise<ApiResponse> {
+        async createNewQuiz(@Body() body: CreateQuizDto, @Req() req: Request): Promise<ApiResponse<void>> {
                 const isExist = await this.quizService.getOneFindField('name', body.name);
                 if (isExist) throw ErrorResponse.send({ details: { name: 'is taken' } }, 'BadRequestException');
 
@@ -39,7 +54,7 @@ export class QuizController {
 
         @Put('/:id')
         @UseGuards(UserAuth)
-        async updateQuiz(@Body(new JoiValidatorPipe(vCreateQuizDto)) body: CreateQuizDto, @Param('id') id: string, @Req() req: Request): Promise<ApiResponse> {
+        async updateQuiz(@Body(new JoiValidatorPipe(vCreateQuizDto)) body: CreateQuizDto, @Param('id') id: string, @Req() req: Request): Promise<ApiResponse<void>> {
                 const quiz = await this.quizService.getOneFindField('_id', id);
                 if (!quiz) throw ErrorResponse.send({ message: 'Quiz with the given Id was not found' }, 'BadRequestException');
 
@@ -54,7 +69,7 @@ export class QuizController {
 
         @Delete('/:id')
         @UseGuards(UserAuth)
-        async deleteQuiz(@Param('id') id: string, @Req() req: Request): Promise<ApiResponse> {
+        async deleteQuiz(@Param('id') id: string, @Req() req: Request): Promise<ApiResponse<void>> {
                 const quiz = await this.quizService.getOneFindField('_id', id);
                 if (!quiz) throw ErrorResponse.send({ message: 'Quiz with the given Id was not found' }, 'BadRequestException');
 

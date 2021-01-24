@@ -3,11 +3,9 @@ import { ObjectId } from 'mongodb';
 
 //* Internal import
 import { initTestModule } from '../../../../test/initTest';
-import { CreateQuizDto } from '../dto/createQuiz.dto';
 import { QuizRepository } from '../entities/quiz.repository';
 import { QuizService } from '../quiz.service';
 import { fakeQuiz, fakeUser } from '../../../../test/fakeEntity';
-import { Question } from '../entities/question.entity';
 import { UserRepository } from '../../user/entities/user.repository';
 import { Quiz } from '../entities/quiz.entity';
 import { User } from 'src/models/user/entities/user.entity';
@@ -17,6 +15,7 @@ describe('QuizService', () => {
         let quizRepository: QuizRepository;
         let userRepository: UserRepository;
         let quizService: QuizService;
+        let quizArr: Quiz[];
 
         beforeAll(async () => {
                 const { getApp, module } = await initTestModule();
@@ -24,6 +23,16 @@ describe('QuizService', () => {
                 quizService = module.get<QuizService>(QuizService);
                 userRepository = module.get<UserRepository>(UserRepository);
                 quizRepository = module.get<QuizRepository>(QuizRepository);
+        });
+
+        beforeAll(async () => {
+                quizArr = [];
+                for (let index = 0; index < 100; index++) {
+                        const quiz = fakeQuiz();
+                        quiz.name = 'quizName' + index;
+                        const insertQuiz = await quizRepository.save(quiz);
+                        quizArr.push(insertQuiz);
+                }
         });
 
         describe('deleteQuiz', () => {
@@ -59,6 +68,40 @@ describe('QuizService', () => {
                         const isResult = await quizService.deleteOneQuiz(quiz);
 
                         expect(isResult).toBeNull();
+                });
+        });
+
+        describe('getQuizByIds', () => {
+                it('Pass 100 quizzes', async () => {
+                        const quizIds = quizArr.map((item) => item._id);
+
+                        const quizzes = await quizService.getQuizByIds(quizIds, { take: 1000 });
+                        expect(quizzes).toHaveLength(100);
+                        expect(quizIds).toHaveLength(100);
+                });
+                it('Pass 20 quizzes', async () => {
+                        const quizIds = quizArr.map((item) => item._id);
+
+                        const quizzes = await quizService.getQuizByIds(quizIds);
+                        expect(quizzes).toHaveLength(20);
+                        expect(quizIds).toHaveLength(100);
+                });
+        });
+        describe('getQuizzesByName', () => {
+                it('Pass 100 quizzes', async () => {
+                        const quizIds = quizArr.map((item) => item._id);
+
+                        const quizzes = await quizService.getQuizzesByName('quizname');
+
+                        expect(quizzes).toHaveLength(20);
+                        expect(quizIds).toHaveLength(100);
+                });
+                it('Pass 1 quizzes', async () => {
+                        const quizIds = quizArr.map((item) => item._id);
+
+                        const quizzes = await quizService.getQuizzesByName('quizName10');
+                        expect(quizzes).toHaveLength(1);
+                        expect(quizIds).toHaveLength(100);
                 });
         });
 

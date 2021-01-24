@@ -13,9 +13,15 @@ export class QuizService extends CusService<Quiz> {
         constructor(@InjectRepository(Quiz) private readonly quizRepository: QuizRepository, @InjectRepository(User) private readonly userRepository: UserRepository) {
                 super(quizRepository);
         }
-        async getQuizByIds(input: Array<ObjectId>) {
-                const options: FindManyOptions<Quiz> = {};
+        async getQuizByIds(input: Array<ObjectId>, options: FindManyOptions<Quiz> = { order: { name: 'ASC' }, take: 20 }) {
                 return await this.quizRepository.findManyByField('_id', input, options);
+        }
+
+        async getQuizzesByName(name: string, options: FindManyOptions<Quiz> = { order: { name: 'ASC' }, take: 20 }) {
+                return await this.quizRepository.find({
+                        where: { name: { $regex: `.*${name}.*`, $options: 'i' } },
+                        ...options,
+                });
         }
 
         async deleteOneQuiz(input: Quiz) {
