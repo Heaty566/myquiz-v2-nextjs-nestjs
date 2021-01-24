@@ -9,8 +9,7 @@ export class NotFoundApiHandler implements ExceptionFilter {
         catch(_: NotFoundException, host: ArgumentsHost) {
                 const ctx = host.switchToHttp();
                 const res = ctx.getResponse<Response>();
-                const resApi: ApiResponse = {
-                        data: null,
+                const resApi: ApiResponse<void> = {
                         message: 'This method is undefined',
                 };
                 return res.send(resApi).status(HttpStatus.NOT_FOUND);

@@ -11,7 +11,7 @@ import { User } from '../models/user/entities/user.entity';
 import { ErrorResponse } from '../common/interfaces/ErrorResponse';
 @Injectable()
 export class UserAuth implements CanActivate {
-        private readonly errorResponse: ApiResponse = {
+        private readonly errorResponse: ApiResponse<void> = {
                 message: 'Invalid token',
         };
 
@@ -41,8 +41,7 @@ export class UserAuth implements CanActivate {
                 const userDecode = this.tokenService.decodeJWT<User>(token.data);
 
                 //checking role
-                if (role === UserRole.ADMIN && userDecode.role !== UserRole.ADMIN)
-                        throw ErrorResponse.send({ message: 'Invalid token' }, 'UnauthorizedException');
+                if (role === UserRole.ADMIN && userDecode.role !== UserRole.ADMIN) throw ErrorResponse.send({ message: 'Invalid token' }, 'UnauthorizedException');
 
                 req.user = userDecode;
                 return true;

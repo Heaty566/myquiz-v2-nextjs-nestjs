@@ -11,15 +11,11 @@ import { User } from '../../models/user/entities/user.entity';
 import { UserService } from '../../models/user/user.service';
 @Injectable()
 export class TokenService {
-        constructor(
-                @InjectRepository(Token) private readonly tokenRepository: TokenRepository,
-                private readonly jwtService: JwtService,
-                private readonly userService: UserService,
-        ) {}
+        constructor(@InjectRepository(Token) private readonly tokenRepository: TokenRepository, private readonly jwtService: JwtService, private readonly userService: UserService) {}
 
-        async getValidToken(_id: string): Promise<Token> {
+        async getValidToken(_id: string | ObjectId): Promise<Token> {
                 try {
-                        const token = await this.tokenRepository.findOne({ _id: new ObjectId(_id) });
+                        const token = await this.tokenRepository.findOneByField('_id', _id);
                         if (!token) return null;
 
                         const isExpired = moment(token.expired).diff(moment(), 'minutes');
@@ -30,14 +26,14 @@ export class TokenService {
                 }
         }
 
-        async getAuthToken(_id: string): Promise<Token> {
+        async getAuthToken(_id: string | ObjectId): Promise<Token> {
                 const token = await this.getValidToken(_id);
                 if (!token) return null;
 
                 const data = this.decodeJWT<{ _id: string }>(token.data);
                 if (!data) return null;
 
-                const user = await this.userService.findUserByField('_id', data._id);
+                const user = await this.userService.getOneFindField('_id', data._id);
                 if (!user) return null;
                 user.password = '';
 

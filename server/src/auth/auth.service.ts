@@ -5,10 +5,12 @@ import * as bcrypt from 'bcrypt';
 //* Internal import
 import { UserRepository } from '../models/user/entities/user.repository';
 import { User } from '../models/user/entities/user.entity';
-import { CreateUserDto } from './dto/createUser.dto';
+import { CusService } from '../common/interfaces/CusService';
 @Injectable()
-export class AuthService {
-        constructor(@InjectRepository(User) private readonly userRepository: UserRepository) {}
+export class AuthService extends CusService<User> {
+        constructor(@InjectRepository(User) private readonly userRepository: UserRepository) {
+                super(userRepository);
+        }
 
         /**
          * @param value The string that you want to encrypt
@@ -28,16 +30,6 @@ export class AuthService {
          */
         async compareEncrypt(value: string, encryptString: string) {
                 return await bcrypt.compare(value, encryptString);
-        }
-
-        /**
-         * @description create a new normal user
-         */
-        async createNewUser({ fullName, username, password }: CreateUserDto) {
-                const encryptedPassword = await this.encryptString(password);
-                const user = new User(username, encryptedPassword, fullName);
-
-                return await this.userRepository.save(user);
         }
 
         /**

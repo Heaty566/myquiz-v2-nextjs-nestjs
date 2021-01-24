@@ -3,73 +3,105 @@ import { ObjectId } from 'mongodb';
 
 //* Internal import
 import { initTestModule } from '../../../../test/initTest';
-import { CreateQuizDto } from '../dto/createQuiz.dto';
 import { QuizRepository } from '../entities/quiz.repository';
 import { QuizService } from '../quiz.service';
-import { fakeData } from '../../../../test/fakeData';
-import { Question } from '../entities/question.entity';
+import { fakeQuiz, fakeUser } from '../../../../test/fakeEntity';
+import { UserRepository } from '../../user/entities/user.repository';
+import { Quiz } from '../entities/quiz.entity';
+import { User } from 'src/models/user/entities/user.entity';
 
 describe('QuizService', () => {
         let app: INestApplication;
         let quizRepository: QuizRepository;
+        let userRepository: UserRepository;
         let quizService: QuizService;
+        let quizArr: Quiz[];
 
         beforeAll(async () => {
                 const { getApp, module } = await initTestModule();
                 app = getApp;
                 quizService = module.get<QuizService>(QuizService);
+                userRepository = module.get<UserRepository>(UserRepository);
                 quizRepository = module.get<QuizRepository>(QuizRepository);
         });
 
-        const generatorQuestion = () => {
-                const question = new Question();
-                question.question = fakeData(10);
-                question.answers = [fakeData(10), fakeData(10), fakeData(10)];
-                question.correctAnswers = [true, false, false];
-                return question;
-        };
+        beforeAll(async () => {
+                quizArr = [];
+                for (let index = 0; index < 100; index++) {
+                        const quiz = fakeQuiz();
+                        quiz.name = 'quizName' + index;
+                        const insertQuiz = await quizRepository.save(quiz);
+                        quizArr.push(insertQuiz);
+                }
+        });
 
-        describe('saveQuiz', () => {
-                let input: CreateQuizDto;
-
-                beforeEach(() => {
-                        input = {
-                                createDate: new Date(),
-                                name: fakeData(10),
-                                questions: [generatorQuestion(), generatorQuestion(), generatorQuestion(), generatorQuestion(), generatorQuestion()],
-                        };
+        describe('deleteQuiz', () => {
+                let quiz: Quiz;
+                let user: User;
+                beforeEach(async () => {
+                        user = await userRepository.save(fakeUser());
+                        const dummyQuiz = fakeQuiz();
+                        dummyQuiz.userId = user._id;
+                        quiz = await quizRepository.save(dummyQuiz);
+                        user.quizIds = [quiz._id];
+                        user = await userRepository.save(user);
                 });
-                it('Pass', async () => {
-                        const newQuiz = await quizService.saveQuiz(input, new ObjectId());
-                        const getQuiz = await quizRepository.findOne({ _id: newQuiz._id });
 
-                        expect(newQuiz.name).toBe(getQuiz.name);
-                        expect(newQuiz).toBeDefined();
+                it('Pass', async () => {
+                        const isResult = await quizService.deleteOneQuiz(quiz);
+                        const getQuiz = await quizRepository.findOne({ _id: quiz._id });
+                        const getUser = await userRepository.findOne({ _id: user._id });
+
+                        expect(getUser).not.toContainEqual(quiz._id);
+                        expect(getQuiz).toBeUndefined();
+                        expect(isResult).toBeDefined();
+                });
+
+                it('Failed (not found)', async () => {
+                        quiz._id = new ObjectId();
+                        const isResult = await quizService.deleteOneQuiz(quiz);
+
+                        expect(isResult._id).toBeUndefined();
+                });
+                it('Failed (not found)', async () => {
+                        quiz.userId = new ObjectId();
+                        const isResult = await quizService.deleteOneQuiz(quiz);
+
+                        expect(isResult).toBeNull();
                 });
         });
-        describe('findQuizByField', () => {
-                let quizName: string;
 
-                beforeEach(async () => {
-                        const input = {
-                                createDate: new Date(),
-                                name: fakeData(10),
-                                questions: [generatorQuestion(), generatorQuestion(), generatorQuestion(), generatorQuestion(), generatorQuestion()],
-                        };
+        describe('getQuizByIds', () => {
+                it('Pass 100 quizzes', async () => {
+                        const quizIds = quizArr.map((item) => item._id);
 
-                        await quizRepository.save(input);
-
-                        quizName = input.name;
+                        const quizzes = await quizService.getQuizByIds(quizIds, { take: 1000 });
+                        expect(quizzes).toHaveLength(100);
+                        expect(quizIds).toHaveLength(100);
                 });
-                it('Pass', async () => {
-                        const getQuiz = await quizService.findQuizByField('name', quizName);
+                it('Pass 20 quizzes', async () => {
+                        const quizIds = quizArr.map((item) => item._id);
 
-                        expect(getQuiz).toBeDefined();
+                        const quizzes = await quizService.getQuizByIds(quizIds);
+                        expect(quizzes).toHaveLength(20);
+                        expect(quizIds).toHaveLength(100);
                 });
-                it('Failed not found', async () => {
-                        const getQuiz = await quizService.findQuizByField('name', '123');
+        });
+        describe('getQuizzesByName', () => {
+                it('Pass 100 quizzes', async () => {
+                        const quizIds = quizArr.map((item) => item._id);
 
-                        expect(getQuiz).toBeUndefined();
+                        const quizzes = await quizService.getQuizzesByName('quizname');
+
+                        expect(quizzes).toHaveLength(20);
+                        expect(quizIds).toHaveLength(100);
+                });
+                it('Pass 1 quizzes', async () => {
+                        const quizIds = quizArr.map((item) => item._id);
+
+                        const quizzes = await quizService.getQuizzesByName('quizName10');
+                        expect(quizzes).toHaveLength(1);
+                        expect(quizIds).toHaveLength(100);
                 });
         });
 

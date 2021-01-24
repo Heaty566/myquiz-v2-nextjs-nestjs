@@ -8,9 +8,7 @@ import { JoiCusArray } from './extend/cusArray';
 export function quizJoiSchema(field: keyof Quiz) {
         switch (field) {
                 case 'name':
-                        return Joi.string().min(5).max(40).trim().lowercase().required().messages(errorMsg());
-                case 'createDate':
-                        return Joi.date().required().messages(errorMsg());
+                        return Joi.string().min(5).max(40).trim().required().messages(errorMsg());
 
                 case 'questions':
                         return Joi.array()
@@ -33,12 +31,7 @@ export function questionJoiSchema(field: keyof Question) {
                 case 'question':
                         return Joi.string().min(2).max(2000).trim().required().messages(errorMsg());
                 case 'answers':
-                        return Joi.array()
-                                .items(Joi.string().min(2).max(2000).trim().messages(errorMsg()))
-                                .min(1)
-                                .max(10)
-                                .required()
-                                .messages(errorMsg());
+                        return Joi.array().items(Joi.string().min(2).max(2000).trim().messages(errorMsg())).min(1).max(10).required().messages(errorMsg());
                 case 'correctAnswers':
                         return JoiCusArray.array()
                                 .some(true)

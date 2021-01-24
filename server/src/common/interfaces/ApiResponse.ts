@@ -1,7 +1,7 @@
 import { ObjError } from '../validation/messageErrorMapper.joi';
 
-export class ApiResponse {
+export class ApiResponse<T> {
         message?: string;
-        data?: any;
+        data?: T;
         details?: ObjError;
 }

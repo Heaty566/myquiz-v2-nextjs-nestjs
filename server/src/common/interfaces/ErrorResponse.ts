@@ -4,7 +4,7 @@ import { ApiResponse } from './ApiResponse';
 type Type = 'BadGatewayException' | 'BadRequestException' | 'InternalServerErrorException' | 'UnauthorizedException';
 
 export class ErrorResponse {
-        public static send(input: ApiResponse, type: Type) {
+        public static send(input: ApiResponse<void>, type: Type) {
                 switch (type) {
                         case 'BadGatewayException':
                                 return new BadGatewayException(input);

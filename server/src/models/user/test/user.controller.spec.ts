@@ -31,32 +31,19 @@ describe('userController', () => {
         let authService: AuthService;
         let tokenService: TokenService;
         let redisService: RedisService;
-        let cookie: string;
+        let cookie: string[];
 
         let userInfo: User;
         beforeAll(async () => {
-                const { getApp, module } = await initTestModule();
+                const { getApp, module, reToken, user } = await initTestModule();
                 app = getApp;
+                cookie = reToken;
+                userInfo = user;
 
                 tokenService = module.get<TokenService>(TokenService);
                 redisService = module.get<RedisService>(RedisService);
                 authService = module.get<AuthService>(AuthService);
                 userRepository = module.get<UserRepository>(UserRepository);
-        });
-
-        beforeAll(async () => {
-                const getUser = fakeUser();
-                const createUserData: CreateUserDto = {
-                        username: getUser.username,
-                        confirmPassword: getUser.password,
-                        password: getUser.password,
-                        fullName: getUser.fullName,
-                };
-                const res = await supertest(app.getHttpServer()).post('/api/auth/register').send(createUserData);
-
-                cookie = res.headers['set-cookie'];
-
-                userInfo = await userRepository.findOne({ username: createUserData.username });
         });
 
         describe('GET /api/user', () => {
@@ -90,8 +77,7 @@ describe('userController', () => {
         });
 
         describe('PUT /api/user/password', () => {
-                const callApi = (input: ChangePasswordDto) =>
-                        supertest(app.getHttpServer()).put('/api/user/password').set({ cookie: cookie }).send(input);
+                const callApi = (input: ChangePasswordDto) => supertest(app.getHttpServer()).put('/api/user/password').set({ cookie: cookie }).send(input);
 
                 let dummyInput: ChangePasswordDto;
                 let dummyPassword: string;
