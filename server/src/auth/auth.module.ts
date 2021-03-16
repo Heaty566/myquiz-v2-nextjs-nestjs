@@ -11,11 +11,12 @@ import { AuthController } from './auth.controller';
 import { UserService } from '../models/user/user.service';
 import { AuthService } from './auth.service';
 import { RedisService } from '../providers/redis/redis.service';
-import { MailService } from '../providers/mail/mail.service';
+import { MailModule } from '../providers/mail/mail.module';
 
 @Module({
-        imports: [TypeOrmModule.forFeature([UserRepository, TokenRepository]), JwtModule.register({ secret: process.env.JWT_SECRET_KEY })],
+        imports: [TypeOrmModule.forFeature([UserRepository, TokenRepository]), JwtModule.register({ secret: process.env.JWT_SECRET_KEY }), MailModule],
         controllers: [AuthController],
-        providers: [AuthService, UserService, RedisService, MailService, TokenService, GoogleStrategy, FacebookStrategy, GithubStrategy],
+        providers: [AuthService, UserService, RedisService, TokenService, GoogleStrategy, FacebookStrategy, GithubStrategy],
+        exports: [AuthService, JwtModule],
 })
 export class AuthModule {}

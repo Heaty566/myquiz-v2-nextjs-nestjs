@@ -9,7 +9,7 @@ export class RuntimeApiHandler implements ExceptionFilter {
         catch(_: NotFoundException, host: ArgumentsHost) {
                 const ctx = host.switchToHttp();
                 const res = ctx.getResponse<Response>();
-                const resApi: ApiResponse = {
+                const resApi: ApiResponse<void> = {
                         data: null,
                         message: 'Something went wrong, Please try again later.',
                 };
