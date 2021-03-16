@@ -25,8 +25,8 @@ export class AuthController {
                 private readonly tokenService: TokenService,
                 private readonly userService: UserService,
                 private readonly redisService: RedisService,
-                private readonly mailService: MailService,
-        ) {}
+        ) // private readonly mailService: MailService,
+        {}
 
         /**
          * @description Handle to register for normal user
@@ -79,23 +79,23 @@ export class AuthController {
          * @description Handle to send a email with reset key
          * @param body email: string
          */
-        @Post('/reset-password')
-        @UsePipes(new JoiValidatorPipe(vEmailResetPassword))
-        async resetUserPassword(@Body() body: EmailResetPasswordDto): Promise<ApiResponse<void>> {
-                const user = await this.userService.getOneFindField('email', body.email);
-                if (!user) throw ErrorResponse.send({ details: { email: 'is not found' } }, 'BadRequestException');
+        // @Post('/reset-password')
+        // @UsePipes(new JoiValidatorPipe(vEmailResetPassword))
+        // async resetUserPassword(@Body() body: EmailResetPasswordDto): Promise<ApiResponse<void>> {
+        //         const user = await this.userService.getOneFindField('email', body.email);
+        //         if (!user) throw ErrorResponse.send({ details: { email: 'is not found' } }, 'BadRequestException');
 
-                const jwt = this.tokenService.generateJWT(user);
-                const key = String(new ObjectId());
-                this.redisService.setByValue(key, jwt, 30);
+        //         const jwt = this.tokenService.generateJWT(user);
+        //         const key = String(new ObjectId());
+        //         this.redisService.setByValue(key, jwt, 30);
 
-                const isSendSuccess = await this.mailService.forgetPasswordMail(user.email, key);
-                if (!isSendSuccess) throw ErrorResponse.send({ details: { email: 'Can not send email to ' + body.email } }, 'BadRequestException');
+        //         const isSendSuccess = await this.mailService.forgetPasswordMail(user.email, key);
+        //         if (!isSendSuccess) throw ErrorResponse.send({ details: { email: 'Can not send email to ' + body.email } }, 'BadRequestException');
 
-                return {
-                        message: 'An email has been sent to your email',
-                };
-        }
+        //         return {
+        //                 message: 'An email has been sent to your email',
+        //         };
+        // }
 
         /**
          * @description Handle to reset password with reset key (the key will be deleted after reset)

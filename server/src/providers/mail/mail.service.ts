@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import { MailService as SendGrid, MailDataRequired } from '@sendgrid/mail';
 import * as mail from '@sendgrid/mail';
 
 @Injectable()
 export class MailService {
-        constructor() {
-                mail.setApiKey(process.env.SENDGRID_API_KEY);
-        }
+        constructor(private readonly sendGrid: SendGrid) {}
 
         /**
          *
@@ -42,7 +41,7 @@ export class MailService {
         }
 
         private sendMail(receiver: string, content: string, subject = 'My Quiz') {
-                const msg: mail.MailDataRequired = {
+                const msg: MailDataRequired = {
                         to: receiver,
                         from: 'MyQuiz<noreply@heaty566.com>',
                         subject: subject,
@@ -60,7 +59,7 @@ export class MailService {
                                 },
                         },
                 };
-                return mail
+                return this.sendGrid
                         .send(msg)
                         .then(() => {
                                 return true;

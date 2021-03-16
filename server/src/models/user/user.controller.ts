@@ -29,7 +29,7 @@ export class UserController {
                 private readonly redisService: RedisService,
                 private readonly userService: UserService,
                 private readonly authService: AuthService,
-                private readonly mailService: MailService,
+
                 private readonly tokenService: TokenService,
                 private readonly awsService: AwsService,
         ) {}
@@ -64,26 +64,6 @@ export class UserController {
 
                 await this.userService.updateOrSave(user);
                 return { message: 'Updated user information' };
-        }
-
-        @Post('/email')
-        @UseGuards(UserAuth)
-        @UsePipes(new JoiValidatorPipe(vUpdateEmailDto))
-        async updateEmail(@Body() body: UpdateEmailDto, @Req() req: Request): Promise<ApiResponse<void>> {
-                const isExistEmail = await this.userService.getOneFindField('email', body.email);
-                if (isExistEmail) throw ErrorResponse.send({ details: { email: 'is taken' } }, 'BadRequestException');
-
-                req.user.email = body.email;
-                const jwt = this.tokenService.generateJWT(req.user);
-                const key = otpGenerator(6);
-                this.redisService.setByValue(key, jwt, 5);
-
-                const isSendSuccess = await this.mailService.otpMail(body.email, key);
-                if (!isSendSuccess) throw ErrorResponse.send({ details: { email: 'Can not send email to' + body.email } }, 'InternalServerErrorException');
-
-                return {
-                        message: 'An email has been sent to your email',
-                };
         }
 
         @Post('/avatar')
