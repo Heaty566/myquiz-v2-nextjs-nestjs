@@ -1,16 +1,16 @@
 import * as Joi from 'joi';
 
-//* Internal import
-import { userJoiSchema, joiSchemaGenerator } from '../../common/validation';
-import { User } from '../../models/user/entities/user.entity';
+import { User } from '../../models/users/entities/user.entity';
+import { ValidatorService } from '../../utils/validator/validator.service';
+import { userJoiSchema } from '../../utils/validator/schema/user.validator';
 
-const { getJoiSchemas } = joiSchemaGenerator<User>(userJoiSchema);
+const { getJoiSchemas } = ValidatorService.joiSchemaGenerator<User>(userJoiSchema);
 
-export class LoginUserDto {
-        username: string;
-        password: string;
+export class LoginUserDTO {
+      username: string;
+      password: string;
 }
 
 export const vLoginUserDto = Joi.object({
-        ...getJoiSchemas(['username', 'password']),
+      ...getJoiSchemas(['username', 'password']),
 });

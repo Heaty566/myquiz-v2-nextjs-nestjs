@@ -1,7 +1,7 @@
-import { User as UserExtend } from './src/models/user/entities/user.entity';
+import UserExtend from './src/models/users/entities/user.entity';
 
 declare global {
-        namespace Express {
-                export interface User extends UserExtend {}
-        }
+      namespace Express {
+            interface User extends UserExtend {}
+      }
 }

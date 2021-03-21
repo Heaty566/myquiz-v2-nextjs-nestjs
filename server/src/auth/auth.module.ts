@@ -1,22 +1,33 @@
-import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtService } from '@nestjs/jwt';
+import { Module } from '@nestjs/common';
 
-//* Internal import
-import { FacebookStrategy, GithubStrategy, GoogleStrategy } from './auth.passport';
-import { UserRepository } from '../models/user/entities/user.repository';
-import { TokenRepository } from '../providers/token/entities/token.repository';
-import { TokenService } from '../providers/token/token.service';
-import { AuthController } from './auth.controller';
-import { UserService } from '../models/user/user.service';
 import { AuthService } from './auth.service';
-import { RedisService } from '../providers/redis/redis.service';
-import { MailModule } from '../providers/mail/mail.module';
+import { AuthController } from './auth.controller';
+import { ReTokenRepository } from './entities/re-token.repository';
+import { UserModule } from '../models/users/user.module';
+import { RedisModule } from '../providers/redis/redis.module';
+import { SmailModule } from '../providers/smail/smail.module';
+import { SmsModule } from '../providers/sms/sms.module';
+import { GoogleStrategy } from './passport/google.strategy';
+import { FacebookStrategy } from './passport/facebook.strategy';
+import { GithubStrategy } from './passport/github.strategy';
 
 @Module({
-        imports: [TypeOrmModule.forFeature([UserRepository, TokenRepository]), JwtModule.register({ secret: process.env.JWT_SECRET_KEY }), MailModule],
-        controllers: [AuthController],
-        providers: [AuthService, UserService, RedisService, TokenService, GoogleStrategy, FacebookStrategy, GithubStrategy],
-        exports: [AuthService, JwtModule],
+      imports: [TypeOrmModule.forFeature([ReTokenRepository]), UserModule, RedisModule, SmailModule, SmsModule],
+      controllers: [AuthController],
+      providers: [
+            AuthService,
+            GoogleStrategy, // GOOGLE
+            FacebookStrategy, // FACEBOOK
+            GithubStrategy, // GITHUB
+            {
+                  provide: JwtService,
+                  useFactory: () => {
+                        return new JwtService({ secret: process.env.JWT_SECRET_KEY });
+                  },
+            },
+      ],
+      exports: [AuthService],
 })
 export class AuthModule {}

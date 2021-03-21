@@ -10,9 +10,9 @@ import '../i18n';
 //* Import
 import { store } from '../store';
 import { GlobalStyle, variable } from '../style';
-import { authActions } from '../store/auth';
 import { apiActions } from '../store/api';
 import { Navbar } from '../components/navbar';
+import { userApiCall } from '../api/user/action';
 export interface AppProps {
         Component: React.FunctionComponent;
         pageProps: any;
@@ -33,7 +33,7 @@ const App: React.FunctionComponent<AppProps> = ({ Component, pageProps }) => {
         }, [Component]);
 
         useEffect(() => {
-                if (reToken) store.dispatch(authActions.getUser());
+                if (reToken) store.dispatch(userApiCall.getUser());
         }, [reToken]);
 
         return (

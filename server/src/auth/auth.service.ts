@@ -1,45 +1,109 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { JwtService } from '@nestjs/jwt';
+import { ObjectId } from 'mongodb';
 import * as bcrypt from 'bcrypt';
 
-//* Internal import
-import { UserRepository } from '../models/user/entities/user.repository';
-import { User } from '../models/user/entities/user.entity';
-import { CusService } from '../common/interfaces/CusService';
+import { UserRepository } from '../models/users/entities/user.repository';
+import { ReTokenRepository } from './entities/re-token.repository';
+import { User } from '../models/users/entities/user.entity';
+import { ReToken } from './entities/re-token.entity';
+import { RedisService } from '../providers/redis/redis.service';
+
 @Injectable()
-export class AuthService extends CusService<User> {
-        constructor(@InjectRepository(User) private readonly userRepository: UserRepository) {
-                super(userRepository);
-        }
+export class AuthService {
+      constructor(
+            private readonly userRepository: UserRepository,
+            private readonly reTokenRepository: ReTokenRepository,
+            private readonly jwtService: JwtService,
+            private readonly redisService: RedisService,
+      ) {}
 
-        /**
-         * @param value The string that you want to encrypt
-         * @param rounds The complexity of encrypt string (recommend > 10)
-         * @returns An encrypted string
-         * @default rounds 10
-         */
-        async encryptString(value: string, rounds = 10) {
-                const salt = await bcrypt.genSalt(rounds);
-                return await bcrypt.hash(value, salt);
-        }
+      //-------------------------------OTP Service --------------------------------------
 
-        /**
-         * @param value current string to compare
-         * @param encryptString encrypt string that you want to compare with value
-         * @returns boolean
-         */
-        async compareEncrypt(value: string, encryptString: string) {
-                return await bcrypt.compare(value, encryptString);
-        }
+      private generateOtpKey(length: number, type: 'sms' | 'email') {
+            const pattern = {
+                  sms: '0123456789',
+                  email: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
+            };
 
-        /**
-         * @description create a new user who login from Google Facebook Github
-         */
-        async createNewUserByOtherProvider(fullName: string, id: string, type: 'googleId' | 'githubId' | 'facebookId') {
-                const user = new User();
-                user.fullName = fullName;
-                user[type] = id;
+            let result = '';
+            const characters = pattern[type];
+            const charactersLength = pattern[type].length;
+            for (let i = 0; i < length; i++) {
+                  result += characters.charAt(Math.floor(Math.random() * charactersLength));
+            }
+            return result;
+      }
 
-                return await this.userRepository.save(user);
-        }
+      generateOTP(user: User, expired: number, type: 'sms' | 'email') {
+            const otpKey = this.generateOtpKey(type === 'email' ? 50 : 6, type);
+            this.redisService.setObjectByKey(otpKey, user, expired);
+            return otpKey;
+      }
+
+      //-------------------------------Token Service --------------------------------------
+
+      async createReToken(data: User) {
+            const authTokenId = await this.createAuthToken(data);
+            const reToken = new ReToken();
+            reToken.data = authTokenId;
+            reToken.userId = data._id;
+            await this.reTokenRepository.delete({ userId: data._id });
+            const insertedReToken = await this.reTokenRepository.save(reToken);
+
+            return String(insertedReToken._id);
+      }
+
+      private async createAuthToken(user: User) {
+            const encryptUser = this.encryptToken(user);
+            const authTokenId = new ObjectId();
+
+            this.redisService.setByValue(String(authTokenId), encryptUser, 0.2);
+            return String(authTokenId);
+      }
+
+      async getAuthTokenByReToken(reTokenId: string) {
+            const reToken = await this.reTokenRepository.findOneByField('_id', reTokenId);
+            if (!reToken) return null;
+
+            const isStillExit = await this.redisService.getByKey(reToken.data);
+            if (!isStillExit) {
+                  const user = await this.userRepository.findOneByField('_id', reToken.userId);
+                  const newReToken = await this.createAuthToken(user);
+                  reToken.data = newReToken;
+                  const updateReToken = await this.reTokenRepository.save(reToken);
+                  return updateReToken.data;
+            }
+
+            return reToken.data;
+      }
+
+      async getUserByAuthToken(authTokenId: string) {
+            const authToken = await this.redisService.getByKey(authTokenId);
+            if (!authToken) return null;
+
+            return await this.decodeToken<User>(authToken);
+      }
+
+      async clearToken(userId: string | ObjectId) {
+            return await this.reTokenRepository.delete({ userId: new ObjectId(userId) });
+      }
+
+      //--------------------------------Encrypt Decrypt Service -------------------------------
+
+      encryptToken(tokenData: Record<any, any>) {
+            return this.jwtService.sign(JSON.stringify(tokenData));
+      }
+
+      decodeToken<T>(tokenData: string) {
+            return this.jwtService.decode(tokenData) as T;
+      }
+
+      async encryptString(data: string): Promise<string> {
+            return await bcrypt.hash(data, 5);
+      }
+
+      async decryptString(data: string, encryptedPassword: string): Promise<boolean> {
+            return bcrypt.compare(data, encryptedPassword);
+      }
 }

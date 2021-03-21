@@ -5,14 +5,13 @@ import Image from 'next/image';
 //* Import
 import { ROUTER } from '../../../constant/routerConstant';
 import { NavDropDownContainer, NavDropDownItem, NavDropDownLink, NavDropDownIcon, NavDropDownList } from './style';
-import { AuthState } from '../../../store/auth';
+import { UserState } from '../../../store/user';
 
 export interface NavDropDownProps {
-        authState: AuthState;
+        authState: UserState;
         isActive: boolean;
         register: React.RefObject<HTMLElement>;
         handleOnClick: Function;
-        handleOnLogout: Function;
 }
 
 const arrData = [
@@ -60,7 +59,7 @@ const arrData = [
         },
 ];
 
-export const NavDropDown: React.FunctionComponent<NavDropDownProps> = ({ authState, isActive, register, handleOnClick, handleOnLogout }) => {
+export const NavDropDown: React.FunctionComponent<NavDropDownProps> = ({ authState, isActive, register, handleOnClick }) => {
         return (
                 <NavDropDownContainer className={`${isActive && 'active'}`} ref={register} role="navigation">
                         <NavDropDownList>
@@ -86,7 +85,7 @@ export const NavDropDown: React.FunctionComponent<NavDropDownProps> = ({ authSta
                                         );
                                 })}
                                 {authState.isLogin && (
-                                        <NavDropDownItem onClick={() => handleOnLogout()}>
+                                        <NavDropDownItem>
                                                 <NavDropDownLink as="button">
                                                         <NavDropDownIcon>
                                                                 <Image src={`/asset/icons/logout.svg`} alt="logout" height="24" width="24" />

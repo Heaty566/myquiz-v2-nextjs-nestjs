@@ -1,15 +1,15 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { apiReducer, ApiState } from './api';
-import { authReducer, AuthState } from './auth';
+import { authReducer, UserState } from './user';
 
 export interface RootState {
         api: ApiState;
-        auth: AuthState;
+        user: UserState;
 }
 
 const reducers = combineReducers<RootState>({
         api: apiReducer,
-        auth: authReducer,
+        user: authReducer,
 });
 
 export const store = configureStore({

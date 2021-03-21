@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Image from 'next/image';
+import Icons from '../../../dataDisplay/icons';
 
 //* Import
 import { InputPasswordContainer, InputPasswordError, InputPasswordField, InputPasswordLabel, InputPasswordFieldWrapper } from './style';
@@ -27,13 +27,7 @@ export const InputPassword: React.FunctionComponent<InputPasswordProps> = ({ err
                                         $isShow={isShow}
                                 />
 
-                                <Image
-                                        src={`/asset/icons/${isShow ? '' : 'in'}visible.svg`}
-                                        alt="invisible"
-                                        height="19"
-                                        width="19"
-                                        onClick={() => setIsShow(!isShow)}
-                                />
+                                <button onClick={() => setIsShow(!isShow)}>{isShow ? Icons.visible : Icons.invisible}</button>
                         </InputPasswordFieldWrapper>
                         {errorMessage && <InputPasswordError>{`${label} ${errorMessage}`}</InputPasswordError>}
                 </InputPasswordContainer>

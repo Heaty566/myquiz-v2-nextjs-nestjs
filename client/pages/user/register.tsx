@@ -7,15 +7,16 @@ import { AuthFormContainer, AuthFormWrapper, AuthFormTitle, AuthFormLink } from 
 import { InputText } from '../../components/form/input/inputText';
 import { InputPassword } from '../../components/form/input/inputPassword';
 import { BtnFunc } from '../../components/btnFunc';
-import { UserRegisterDto } from '../../store/auth/dto';
+import { UserRegisterDto } from '../../api/auth/dto';
 import { LoginSocial } from '../../components/form/loginSocial';
 import { ROUTER } from '../../constant/routerConstant';
 import { RootState, store } from '../../store';
-import { authActions } from '../../store/auth';
+import { authApiCall } from '../../api/auth/action';
 import { useSelector } from 'react-redux';
 import { ApiState } from '../../store/api';
 import { RouterHOC } from '../../HOC/routerHOC';
 import { seoHead } from '../../helper/seoHead';
+import { UserState } from '../../store/user';
 
 export interface LoginProps {}
 
@@ -23,7 +24,7 @@ const initialValue: UserRegisterDto = {
         username: '',
         password: '',
         confirmPassword: '',
-        fullName: '',
+        name: '',
 };
 
 const Register: React.FunctionComponent<LoginProps> = () => {
@@ -31,10 +32,11 @@ const Register: React.FunctionComponent<LoginProps> = () => {
         const { register, handleSubmit } = useForm<UserRegisterDto>({
                 defaultValues: initialValue,
         });
+        const userState = useSelector<RootState, UserState>((state) => state.user);
         const [errors, setErrors] = useState<UserRegisterDto>(initialValue);
 
         const handleOnSubmit = (data: UserRegisterDto) => {
-                store.dispatch(authActions.registerUser(data));
+                store.dispatch(authApiCall.registerUser(data));
         };
 
         useEffect(() => {
@@ -52,7 +54,7 @@ const Register: React.FunctionComponent<LoginProps> = () => {
                                         <AuthFormTitle>
                                                 <span>Register New Account</span>
                                         </AuthFormTitle>
-                                        <InputText errorMessage={errors.fullName} label="Full Name" name="fullName" register={register} />
+                                        <InputText errorMessage={errors.name} label="Name" name="name" register={register} />
                                         <InputText errorMessage={errors.username} label="Username" name="username" register={register} />
                                         <InputPassword errorMessage={errors.password} label="Password" name="password" register={register} />
                                         <InputPassword

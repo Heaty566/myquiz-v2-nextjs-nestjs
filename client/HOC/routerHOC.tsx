@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 //* Import
 import { RootState } from '../store';
-import { AuthState } from '../store/auth';
+import { UserState } from '../store/user';
 export interface UserRouterProps {
         Component: Function;
         props: any;
@@ -13,7 +13,7 @@ export interface UserRouterProps {
 }
 
 export const RouterHOC: React.FunctionComponent<UserRouterProps> = ({ Component, props, isNeedLogin = false, role = 'USER' }) => {
-        const authState = useSelector<RootState, AuthState>((state) => state.auth);
+        const authState = useSelector<RootState, UserState>((state) => state.user);
         const router = useRouter();
 
         useEffect(() => {

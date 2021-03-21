@@ -5,13 +5,13 @@ import Image from 'next/image';
 import { NavMenuContainer, NavMenuBtn, NavAvatar } from './style';
 import { ROUTER } from '../../../constant/routerConstant';
 import { SearchBox } from '../../form/searchBox';
-import { AuthState } from '../../../store/auth';
+import { UserState } from '../../../store/user';
 import { BtnLink } from '../../btnLink';
 
 export interface NavMenuProps {
         handleOnClick: Function;
         isActive: boolean;
-        authState: AuthState;
+        authState: UserState;
 }
 
 export const NavMenu: React.FunctionComponent<NavMenuProps> = ({ handleOnClick, isActive, authState }) => {

@@ -1,55 +1,63 @@
-import { createClient, RedisClient } from 'redis';
-import { Injectable } from '@nestjs/common';
+import { RedisClient } from 'redis';
+import { Injectable, Inject } from '@nestjs/common';
 import * as flat from 'flat';
-
-//* Internal import
-import { CONSTANT } from '../../common/constant';
+import { LoggerService } from '../../utils/logger/logger.service';
 
 @Injectable()
 export class RedisService {
-        private readonly redisRepository: RedisClient;
-        constructor() {
-                const redisPort = Number(process.env.REDIS_PORT) || 7000;
+      constructor(@Inject('RedisClient') private readonly redisRepository: RedisClient, private readonly logger: LoggerService) {}
 
-                this.redisRepository = createClient({ port: redisPort, host: process.env.REDIS_HOST || '' });
-                this.redisRepository.select(process.env.REDIS_DB_NUMBER || 1);
-        }
+      /**
+       *
+       * @param expired amount time for redis value to be expired( 1 = 60s )
+       */
+      setObjectByKey(key: string, value: Record<string, any>, expired?: number) {
+            const flatValue: Record<string, any> = flat(value);
+            this.redisRepository.hmset(key, flatValue);
+            if (expired) {
+                  this.redisRepository.expire(key, expired * 60);
+            }
+      }
 
-        deleteByKey(key: string) {
-                this.redisRepository.del(key);
-        }
+      deleteByKey(key: string) {
+            this.redisRepository.del(key);
+      }
 
-        setByObject(key: string, value: Record<string, any>) {
-                const flatValue: Record<string, any> = flat(value);
+      getObjectByKey<T>(key: string) {
+            return new Promise<T>((res, rej) => {
+                  this.redisRepository.hgetall(key, (err, data) => {
+                        if (err) {
+                              this.logger.print(err, 'error');
+                              return rej(null);
+                        }
 
-                this.redisRepository.hmset(key, flatValue);
-        }
-        getByObject<T extends Record<string, string>>(key: string) {
-                return new Promise((res, rej) => {
-                        this.redisRepository.hgetall(key, (err, data) => {
-                                if (err) return rej(err);
+                        res(flat.unflatten(data) as T);
+                  });
+            });
+      }
 
-                                res(flat.unflatten(data) as T);
-                        });
-                });
-        }
+      /**
+       *
+       * @param expired amount time for redis value to be expired( 1 = 60s )
+       */
+      setByValue(key: string, value: number | string, expired?: number) {
+            if (expired) {
+                  this.redisRepository.setex(key, expired * 60, String(value));
+            } else {
+                  this.redisRepository.set(key, String(value));
+            }
+      }
 
-        setByValue(key: string, value: number | string, expired?: number) {
-                if (expired) {
-                        this.redisRepository.setex(key, expired * CONSTANT.MINUTE, String(value));
-                } else {
-                        this.redisRepository.set(key, String(value));
-                }
-        }
+      getByKey(key: string): Promise<string> {
+            return new Promise((res, rej) => {
+                  this.redisRepository.get(key, (err, data) => {
+                        if (err) {
+                              this.logger.print(err, 'error');
+                              return rej(null);
+                        }
 
-        // *todo take a note if it goes wrong
-        getByKey(key: string): Promise<string> {
-                return new Promise((res, rej) => {
-                        this.redisRepository.get(key, (err, data) => {
-                                if (err) return rej(err);
-
-                                res(data);
-                        });
-                });
-        }
+                        res(data);
+                  });
+            });
+      }
 }

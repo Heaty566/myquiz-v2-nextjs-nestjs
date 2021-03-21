@@ -1,48 +1,33 @@
-import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
-//* Internal import
-import { CountVisitorInterceptor } from './common/interceptor/countVisitor.interceptor';
-import { Token } from './providers/token/entities/token.entity';
-import { User } from './models/user/entities/user.entity';
-import { RedisModule } from './providers/redis/redis.module';
-import { TokenModule } from './providers/token/token.module';
+
 import { AuthModule } from './auth/auth.module';
-import { UserModule } from './models/user/user.module';
-import { MailModule } from './providers/mail/mail.module';
-import { RedisService } from './providers/redis/redis.service';
-import { AwsService } from './providers/aws/aws.service';
-import { AppController } from './app.controller';
-import { QuizModule } from './models/quiz/quiz.module';
-import { Quiz } from './models/quiz/entities/quiz.entity';
+import { SmailModule } from './providers/smail/smail.module';
+import { UserModule } from './models/users/user.module';
+import { SmsModule } from './providers/sms/sms.module';
+import { AwsModule } from './providers/aws/aws.module';
+import { LoggerModule } from './utils/logger/logger.module';
+import { RedisModule } from './providers/redis/redis.module';
+
+import { User } from './models/users/entities/user.entity';
+import { ReToken } from './auth/entities/re-token.entity';
 
 const Config = ConfigModule.forRoot({
-        isGlobal: true,
-        envFilePath: `./config/.env.${process.env.NODE_ENV}`,
+      isGlobal: true,
+      envFilePath: `./config/.env.${process.env.NODE_ENV}`,
 });
 const DBConfig = TypeOrmModule.forRoot({
-        url: process.env.DB_URL,
-        type: 'mongodb',
-        synchronize: true,
-        keepConnectionAlive: true,
-        useUnifiedTopology: true,
-        entities: [User, Token, Quiz],
+      url: process.env.DB_URL,
+      type: 'mongodb',
+      synchronize: true,
+      keepConnectionAlive: true,
+      useUnifiedTopology: true,
+      entities: [User, ReToken],
 });
 
-const JwtConfig = JwtModule.register({ secret: process.env.JWT_SECRET_KEY });
-
 @Module({
-        imports: [Config, DBConfig, UserModule, JwtConfig, AuthModule, TokenModule, RedisModule, MailModule, AwsService, QuizModule],
-        controllers: [AppController],
-        providers: [
-                {
-                        provide: APP_INTERCEPTOR,
-                        useClass: CountVisitorInterceptor,
-                },
-                RedisService,
-                AwsService,
-        ],
+      imports: [Config, DBConfig, AuthModule, SmailModule, UserModule, SmsModule, AwsModule, LoggerModule, RedisModule],
+      controllers: [],
 })
 export class AppModule {}

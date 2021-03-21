@@ -1,180 +1,141 @@
-import { Controller, Post, Body, UsePipes, Res, Get, UseGuards, Req, Put } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res, UseGuards, UsePipes } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Response, Request } from 'express';
-import { ObjectId } from 'mongodb';
 
-//* Internal import
-import { vEmailResetPassword, EmailResetPasswordDto, PasswordResetDto, vPasswordResetDtoValidator } from './dto/resetPassword';
-import { CreateUserDto, vCreateUserDto } from './dto/createUser.dto';
-import { vLoginUserDto, LoginUserDto } from './dto/loginUser.dto';
-import { JoiValidatorPipe } from '../common/validation/validator.pipe';
-import { TokenService } from '../providers/token/token.service';
-import { UserService } from '../models/user/user.service';
-import { CONSTANT } from '../common/constant';
+import { UpdateEmailDTO, vUpdateEmailDTO } from '../models/users/dto/updateEmail.dto';
+import { RegisterUserDTO, vRegisterUserDto } from './dto/registerUser.dto';
+import { LoginUserDTO, vLoginUserDto } from './dto/loginUser.dto';
+import { OtpSmsDTO, vOtpSmsDTO } from './dto/otpSms.dto';
+import { SmailService } from '../providers/smail/smail.service';
+import { SmsService } from '../providers/sms/sms.service';
+import { JoiValidatorPipe } from '../utils/validator/validator.pipe';
+import { User } from '../models/users/entities/user.entity';
+import { apiResponse } from '../app/interface/ApiResponse';
 import { AuthService } from './auth.service';
-import { ErrorResponse } from '../common/interfaces/ErrorResponse';
-import { ApiResponse } from '../common/interfaces/ApiResponse';
-import { MailService } from '../providers/mail/mail.service';
-import { RedisService } from '../providers/redis/redis.service';
-import { User } from '../models/user/entities/user.entity';
+import { UserService } from '../models/users/user.service';
+import { MyAuthGuard } from './auth.guard';
 
 @Controller('auth')
 export class AuthController {
-        constructor(
-                private readonly authService: AuthService,
-                private readonly tokenService: TokenService,
-                private readonly userService: UserService,
-                private readonly redisService: RedisService,
-        ) // private readonly mailService: MailService,
-        {}
+      constructor(
+            private readonly authService: AuthService,
+            private readonly userService: UserService,
+            private readonly smailService: SmailService,
+            private readonly smsService: SmsService,
+      ) {}
 
-        /**
-         * @description Handle to register for normal user
-         * @param body  fullName:string ,username: string ; password: string ; confirmPassword: string
-         * @returns a re-token token to user for the next authentication
-         */
-        @Post('/register')
-        @UsePipes(new JoiValidatorPipe(vCreateUserDto))
-        async registerUser(
-                @Body()
-                body: CreateUserDto,
-                @Res() res: Response,
-        ) {
-                const isExistUsername = await this.userService.getOneFindField('username', body.username);
-                if (isExistUsername) throw ErrorResponse.send({ details: { username: 'is taken' } }, 'BadRequestException');
+      //----------------------------------Common authentication-----------------------------------------------------------
+      @Post('/login')
+      @UsePipes(new JoiValidatorPipe(vLoginUserDto))
+      async cLoginUser(@Body() body: LoginUserDTO, @Res() res: Response) {
+            //checking user is exist or not
+            const isUserExist = await this.userService.findOneUserByField('username', body.username);
+            if (!isUserExist) throw apiResponse.sendError({ body: { details: { username: 'username or password is not correct' } } });
 
-                const encryptedPassword = await this.authService.encryptString(body.password);
-                const user = new User();
-                user.username = body.username;
-                user.password = encryptedPassword;
-                user.fullName = body.fullName;
+            //checking hash password
+            const isCorrect = await this.authService.decryptString(body.password, isUserExist.password);
+            if (!isCorrect) throw apiResponse.sendError({ body: { details: { username: 'username or password is not correct' } } });
 
-                const newUser = await this.authService.updateOrSave(user);
-                const reToken = await this.tokenService.getRefreshToken(newUser);
+            //return token
+            const reToken = await this.authService.createReToken(isUserExist);
+            return res.cookie('re-token', reToken, { maxAge: 1000 * 60 * 60 * 24 * 30 }).send();
+      }
 
-                return res.cookie('re-token', reToken, { maxAge: 180 * CONSTANT.DAY }).send();
-        }
+      @Post('/register')
+      @UsePipes(new JoiValidatorPipe(vRegisterUserDto))
+      async cRegisterUser(@Body() body: RegisterUserDTO, @Res() res: Response) {
+            //checking user is exist or not
+            const isUserExist = await this.userService.findOneUserByField('username', body.username);
+            if (isUserExist) throw apiResponse.sendError({ body: { details: { username: 'username is already exist' } } });
 
-        /**
-         * @description Handle to login for normal user
-         * @param body username: string ; password: string
-         * @returns a re-token token to user for the next authentication
-         */
-        @Post('/login')
-        @UsePipes(new JoiValidatorPipe(vLoginUserDto))
-        async loginUser(@Body() body: LoginUserDto, @Res() res: Response) {
-                const errorResponse = ErrorResponse.send({ details: { username: 'or Password are invalid' } }, 'BadRequestException');
+            const newUser = new User();
+            newUser.username = body.username;
+            newUser.name = body.name;
+            newUser.password = await this.authService.encryptString(body.password);
+            const insertedUser = await this.userService.saveUser(newUser);
 
-                const getUser = await this.userService.getOneFindField('username', body.username);
-                if (!getUser) throw errorResponse;
+            //return token
+            const reToken = await this.authService.createReToken(insertedUser);
+            return res.cookie('re-token', reToken, { maxAge: 1000 * 60 * 60 * 24 * 30 }).send();
+      }
 
-                const isCorrectPassword = await this.authService.compareEncrypt(body.password, getUser.password);
-                if (!isCorrectPassword) throw errorResponse;
+      @Post('/logout')
+      @UseGuards(MyAuthGuard)
+      async cLogout(@Req() req: Request, @Res() res: Response) {
+            await this.authService.clearToken(req.user._id);
 
-                const refreshToken = await this.tokenService.getRefreshToken(getUser);
-                return res.cookie('re-token', refreshToken, { maxAge: CONSTANT.DAY * 180 }).send();
-        }
+            return res.cookie('re-token', '', { maxAge: -999 }).cookie('auth-token', '', { maxAge: -999 }).send();
+      }
 
-        /**
-         * @description Handle to send a email with reset key
-         * @param body email: string
-         */
-        // @Post('/reset-password')
-        // @UsePipes(new JoiValidatorPipe(vEmailResetPassword))
-        // async resetUserPassword(@Body() body: EmailResetPasswordDto): Promise<ApiResponse<void>> {
-        //         const user = await this.userService.getOneFindField('email', body.email);
-        //         if (!user) throw ErrorResponse.send({ details: { email: 'is not found' } }, 'BadRequestException');
+      //----------------------------------OTP authentication without guard-----------------------------------------------------------
+      @Post('/otp-email')
+      @UsePipes(new JoiValidatorPipe(vUpdateEmailDTO))
+      async cSendOTPByMail(@Body() body: UpdateEmailDTO) {
+            const user = await this.userService.findOneUserByField('email', body.email);
+            if (!user) {
+                  throw apiResponse.sendError({ body: { details: { email: 'email is not found' } } });
+            }
+            const redisKey = await this.authService.generateOTP(user, 30, 'email');
+            const isSent = await this.smailService.sendOTP(user.email, redisKey);
+            if (!isSent)
+                  throw apiResponse.sendError({
+                        body: { details: { email: 'problem occurs when sending email' } },
+                        type: 'InternalServerErrorException',
+                  });
 
-        //         const jwt = this.tokenService.generateJWT(user);
-        //         const key = String(new ObjectId());
-        //         this.redisService.setByValue(key, jwt, 30);
+            return apiResponse.send({ body: { message: 'a mail has been sent to you email' } });
+      }
 
-        //         const isSendSuccess = await this.mailService.forgetPasswordMail(user.email, key);
-        //         if (!isSendSuccess) throw ErrorResponse.send({ details: { email: 'Can not send email to ' + body.email } }, 'BadRequestException');
+      @Post('/otp-sms')
+      @UsePipes(new JoiValidatorPipe(vOtpSmsDTO))
+      async cSendOTPBySms(@Body() body: OtpSmsDTO) {
+            const user = await this.userService.findOneUserByField('phoneNumber', body.phoneNumber);
+            if (!user) throw apiResponse.sendError({ body: { details: { phoneNumber: 'is not correct' } } });
 
-        //         return {
-        //                 message: 'An email has been sent to your email',
-        //         };
-        // }
+            const otpKey = this.authService.generateOTP(user, 5, 'sms');
 
-        /**
-         * @description Handle to reset password with reset key (the key will be deleted after reset)
-         * @param body resetKey: string ; password: string ; confirmPassword: string
-         */
-        @Put('/reset-password')
-        @UsePipes(new JoiValidatorPipe(vPasswordResetDtoValidator))
-        async resetPasswordHandler(@Body() body: PasswordResetDto): Promise<ApiResponse<void>> {
-                const findRedisKey = await this.redisService.getByKey(body.resetKey);
-                if (!findRedisKey) throw ErrorResponse.send({ details: { resetKey: 'is invalid' } }, 'BadRequestException');
+            const res = await this.smsService.sendOTP(user.phoneNumber, otpKey);
+            if (!res) throw apiResponse.sendError({ body: { message: 'please, try again later' }, type: 'InternalServerErrorException' });
+            return apiResponse.send({ body: { message: 'an OTP has been sent to your phone number' } });
+      }
 
-                const decode = this.tokenService.decodeJWT<User>(findRedisKey);
-                const user = await this.userService.getOneFindField('_id', decode._id);
-                user.password = await this.authService.encryptString(body.newPassword, 10);
+      //---------------------------------- 3rd authentication -----------------------------------------------------------
+      @Get('/google')
+      @UseGuards(AuthGuard('google'))
+      cGoogleAuth() {
+            //
+      }
 
-                await this.userService.updateOrSave(user);
-                this.redisService.deleteByKey(body.resetKey);
-                return {
-                        message: 'Update user success',
-                };
-        }
+      @Get('/google/callback')
+      @UseGuards(AuthGuard('google'))
+      async cGoogleAuthRedirect(@Req() req: Request, @Res() res: Response) {
+            const reToken = await this.authService.createReToken(req.user);
+            return res.cookie('re-token', reToken, { maxAge: 1000 * 60 * 60 * 24 * 30 }).redirect(process.env.CLIENT_URL);
+      }
 
-        /**
-         * @description Handle login with Google in
-         */
-        @Get('/google')
-        @UseGuards(AuthGuard('google'))
-        googleAuth() {
-                //
-        }
+      @Get('/facebook')
+      @UseGuards(AuthGuard('facebook'))
+      cFacebookAuth() {
+            //
+      }
 
-        /**
-         * @description Handle login with Google out
-         */
-        @Get('/google/callback')
-        @UseGuards(AuthGuard('google'))
-        async googleCallBack(@Req() req: Request, @Res() res: Response) {
-                const refreshToken = await this.tokenService.getRefreshToken(req.user);
+      @Get('/facebook/callback')
+      @UseGuards(AuthGuard('facebook'))
+      async cFacebookAuthRedirect(@Req() req: Request, @Res() res: Response) {
+            const reToken = await this.authService.createReToken(req.user);
+            return res.cookie('re-token', reToken, { maxAge: 1000 * 60 * 60 * 24 * 30 }).redirect(process.env.CLIENT_URL);
+      }
 
-                return res.cookie('re-token', refreshToken, { maxAge: CONSTANT.DAY * 180 }).redirect(process.env.CLIENT_URL);
-        }
+      @Get('/github')
+      @UseGuards(AuthGuard('github'))
+      async cGithubAuth() {
+            //
+      }
 
-        /**
-         * @description Handle login with Facebook in
-         */
-        @Get('/facebook')
-        @UseGuards(AuthGuard('facebook'))
-        facebookAuth() {
-                //
-        }
-
-        /**
-         * @description Handle login with Facebook out
-         */
-        @Get('/facebook/callback')
-        @UseGuards(AuthGuard('facebook'))
-        async facebookCallback(@Req() req: Request, @Res() res: Response) {
-                const refreshToken = await this.tokenService.getRefreshToken(req.user);
-
-                return res.cookie('re-token', refreshToken, { maxAge: CONSTANT.DAY * 180 }).redirect(process.env.CLIENT_URL);
-        }
-
-        /**
-         * @description Handle login with Github in
-         */
-        @Get('/github')
-        @UseGuards(AuthGuard('github'))
-        githubAuth() {
-                //
-        }
-
-        /**
-         * @description Handle login with Github out
-         */
-        @Get('/github/callback')
-        @UseGuards(AuthGuard('github'))
-        async githubCallback(@Req() req: Request, @Res() res: Response) {
-                const refreshToken = await this.tokenService.getRefreshToken(req.user);
-
-                return res.cookie('re-token', refreshToken, { maxAge: CONSTANT.DAY * 180 }).redirect(process.env.CLIENT_URL);
-        }
+      @Get('/github/callback')
+      @UseGuards(AuthGuard('github'))
+      async cGithubAuthRedirect(@Req() req: Request, @Res() res: Response) {
+            const reToken = await this.authService.createReToken(req.user);
+            return res.cookie('re-token', reToken, { maxAge: 1000 * 60 * 60 * 24 * 30 }).redirect(process.env.CLIENT_URL);
+      }
 }

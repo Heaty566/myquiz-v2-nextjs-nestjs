@@ -1,49 +1,62 @@
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Request, Response } from 'express';
+import { Reflector } from '@nestjs/core';
 
-//* Internal import
-import { ApiResponse } from '../common/interfaces/ApiResponse';
-import { TokenService } from '../providers/token/token.service';
-import { UserRole } from './entities/userRole.enum';
-import { CONSTANT } from '../common/constant';
-import { User } from '../models/user/entities/user.entity';
-import { ErrorResponse } from '../common/interfaces/ErrorResponse';
+import { UserRole } from '../models/users/entities/user.userRole.enum';
+import { apiResponse } from '../app/interface/ApiResponse';
+import { AuthService } from './auth.service';
+
 @Injectable()
-export class UserAuth implements CanActivate {
-        private readonly errorResponse: ApiResponse<void> = {
-                message: 'Invalid token',
-        };
+export class MyAuthGuard implements CanActivate {
+      constructor(private authService: AuthService, private readonly reflector: Reflector) {}
 
-        constructor(private readonly reflector: Reflector, private readonly tokenService: TokenService) {}
+      private async deleteAllAuthToken(res: Response) {
+            res.cookie('auth-token', '', { maxAge: 0 });
+            res.cookie('re-token', '', { maxAge: 0 });
+      }
 
-        async canActivate(context: ExecutionContext) {
-                const req: Request = context.switchToHttp().getRequest();
-                const res: Response = context.switchToHttp().getResponse();
-                const role = this.reflector.get<UserRole>('role', context.getHandler());
+      private async getAuthToken(res: Response, reToken: string) {
+            const authTokenId = await this.authService.getAuthTokenByReToken(reToken);
 
-                //get token and re-token from cookie
-                const refreshToken: string = req.cookies['re-token'] || '';
-                let authToken: string = req.cookies['auth-token'] || '';
-                if (!refreshToken) throw ErrorResponse.send({ message: 'Invalid token' }, 'UnauthorizedException');
+            if (!authTokenId) {
+                  this.deleteAllAuthToken(res);
+                  throw apiResponse.sendError({ body: { message: 'invalid token' }, type: 'UnauthorizedException' });
+            }
+            res.cookie('auth-token', authTokenId, { maxAge: 1000 * 60 * 5 });
+            return await this.authService.getUserByAuthToken(authTokenId);
+      }
 
-                let token = await this.tokenService.getValidToken(authToken);
+      async canActivate(context: ExecutionContext) {
+            const req: Request = context.switchToHttp().getRequest();
+            const res: Response = context.switchToHttp().getResponse();
+            const role = this.reflector.get<UserRole>('role', context.getHandler());
 
-                if (!token) {
-                        token = await this.tokenService.getAuthToken(refreshToken);
-                        if (!token) throw ErrorResponse.send({ message: 'Invalid token' }, 'UnauthorizedException');
+            // get refreshToken and authToken
+            const refreshToken = req.cookies['re-token'] || '';
+            const authToken = req.cookies['auth-token'] || '';
 
-                        authToken = String(token._id);
-                        res.cookie('auth-token', authToken, { maxAge: CONSTANT.MINUTE * 5 });
-                }
+            if (!refreshToken) {
+                  res.cookie('re-token', '', { maxAge: 0 });
+                  throw apiResponse.sendError({ body: { message: 'invalid token' }, type: 'UnauthorizedException' });
+            }
+            if (authToken) {
+                  const user = await this.authService.getUserByAuthToken(authToken);
+                  if (!user) req.user = await this.getAuthToken(res, refreshToken);
+                  else req.user = user;
+            } else req.user = await this.getAuthToken(res, refreshToken);
 
-                //generate token if it does not exist
-                const userDecode = this.tokenService.decodeJWT<User>(token.data);
+            //checking isDisabled user
+            if (req.user.isDisabled) {
+                  this.deleteAllAuthToken(res);
+                  throw apiResponse.sendError({ type: 'ForbiddenException', body: { message: 'you is blocked by an administrator' } });
+            }
 
-                //checking role
-                if (role === UserRole.ADMIN && userDecode.role !== UserRole.ADMIN) throw ErrorResponse.send({ message: 'Invalid token' }, 'UnauthorizedException');
+            //checking role
+            if (role === UserRole.ADMIN && req.user.role !== UserRole.ADMIN) {
+                  this.deleteAllAuthToken(res);
+                  throw apiResponse.sendError({ body: { message: 'action is not allowed' }, type: 'ForbiddenException' });
+            }
 
-                req.user = userDecode;
-                return true;
-        }
+            return true;
+      }
 }

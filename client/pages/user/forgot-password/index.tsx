@@ -1,48 +1,43 @@
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
-
 //* Import
-import { AuthFormContainer, AuthFormWrapper, AuthFormTitle, AuthFormSuccessMsg } from '../../../components/views/user/form';
-import { InputText } from '../../../components/form/input/inputText';
-import { ForgotPasswordDto } from '../../../store/auth/dto';
-import { BtnFunc } from '../../../components/btnFunc';
+import { AuthFormContainer } from '../../../components/views/user/form';
+
+// import { ForgotPasswordDto } from '../../../service/auth/dto';
+
 import { RouterHOC } from '../../../HOC/routerHOC';
-import { RootState, store } from '../../../store';
-import { authActions } from '../../../store/auth';
+
+// import { authActions } from '../../../store/auth';
 import { seoHead } from '../../../helper/seoHead';
-import { ApiState } from '../../../store/api';
 
 export interface LoginProps {}
 
-const initialValue: ForgotPasswordDto = {
-        email: '',
-};
+// const initialValue: ForgotPasswordDto = {
+//         email: '',
+// };
 
 const ForgotPassword: React.FunctionComponent<LoginProps> = () => {
-        const apiState = useSelector<RootState, ApiState>((state) => state.api);
+        // const apiState = useSelector<RootState, ApiState>((state) => state.api);
 
-        const { register, handleSubmit } = useForm<ForgotPasswordDto>({
-                defaultValues: initialValue,
-        });
-        const [errors, setErrors] = useState<ForgotPasswordDto>(initialValue);
+        // const { register, handleSubmit } = useForm<ForgotPasswordDto>({
+        //         defaultValues: initialValue,
+        // });
+        // const [errors, setErrors] = useState<ForgotPasswordDto>(initialValue);
 
-        const handleOnSubmit = (data: ForgotPasswordDto) => {
-                store.dispatch(authActions.forgotPasswordCreate(data));
-        };
+        // const handleOnSubmit = (data: ForgotPasswordDto) => {
+        //         store.dispatch(authActions.forgotPasswordCreate(data));
+        // };
 
-        useEffect(() => {
-                const { isError, errorDetails } = apiState;
+        // useEffect(() => {
+        //         const { isError, errorDetails } = apiState;
 
-                if (isError) setErrors({ ...initialValue, ...errorDetails });
-                else setErrors(initialValue);
-        }, [apiState.isError]);
+        //         if (isError) setErrors({ ...initialValue, ...errorDetails });
+        //         else setErrors(initialValue);
+        // }, [apiState.isError]);
 
         return (
                 <>
                         {seoHead({ title: 'Forgot Password', canonical: '/user/forgot-password', keyword: 'reset password, recovery password' })}
                         <AuthFormContainer>
-                                <AuthFormWrapper onSubmit={handleSubmit(handleOnSubmit)} role="form">
+                                {/* <AuthFormWrapper onSubmit={handleSubmit(handleOnSubmit)} role="form">
                                         <AuthFormTitle>
                                                 <span>Forgot Password</span>
                                         </AuthFormTitle>
@@ -52,7 +47,7 @@ const ForgotPassword: React.FunctionComponent<LoginProps> = () => {
                                         <InputText errorMessage={errors.email} label="Email" name="email" register={register} />
 
                                         <BtnFunc label="Send An Email" isLoading={apiState.isLoading} />
-                                </AuthFormWrapper>
+                                </AuthFormWrapper> */}
                         </AuthFormContainer>
                 </>
         );

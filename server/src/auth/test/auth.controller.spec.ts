@@ -1,175 +1,82 @@
-import * as supertest from 'supertest';
 import { INestApplication } from '@nestjs/common';
+import { createMock } from 'ts-auto-mock';
+import { Request, Response } from 'express';
 
 //* Internal import
 import { fakeUser } from '../../../test/fakeEntity';
-import { UserRepository } from '../../models/user/entities/user.repository';
 import { initTestModule } from '../../../test/initTest';
-import { CreateUserDto } from '../dto/createUser.dto';
-import { User } from '../../models/user/entities/user.entity';
-import { LoginUserDto } from '../dto/LoginUser.dto';
-import { AuthService } from '../auth.service';
-import { EmailResetPasswordDto, PasswordResetDto } from '../dto/resetPassword';
-import { RedisService } from '../../providers/redis/redis.service';
-import { TokenService } from '../../providers/token/token.service';
-import { defuse } from '../../../test/testHelper';
 
-let mockObj = Promise.resolve();
-jest.mock('@sendgrid/mail', () => {
-        return {
-                setApiKey: jest.fn(),
-                send: jest.fn(() => mockObj),
-        };
-});
+import { UserRepository } from '../../models/users/entities/user.repository';
+
+import { AuthController } from '../auth.controller';
+import { ReTokenRepository } from '../entities/re-token.repository';
 
 describe('AuthController', () => {
-        let app: INestApplication;
-        let userRepository: UserRepository;
-        let authService: AuthService;
-        let redisService: RedisService;
-        let tokenService: TokenService;
-        beforeAll(async () => {
-                const { getApp, module } = await initTestModule();
-                app = getApp;
-                tokenService = module.get<TokenService>(TokenService);
-                userRepository = module.get<UserRepository>(UserRepository);
-                redisService = module.get<RedisService>(RedisService);
-                authService = module.get<AuthService>(AuthService);
-        });
+      let app: INestApplication;
 
-        describe('POST /register', () => {
-                let createUserData: CreateUserDto;
-                const reqApi = (input: CreateUserDto) => supertest(app.getHttpServer()).post('/api/auth/register').send(input);
+      let userRepository: UserRepository;
 
-                beforeEach(() => {
-                        const getUser = fakeUser();
-                        createUserData = {
-                                fullName: getUser.fullName,
-                                username: getUser.username,
-                                password: getUser.password,
-                                confirmPassword: getUser.password,
-                        };
-                });
-                it('Pass', async () => {
-                        const res = await reqApi(createUserData);
+      let authController: AuthController;
+      let reTokenRepository: ReTokenRepository;
+      beforeAll(async () => {
+            const { getApp, module } = await initTestModule();
+            app = getApp;
 
-                        expect(res.headers['set-cookie']).toBeDefined();
-                        expect(res.status).toBe(201);
-                });
+            userRepository = module.get<UserRepository>(UserRepository);
+            authController = module.get<AuthController>(AuthController);
+            reTokenRepository = module.get<ReTokenRepository>(ReTokenRepository);
+      });
 
-                it('Failed (username is taken)', async () => {
-                        await reqApi(createUserData);
-                        const res = await reqApi(createUserData);
-                        expect(res.status).toBe(400);
-                });
+      describe('3rd Authentication', () => {
+            describe('googleAuth | facebookAuth | githubAuth', () => {
+                  it('googleAuth', async () => {
+                        const res = await authController.cGoogleAuth();
+                        expect(res).toBeUndefined();
+                  });
+                  it('facebookAuth', async () => {
+                        const res = await authController.cFacebookAuth();
+                        expect(res).toBeUndefined();
+                  });
+                  it('githubAuth', async () => {
+                        const res = await authController.cGithubAuth();
+                        expect(res).toBeUndefined();
+                  });
+            });
 
-                it('Failed (confirmPassword does not match)', async () => {
-                        createUserData.confirmPassword = '12345678';
-                        const res = await reqApi(createUserData);
+            describe('googleAuthRedirect | facebookAuthRedirect | githubAuthRedirect', () => {
+                  let req: Request;
+                  let res: Response;
 
-                        expect(res.status).toBe(400);
-                });
-        });
+                  beforeEach(() => {
+                        req = createMock<Request>();
+                        req.user = fakeUser();
+                        res = createMock<Response>();
+                        res.cookie = jest.fn().mockReturnValue({
+                              redirect: (url) => url,
+                        });
+                  });
 
-        describe('POST /login', () => {
-                //
-                let loginUserDto: LoginUserDto;
-                const reqApi = (input: LoginUserDto) => supertest(app.getHttpServer()).post('/api/auth/login').send(input);
+                  it('googleAuthRedirect', async () => {
+                        const output = await authController.cGoogleAuthRedirect(req, res);
 
-                beforeEach(async () => {
-                        const getUser = fakeUser();
-                        loginUserDto = {
-                                username: getUser.username,
-                                password: getUser.password,
-                        };
-                        const encryptPassword = await authService['encryptString'](loginUserDto.password);
-                        await userRepository.insert({ username: loginUserDto.username, password: encryptPassword });
-                });
-                it('Pass', async () => {
-                        const res = await reqApi(loginUserDto);
+                        expect(output).toBe(process.env.CLIENT_URL);
+                  });
+                  it('facebookAuthRedirect', async () => {
+                        const output = await authController.cFacebookAuthRedirect(req, res);
 
-                        expect(res.headers['set-cookie']).toBeDefined();
-                        expect(res.status).toBe(201);
-                });
+                        expect(output).toBe(process.env.CLIENT_URL);
+                  });
+                  it('githubAuthRedirect', async () => {
+                        const output = await authController.cGithubAuthRedirect(req, res);
 
-                it('Failed (username does not exist)', async () => {
-                        loginUserDto.username = 'helloworld';
-                        const res = await reqApi(loginUserDto);
+                        expect(output).toBe(process.env.CLIENT_URL);
+                  });
+            });
+      });
 
-                        expect(res.status).toBe(400);
-                });
-                it('Failed (incorrect password)', async () => {
-                        loginUserDto.password = 'helloworld';
-                        const res = await reqApi(loginUserDto);
-                        expect(res.status).toBe(400);
-                });
-        });
-
-        describe('POST /reset-password', () => {
-                const reqApi = (input: EmailResetPasswordDto) => supertest(app.getHttpServer()).post('/api/auth/reset-password').send(input);
-                let user: User;
-                beforeAll(async () => {
-                        const hello = fakeUser();
-                        hello.email = 'hello@gmail.com';
-                        user = await userRepository.save(hello);
-                });
-
-                it('Pass', async () => {
-                        const res = await reqApi({ email: user.email });
-                        expect(res.status).toBe(201);
-                        expect(res.body).toBeDefined();
-                });
-
-                it('Failed (email does not exist)', async () => {
-                        const res = await reqApi({ email: 'example@gmail.com' });
-                        expect(res.status).toBe(400);
-                        expect(res.body).toBeDefined();
-                });
-
-                it('Failed (email does not exist in database)', async () => {
-                        const res = await reqApi({ email: 'example@gmail.com' });
-                        expect(res.status).toBe(400);
-                        expect(res.body).toBeDefined();
-                });
-                it('Failed (email does not exist in database)', async () => {
-                        mockObj = defuse(new Promise((resolve, reject) => reject(new Error('Oops'))));
-
-                        const res = await reqApi({ email: 'hello@gmail.com' });
-
-                        expect(res.status).toBe(400);
-                        expect(res.body).toBeDefined();
-                });
-        });
-
-        describe('PUT /reset-password', () => {
-                const reqApi = (input: PasswordResetDto) => supertest(app.getHttpServer()).put('/api/auth/reset-password').send(input);
-                let user: User;
-
-                beforeAll(async () => {
-                        const hello = fakeUser();
-                        hello.email = 'hello@gmail.com';
-                        user = await userRepository.save(hello);
-                        const token = tokenService.generateJWT(hello);
-                        redisService.setByValue('value', token);
-                });
-
-                it('Pass', async () => {
-                        const res = await reqApi({ newPassword: user.password, confirmPassword: user.password, resetKey: 'value' });
-
-                        expect(res.status).toBe(200);
-                        expect(res.body).toBeDefined();
-                });
-
-                it('Failed (reset key have been delete)', async () => {
-                        const res = await reqApi({ newPassword: user.password, confirmPassword: user.password, resetKey: 'value' });
-
-                        expect(res.status).toBe(400);
-                        expect(res.body).toBeDefined();
-                });
-        });
-
-        afterAll(async () => {
-                await userRepository.clear();
-                await app.close();
-        });
+      afterAll(async () => {
+            await reTokenRepository.clear();
+            await userRepository.clear();
+            await app.close();
+      });
 });

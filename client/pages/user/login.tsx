@@ -7,15 +7,17 @@ import { AuthFormContainer, AuthFormWrapper, AuthFormTitle, AuthFormLink } from 
 import { InputText } from '../../components/form/input/inputText';
 import { InputPassword } from '../../components/form/input/inputPassword';
 import { BtnFunc } from '../../components/btnFunc';
-import { UserLoginDto } from '../../store/auth/dto';
+import { UserLoginDto } from '../../api/auth/dto';
+import { authApiCall } from '../../api/auth/action';
 import { LoginSocial } from '../../components/form/loginSocial';
 import { ROUTER } from '../../constant/routerConstant';
 import { RootState, store } from '../../store';
-import { authActions } from '../../store/auth';
+
 import { useSelector } from 'react-redux';
 import { ApiState } from '../../store/api';
 import { RouterHOC } from '../../HOC/routerHOC';
 import { seoHead } from '../../helper/seoHead';
+import { UserState } from '../../store/user';
 
 export interface LoginProps {}
 
@@ -26,13 +28,14 @@ const initialValue: UserLoginDto = {
 
 const Login: React.FunctionComponent<LoginProps> = () => {
         const apiState = useSelector<RootState, ApiState>((state) => state.api);
+        const userState = useSelector<RootState, UserState>((state) => state.user);
         const { register, handleSubmit } = useForm<UserLoginDto>({
                 defaultValues: initialValue,
         });
         const [errors, setErrors] = useState<UserLoginDto>(initialValue);
 
         const handleOnSubmit = (data: UserLoginDto) => {
-                store.dispatch(authActions.loginUser(data));
+                store.dispatch(authApiCall.loginUser(data));
         };
 
         useEffect(() => {
